@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname car-moving) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname |#car-moving|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 (require 2htdp/universe)
 (require 2htdp/image)
 
@@ -15,8 +15,9 @@
   (overlay/xy (circle 15 "solid" "green")
                9 15
                (rectangle 10 30 "solid" "brown")))
+(define trees (beside tree (rectangle 100 0 "solid" "white") tree (rectangle 100 0 "solid" "white") tree))
 
-(define SCENE (place-image tree 150 40 (empty-scene 500 70)))
+(define SCENE (place-image trees 150 40 (empty-scene 500 70)))
 (define CAR-Y-COORDINATE (-(image-height SCENE) (/(image-height CAR)2)))
 
 ;WorldState: data that represent the state of the world (ws). Is a number.
