@@ -13,10 +13,11 @@
 
 (define tree
   (overlay/xy (circle 15 "solid" "green")
-               9 15
-               (rectangle 10 30 "solid" "brown")))
+              9 15
+              (rectangle 10 30 "solid" "brown")))
+(define trees (beside tree (rectangle 100 0 "solid" "white") tree (rectangle 30 0 "solid" "white") tree))
 
-(define SCENE (place-image tree 150 40 (empty-scene 500 70)))
+(define SCENE (place-image trees 150 40 (empty-scene 500 70)))
 (define CAR-Y-COORDINATE (-(image-height SCENE) (/(image-height CAR)2)))
 
 ;WorldState: data that represent the state of the world (ws). Is a number.
@@ -35,11 +36,18 @@
 (check-expect (ontick 0) 3)
 (check-expect (ontick 3) 6)
 
+;WorldState->Boolean
+;When WorldState = SCENE WIDTH returns true, else false
+(define (stop-handler ws)
+  (> ws (image-width SCENE)))
+
+
 ;big-bang
 (define (main x)
   (big-bang x
     [to-draw render]
     [on-tick ontick]
+    [stop-when stop-handler]
     ))
 
 (main 0)
