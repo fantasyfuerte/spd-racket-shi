@@ -25,7 +25,7 @@
 ;WorldState->Image
 ;Place the image ws pixels from the left margin of the given image
 (define (render ws)
-  (place-image CAR ws CAR-Y-COORDINATE SCENE)
+  (place-image CAR (- ws (/ (image-width CAR) 2)) CAR-Y-COORDINATE SCENE)
   )
 
 ;WorldState->WorldState
@@ -39,7 +39,7 @@
 ;WorldState->Boolean
 ;When WorldState = SCENE WIDTH returns true, else false
 (define (stop-handler ws)
-  (> ws (image-width SCENE)))
+  (> (- ws (image-width CAR)) (image-width SCENE)))
 
 
 ;big-bang
