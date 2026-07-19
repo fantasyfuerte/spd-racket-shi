@@ -17,7 +17,7 @@
               (rectangle 10 30 "solid" "brown")))
 (define trees (beside tree (rectangle 100 0 "solid" "white") tree (rectangle 30 0 "solid" "white") tree))
 
-(define SCENE (place-image trees 150 40 (empty-scene 500 70)))
+(define SCENE (place-image trees 150 40 (empty-scene 800 70)))
 (define CAR-Y-COORDINATE (-(image-height SCENE) (/(image-height CAR)2)))
 
 ;WorldState: represents clock ticks since the animation started
@@ -30,13 +30,17 @@
 
 ;WorldState->WorldState
 ;for each tick of the clock, calculate how distance the car is moving
-(define (ontick ws) (* (+ 1 ws) 1.15))
+(define (ontick ws) (* (+ 1 ws) 1.03))
 
 ;WorldState->Boolean
 ;When WorldState = SCENE WIDTH returns true, else false
 (define (stop-handler ws)
   (> (- ws (image-width CAR)) (image-width SCENE)))
 
+;WorldState Number Number String -> WorldState
+;If the mouse event is "button down" place car at that mouse x coordinate
+(define (car-positioner x-car x-mouse y-mouse me)
+  (if (string=? me "button-down") x-mouse x-car))
 
 ;big-bang
 (define (main x)
@@ -44,6 +48,7 @@
     [to-draw render]
     [on-tick ontick]
     [stop-when stop-handler]
+    [on-mouse car-positioner]
     ))
 
 (main 0)
