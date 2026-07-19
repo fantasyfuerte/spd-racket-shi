@@ -4,15 +4,22 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
-(define CAR (overlay/xy (overlay (circle 7 "outline" "grey")(circle 10 "solid" "black")) -50 -15 (overlay/xy (overlay (circle 7 "outline" "grey")(circle 10 "solid" "black")) -5 -15 (above (rectangle 40 8 "solid" "beige")(rectangle 80 20 "solid" "beige") ))))
+(define WHEEL-RADIUS 15)
+(define DISTANCE-BETWEEN-WHEELS (* WHEEL-RADIUS 3.5))
+(define WHEEL (circle WHEEL-RADIUS "solid" "black"))
+(define WHEELS (beside WHEEL (rectangle DISTANCE-BETWEEN-WHEELS 0 "solid" "white") WHEEL))
+(define CAR-BODY (above (rectangle (* (image-width WHEEL) 2) (/ (image-width WHEEL) 2) "solid" "beige") (rectangle (* (image-width WHEELS) 1.1) (*(image-height WHEEL) 1.1) "solid" "beige")))
+(define CAR (overlay/xy WHEELS 0 (*(image-height WHEEL) -1)  CAR-BODY))
+
 (define SCENE (empty-scene 500 70))
+(define CAR-Y-COORDINATE (-(image-height SCENE) (/(image-height CAR)2)))
 
 ;WorldState: data that represent the state of the world (ws). Is a number.
 
 ;WorldState->Image
-;Place the image ws pixels from the left margin
+;Place the image ws pixels from the left margin of the given image
 (define (render ws)
-  (place-image CAR ws 50 SCENE)
+  (place-image CAR ws CAR-Y-COORDINATE SCENE)
   )
 
 ;WorldState->WorldState
@@ -21,7 +28,9 @@
 
 ;big-bang
 (define (main x)
- (big-bang x
-  [to-draw render]
-  [on-tick ontick]
-))
+  (big-bang x
+    [to-draw render]
+    [on-tick ontick]
+    ))
+
+(main 90)
