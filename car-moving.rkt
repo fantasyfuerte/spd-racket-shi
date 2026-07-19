@@ -20,7 +20,7 @@
 (define SCENE (place-image trees 150 40 (empty-scene 500 70)))
 (define CAR-Y-COORDINATE (-(image-height SCENE) (/(image-height CAR)2)))
 
-;WorldState: data that represent the state of the world (ws). Is a number.
+;WorldState: represents clock ticks since the animation started
 
 ;WorldState->Image
 ;Place the image ws pixels from the left margin of the given image
@@ -29,12 +29,8 @@
   )
 
 ;WorldState->WorldState
-;for each tick of the clock, adds 3 to the worldstate
-;given 0 expects 3
-;given 3 expects 6
-(define (ontick ws) (+ 3 ws))
-(check-expect (ontick 0) 3)
-(check-expect (ontick 3) 6)
+;for each tick of the clock, calculate how distance the car is moving
+(define (ontick ws) (* (+ 1 ws) 1.15))
 
 ;WorldState->Boolean
 ;When WorldState = SCENE WIDTH returns true, else false
