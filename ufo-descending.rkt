@@ -37,8 +37,8 @@
 ;Returns a text image with the status of the ufo's landing
 (define (status-image y)
   (cond
-    [(>= (- HEIGHT y) CLOSE)(text "DESCENDING" 20 "blue")]
-    [(>= (- HEIGHT y) (- HEIGHT LANDING-COORDINATE))(text "CLOSING IN" 20 "navy")]
+    [(<= y CLOSE)(text "DESCENDING" 20 "blue")]
+    [(<= y LANDING-COORDINATE)(text "CLOSING IN" 20 "navy")]
     [else (text "LANDED" 20 "green")]
 ))
 
