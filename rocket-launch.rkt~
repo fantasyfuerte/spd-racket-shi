@@ -1,0 +1,13 @@
+;; The first three lines of this file were inserted by MEEEE
+;; just to run this shi on drracket because he doesn't use the first 3 lines
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname controllable-dot) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+
+(require 2htdp/image)
+(require 2htdp/universe)
+
+;CONSTANT DEFINITIONS
+(define SCENE (empty-scene 200 200))
+(define ROCKET (above (triangle 10 'solid 'red)(rectangle 10 50 'solid 'skyblue)))
+ROCKET
+
+;State: Number that represents distance from the ground to the rocket
