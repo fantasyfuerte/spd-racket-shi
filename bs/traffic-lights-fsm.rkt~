@@ -1,0 +1,21 @@
+#lang racket
+
+;TrafficLight: String that represents color of the current light
+;--- "green"
+;--- "yellow"
+;--- "red"
+
+;TrafficLight->TrafficLight
+;Given the current state says the next light
+(check-expect (next-light "green") "yellow")
+(check-expect (next-light "yellow") "red")
+(check-expect (next-light "red") "green")
+(define (next-light s)
+  (cond
+    [(string=? s "green") "yellow"]
+    [(string=? s "yellow") "red"]
+    [(string=? s "red") "green"]
+    ))
+
+
+
