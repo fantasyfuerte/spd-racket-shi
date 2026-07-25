@@ -49,7 +49,13 @@
     [(or(string=? ke "left")(string=? ke "right"))(move-cursor e ke)]
     [(string=? ke "\b")(delchar e)]
     [(or(string=? ke "\t")(string=? ke "\r"))e]
-    [else (writechar e ke)]
+    [else 
+      (if
+        (>= (+(image-width (ctext (string-append (editor-pre e) (editor-post e)))) 10) (image-width MTS))
+        e
+        (writechar e ke)
+      )
+    ]
   )
 )
 
