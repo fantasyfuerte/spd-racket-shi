@@ -36,7 +36,7 @@
 
 ;a SIGS is the state of the world
 (define (main a) 
-  (big-bang (make-aim (make-posn (/(image-width SCENE)2) 10) (make-tank 0 3))
+  (big-bang (make-aim (make-posn (/(image-width SCENE)2) 10) (make-tank 10 10))
     [to-draw si-render]
     [on-tick si-move]
     [stop-when si-game-over?]
@@ -103,7 +103,13 @@
 ;Tank->Tank
 ;Moves the fucking tank
 (define (move-tank t) 
-  (make-tank (+(tank-loc t) (tank-vel t)) (tank-vel t))
+  (make-tank  
+    (cond
+      [(<= (+(tank-loc t) (tank-vel t)) 15)(tank-loc t)]
+      [(>= (+(tank-loc t) (tank-vel t)) (- (image-width SCENE) 15))(tank-loc t)]
+      [else (+(tank-loc t) (tank-vel t))]
+    )
+    (tank-vel t))
 )
 
 ;UFO->UFO
