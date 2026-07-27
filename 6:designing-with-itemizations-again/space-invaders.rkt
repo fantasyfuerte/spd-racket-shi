@@ -39,7 +39,7 @@
   (big-bang (make-aim (make-posn (/(image-width SCENE)2) 10) (make-tank 10 10))
     [to-draw si-render]
     [on-tick si-move]
-    [stop-when si-game-over?]
+    [stop-when si-game-over? si-render-final]
     [on-key si-control]
   )
 )
@@ -154,5 +154,9 @@
       [else (tank-vel t)]
     )
   )
+)
+
+(define (si-render-final s)
+  (text "game over" 20 "black")
 )
 (main 0)
