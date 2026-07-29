@@ -13,7 +13,12 @@
 ;computes the average temperature
 (check-expect (average (cons 1 (cons 2 (cons 3 '())))) 2)
 (define (average l) 
-  (/ (sum l) (how-many l))
+  (cond
+    [(empty? l) (error "average: list cannot be an empty list")]
+    [else 
+      (/ (sum l) (how-many l))
+    ]
+  )
 )
 
 ;List-Of-Temperatures->Number
