@@ -40,7 +40,7 @@
 
 ;List-Of-Temperatures->Number
 ;computes how many temperatures the list have
-(check-expect (sum '()) 0)
+(check-expect (how-many '()) 0)
 (check-expect (how-many (cons 1 (cons 2 '()))) 2)
 (check-expect (how-many (cons 1 (cons 2 '()))) 2)
 (define (how-many l)
@@ -49,3 +49,27 @@
     [else (add1 (how-many (rest l)))]
   )
 )
+
+;NEList-Of-Temperatures->Number
+;Computes the sum of every temperature on the non-empty-list
+(check-expect (nel-sum (cons 1 (cons 2 (cons 3 '())))) 6)
+(check-expect (nel-sum (cons 9 (cons 2 (cons 3 '())))) 14)
+(define (nel-sum l) 
+  (cond
+    [(empty? (rest l))(first l)]
+    [else (+(first l) (nel-sum (rest l)))]
+  )
+)
+
+;NEList-Of-Temperatures->Number
+;computes how many temperatures the non-empty-list have
+(check-expect (nel-how-many (cons 1 (cons 2 '()))) 2)
+(check-expect (nel-how-many (cons 1 (cons 2 '()))) 2)
+(define (nel-how-many l) 
+  (cond
+    [(empty? (rest l))1]
+    [else (add1 (nel-how-many (rest l)))]
+  )
+)
+
+
