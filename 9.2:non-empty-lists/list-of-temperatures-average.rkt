@@ -7,9 +7,14 @@
 ;-- (cons CTemperature List-Of-Temperatures)
 ;interpretation: an arbitrary large list of temperatures
 
+;a NELList-Of-Temperatures is one of:
+;-- (cons CTemperature '())
+;-- (cons CTemperature List-Of-Temperatures)
+;interpretation: an arbitrary large non-empty-list of temperatures
+
 ;a CTemperature is a Number greater than -272
 
-;List-Of-Temperatures->Number
+;NEList-Of-Temperatures->Number
 ;computes the average temperature
 (check-expect (average (cons 1 (cons 2 (cons 3 '())))) 2)
 (define (average l) 
