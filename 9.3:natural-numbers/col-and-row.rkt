@@ -32,3 +32,28 @@
     [else (beside img (row (sub1 n) img))]
   )
 )
+
+(define seats (overlay(square 20 "outline" "black") (square 20 "solid" "white")))
+
+(define lecture-hall (col 18 (row 8 seats))) 
+
+;a PosnsList is one of
+;-- '()
+;-- (cons Posn PosnsList)
+;interpretation: a list of coordinates
+
+(define balloon-popped (circle 10 "solid" "red"))
+(define plist (cons (make-posn 90 200) (cons (make-posn 9 80) (cons (make-posn 28 300) '())))) 
+
+;Image PosnsList->Image
+(check-expect (add-balloons lecture-hall '()) lecture-hall)
+(check-expect (add-balloons lecture-hall (cons (make-posn 1 4) '()))
+  (place-image balloon-popped 1 4 lecture-hall))
+(define (add-balloons hall posns)
+  (cond
+    [(empty? posns) hall]
+    [else (place-image balloon-popped (posn-x (first posns)) (posn-y (first posns)) (add-balloons hall (rest posns)))]
+  )
+)
+
+(add-balloons lecture-hall plist)
