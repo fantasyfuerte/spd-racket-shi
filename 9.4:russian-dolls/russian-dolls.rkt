@@ -12,10 +12,22 @@
 
 ;RD->Number
 ;produces the amount of dolls from a rd
+(check-expect (depth "red") 1)
 (check-expect (depth example-rds) 3)
 (define (depth rd)
   (cond
     [(string? rd) 1]
     [else (add1 (depth (layer-doll rd)))]
+  )
+)
+
+;RD->String
+;produces the innermost color of an RD
+(check-expect (inner "red") "red")
+(check-expect (inner example-rds) "white")
+(define (inner rd)
+  (cond
+    [(string? rd) rd]
+    [else (inner (layer-doll rd))]
   )
 )
