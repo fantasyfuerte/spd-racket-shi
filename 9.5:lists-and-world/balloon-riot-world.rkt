@@ -46,20 +46,15 @@
 (define balloon-popped (circle 10 "solid" "red"))
 (define plist (cons (make-posn 90 200) (cons (make-posn 9 80) (cons (make-posn 28 300) '())))) 
 
+(define-struct pair [balloon# l])
+;a Pair is a structure (make-pair N PosnsList)
+;interpretation (make-pair n lob) means n baloons must be thrown and added to lob
+
 ;a PosnsList is the state of the world
 (define (main x)
-  (big-bang (get-posns x)
+  (big-bang (make-pair x '())
     [to-draw render]
-    [on-tick tick-handler]
-  )
-)
-
-;Number->PosnsList
-;produces a PosnsList of n lenght
-(define (get-posns n)
-  (cond
-    [(= n 0) '()]
-    [else (cons (make-posn (random 160) (random 360)) (get-posns (sub1 n)))]
+    [on-tick tick-handler 1]
   )
 )
 
@@ -67,13 +62,21 @@
 ;places red balloons at the image
 (define (render l)
   (cond
+    [(pair? l) (render (pair-l l))]
     [(empty? l) lecture-hall]
     [else (place-image balloon-popped (posn-x (first l)) (posn-y (first l)) (render(rest l)) )]
   )
 )
 
-;PosnsList->PosnsList
-;does nothing
-(define (tick-handler s) s)
+;Pair->Pair
+;adds (pair-balloon# p) balloons to (pair-l p)
+(define (tick-handler p)
+  (cond
+    [(>= (pair-balloon# p) 0)(make-pair (sub1 (pair-balloon# p))
+      (cons (make-posn (random 160) (random 360)) (pair-l p)))
+     ]
+    [else p]
+  )
+)
 
 (main 10)
