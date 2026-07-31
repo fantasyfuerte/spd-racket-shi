@@ -14,3 +14,28 @@
 (define row1 (cons 11 ( cons 12 '())))
 (define row2 (cons 21 ( cons 22 '())))
 (define mat1 (cons row1 (cons row2 '())))
+
+(define wor1 (cons 11 (cons 21 '())))
+(define wor2 (cons 12 (cons 22 '())))
+(define tam1 (cons wor1 (cons wor2 '())))
+
+;Matrix->Matrix
+;transpose the matrix
+(check-expect (transpose mat1) tam1)
+(define (transpose lln)
+  (cond 
+    [(empty? (first lln))'()]
+    [else (cons (first* lln) (transpose (rest* lln)))]
+  )
+) 
+
+;Matrix->Row
+;given a matrix returns the first column
+(define (first* m)
+  (first m)
+)
+
+;Matrix->Matrix
+(define (rest* m)
+  (rest m)
+)
