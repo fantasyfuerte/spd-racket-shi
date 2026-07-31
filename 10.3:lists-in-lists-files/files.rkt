@@ -12,4 +12,11 @@
 ;interpretation: an arbitrary large list of strings
 
 (define poem-l (cons "TTT" (cons "" (cons "Put up in a place" (cons "where it's easy to see" '())))))
-(define poem-2 (cons "TTT" (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '()))))))))))))
+(define poem-w (cons "TTT" (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '()))))))))))))
+
+;a List-Of-List-Of-Strings (LLS) is one of:
+;-- '()
+;-- (cons List-Of-Strings List-Of-List-Of-Strings)
+;interpretation: an arbitrary large LLS
+
+(define poem-lls (cons (cons "TTT" '()) (cons "" (cons (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" '()))))) (cons (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '())))))'()))))) 
