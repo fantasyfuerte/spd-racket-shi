@@ -41,7 +41,7 @@
     [else 
     (cons (how-many(first lls)) 
     (words-on-line(rest lls)))
-    ]   
+    ]
   )
 )
 
@@ -53,4 +53,10 @@
     [else
     (add1 (how-many (rest ls)))
     ])
+)
+
+;String->List-Of-Numbers
+;produces the words on each line on f file
+(define (file-statistic f)
+  (words-on-line (read-words/line f))
 )
