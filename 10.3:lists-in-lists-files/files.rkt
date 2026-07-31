@@ -4,8 +4,6 @@
 
 (require 2htdp/batch-io)
 
-(read-file "ttt.txt")
-
 ;a List-Of-Strings is one of:
 ;--'()
 ;-- (cons String List-Of-Strings)
@@ -19,4 +17,8 @@
 ;-- (cons List-Of-Strings List-Of-List-Of-Strings)
 ;interpretation: an arbitrary large LLS
 
-(define poem-lls (cons (cons "TTT" '()) (cons "" (cons (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" '()))))) (cons (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '())))))'()))))) 
+(define poem-lls (cons (cons "TTT" '()) (cons '() (cons (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" '()))))) (cons (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '())))))'()))))) 
+
+(read-words/line "ttt.txt")
+
+(equal? (read-words/line "ttt.txt") poem-lls)
