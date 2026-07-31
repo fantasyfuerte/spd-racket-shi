@@ -19,6 +19,38 @@
 
 (define poem-lls (cons (cons "TTT" '()) (cons '() (cons (cons "Put" (cons "up" (cons "in" (cons "a" (cons "place" '()))))) (cons (cons "where" (cons "it's" (cons "easy" (cons "to" (cons "see" '())))))'()))))) 
 
-(read-words/line "ttt.txt")
+;a List-Of-Numbers is one of:
+;-- '()
+;-- (cons Number List-Of-Numbers)
+;interpretation: an arbitrary large list of numbers
 
-(equal? (read-words/line "ttt.txt") poem-lls)
+(define line1 (cons "Hello" (cons "World" '())))
+(define line2 (cons "How" (cons "are" (cons "you" '()))))
+(define line3 '())
+
+(define lls1 (cons line1 (cons line2 (cons line3 '()))))
+(define lls2 '())
+
+;LLS->List-Of-Numbers
+;determines the number of words on each line
+(check-expect (words-on-line lls2) '())
+(check-expect (words-on-line lls1) (cons 2 (cons 3( cons 0 '()))))
+(define (words-on-line lls)
+  (cond
+    [(empty? lls) '()]
+    [else 
+    (cons (how-many(first lls)) 
+    (words-on-line(rest lls)))
+    ]   
+  )
+)
+
+;List-Of-Strings->Number
+;produces the amount of strings of the list
+(define (how-many ls)
+  (cond
+    [(empty? ls) 0]
+    [else
+    (add1 (how-many (rest ls)))
+    ])
+)
