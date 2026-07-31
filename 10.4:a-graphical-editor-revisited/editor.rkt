@@ -45,9 +45,9 @@
 (define (editor-render e)
   (place-image/align
     (beside 
-      (text (append-line (reverse(editor-pre e))) FONT-SIZE FONT-COLOR)
+      (text (implode (reverse(editor-pre e))) FONT-SIZE FONT-COLOR)
       CURSOR
-      (text (append-line (editor-post e)) FONT-SIZE FONT-COLOR)
+      (text (implode (editor-post e)) FONT-SIZE FONT-COLOR)
     )
   1 1
   "left" "top" MT)
@@ -165,15 +165,6 @@
   (cond 
     [(empty? l) (cons s '())]
     [else (cons (first l) (add-at-end(rest l) s))]
-  )
-)
-
-;List-Of-Strings->String
-;produces a string from a list of strings
-(define (append-line l)
-  (cond
-    [(empty? l) ""]
-    [else (string-append (first l) (append-line (rest l)))]
   )
 )
 
