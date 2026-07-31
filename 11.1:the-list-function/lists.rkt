@@ -17,3 +17,7 @@
 (define c2 (cons (cons "he" (cons 0 '())) (cons (cons "it" (cons 1 '())) (cons "lui"(cons 14 '())))))
 
 (define c3 (cons 1 (cons (cons 1 (cons 2 '())) (cons (cons 1 (cons 2 (cons 3 '()))) '())))) 
+
+(define l6 (list a 0 #false))
+(define l7 (list 1 13))
+
