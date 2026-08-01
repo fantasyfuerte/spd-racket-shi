@@ -29,7 +29,7 @@
     [(empty? sl) (list p)]
     [else 
       (cond
-        [(>= (p-aura p) (p-aura (first sl))) (cons p sl)]  
+        [(aura>? p (first sl)) (cons p sl)]  
         [else (cons (first sl) (insert p (rest sl)))]
       )]
   )
@@ -37,11 +37,9 @@
 
 ;Person Person->Person
 ;return the person with more amount of aura
-(check-expect (aura-comparison leo sean) leo)
-(check-expect (aura-comparison manuel sean) manuel)
-(define (aura-comparison p1 p2)
-  (cond
-    [(>= (p-aura p1)(p-aura p2)) p1]
-    [else p2]
-  )
+(check-expect (aura>? leo sean) #true)
+(check-expect (aura>? manuel sean) #true)
+(check-expect (aura>? leo manuel) #false)
+(define (aura>? p1 p2)
+  (>= (p-aura p1) (p-aura p2))
 )
