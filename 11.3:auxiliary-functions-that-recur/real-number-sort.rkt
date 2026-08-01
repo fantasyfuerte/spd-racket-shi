@@ -6,6 +6,7 @@
 ;produces a sorted version of alon
 (check-expect (sort> empty) empty)
 (check-expect (sort> (list 1 2 3)) (list 3 2 1))
+(check-satisfied  (sort> (list 1 2 3)) sorted>?)
 (define (sort> alon)
   (cond
     [(empty? alon) '()]
@@ -26,5 +27,13 @@
         [(<= (first l) n) (cons n l)] 
         [else (cons (first l) (insert n (rest l)))]
       )]
+  )
+)
+
+(define (sorted>? l)
+  (cond
+    [(empty? (rest l)) #true]
+    [(>(first(rest l)) (first l)) #false]
+    [else (sorted>? (rest l))]
   )
 )
