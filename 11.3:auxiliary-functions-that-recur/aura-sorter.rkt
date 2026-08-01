@@ -35,8 +35,8 @@
   )
 )
 
-;Person Person->Person
-;return the person with more amount of aura
+;Person Person->Boolean
+;yields #true if p1 has more aura than p2
 (check-expect (aura>? leo sean) #true)
 (check-expect (aura>? manuel sean) #true)
 (check-expect (aura>? leo manuel) #false)
