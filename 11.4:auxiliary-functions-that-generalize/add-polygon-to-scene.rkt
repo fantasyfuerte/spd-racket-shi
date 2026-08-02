@@ -42,10 +42,10 @@
     20 10 20 20 "red")
   20 20 10 20 "red")
 )
-(define (connect-dots img p)
+(define (connect-dots img p f)
   (cond 
-    [(empty? (rest p)) img]
-    [else (render-line (connect-dots img (rest p))(first p) (second p))]
+    [(empty? (rest p)) (render-line img (first p) f)]
+    [else (render-line (connect-dots img (rest p) f)(first p) (second p))]
   )
 )
 
@@ -67,7 +67,7 @@
   10 20 10 10 "red")
 )
 (define (render-poly img p)
-  (render-line (connect-dots img p) (first p) (last p))
+  (connect-dots img p (first p))
 )
 
 ;Polygon->Posn
