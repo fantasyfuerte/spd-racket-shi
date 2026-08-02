@@ -73,9 +73,10 @@
 (define (starts-with letter dict)
   (cond
     [(empty? dict) '()]
+    [(string<? letter (substring (first dict) 0 1)) '()]
     [else (
       cond
-        [(string=? letter (first (explode (first dict))))
+        [(string=? letter (substring (first dict) 0 1))
            (cons (first dict) (starts-with letter (rest dict)))]
         [else (starts-with letter (rest dict))]
       )]
