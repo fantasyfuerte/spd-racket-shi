@@ -30,17 +30,17 @@
 ;  20 
 ;  (make-date 2011 5 17 17 35 13))
 
-;Track->PlayTime
-;given a tracks produces its playing time
+;Track->Number
+;given a track produces its playing time in milliseconds
 (define (total-time t)
   (* (track-time t) (track-play# t))
 )
 
+;LTracks->Number
+;given a list of tracks produces its total playing time in milliseconds
 (define (time-wasted l)
   (cond
     [(empty? l) 0]
     [else (+ (total-time (first l)) (time-wasted (rest l)))]
   )
 )
-
-(time-wasted itunes-tracks)
