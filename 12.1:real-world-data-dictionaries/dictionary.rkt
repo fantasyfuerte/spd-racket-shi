@@ -22,3 +22,20 @@
 (define LETTERS
   (explode "abcdefghijklmnopqrstuvwxyz")
 )
+
+;Letter Dictionary->Number
+;counts how many words in dict start with letter
+(check-expect (starts-with# "a" (list "analysis" "beyond")) 1)
+(check-expect (starts-with# "a" (list "amigo" "among")) 2)
+(check-expect (starts-with# "a" (list "perro" "santo")) 0)
+(define (starts-with# letter dict)
+  (cond
+    [(empty? dict) 0]
+    [else (
+      cond
+        [(string=? letter (first (explode (first dict))))
+           (add1 (starts-with# letter (rest dict)))]
+        [else (starts-with# letter (rest dict))]
+      )]
+  )
+)
