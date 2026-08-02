@@ -82,7 +82,7 @@
   )
 )
 
-;Dictionary->Number
+;Dictionary->LetterCount
 ;say how many times is used the most used letter of the dictionary
 (check-expect 
   (most-frequent (list "arbol" "amigo" "perro")) 
@@ -93,6 +93,7 @@
 (define (most-frequent dict)
   (greater (count-by-letter LETTERS dict))
 )
+
 
 ;List-Of-LetterCounts->LetterCount
 ;return the greater number on a list
@@ -159,5 +160,3 @@
       )]
   )
 )
-
-(most-frequent AS-LIST)
