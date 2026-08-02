@@ -58,3 +58,23 @@
     [else (cons (track-album (first l)) (select-all-album-titles (rest l)))]
   )
 )
+
+;List-Of-Strings->List-Of-Strings
+;removes repeated strings
+(check-expect
+  (create-set (list "1" "2" "3"))
+  (list "1" "2" "3"))
+(check-expect
+  (create-set (list "1" "1" "2" "3"))
+  (list "1" "2" "3"))
+(define (create-set l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cond 
+        [(member? (first l) (create-set (rest l))) (create-set (rest l))]
+        [else (cons (first l) (create-set (rest l)))]
+      )
+    ]
+  )
+)
