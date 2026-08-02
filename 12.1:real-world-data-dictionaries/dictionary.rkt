@@ -23,6 +23,22 @@
   (explode "abcdefghijklmnopqrstuvwxyz")
 )
 
+;Dictionary->List-Of-Numbers
+;count how many times is used a letter as the first of the word
+(check-expect 
+  (count-by-letter (list "a" "b" "c") 
+  (list "amigo" "below" "car" "cool")) (list 1 1 2))
+(check-expect 
+  (count-by-letter (list "a" "b" "c") 
+  (list "amigo" "arbol" "car" "cool")) (list 2 0 2))
+(define (count-by-letter ls dict)
+  (cond
+    [(empty? ls) '()]
+    [else 
+      (cons (starts-with# (first ls) dict) (count-by-letter (rest ls) dict))]
+  )
+)
+
 ;Letter Dictionary->Number
 ;counts how many words in dict start with letter
 (check-expect (starts-with# "a" (list "analysis" "beyond")) 1)
