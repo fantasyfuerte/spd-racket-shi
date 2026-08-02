@@ -29,3 +29,9 @@
 ;  (make-date 2002 7 17 3 55 14) 
 ;  20 
 ;  (make-date 2011 5 17 17 35 13))
+
+;Track->PlayTime
+;given a tracks produces its playing time
+(define (total-time t)
+  (* (track-time t) (track-play# t))
+)
