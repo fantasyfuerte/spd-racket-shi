@@ -14,6 +14,11 @@
 ;a Dictionary is a List-Of-Strings
 (define AS-LIST (read-lines LOCATION))
 
+;a List-Of-Dictionaries is one of:
+;--'()
+;--(cons Dictionary List-Of-Dictionaries)
+;interpretation: an arbitrary large list of Dictionaries
+
 ;a letter is one of the following 1Strings:
 ;-- "a"
 ;-- ...
@@ -33,6 +38,49 @@
 ;-- '()
 ;-- (cons LetterCount List-Of-LetterCounts)
 ;interpretation: an abitrary large list of LetterCounts
+
+;Dictionary->List-Of-Dictionaries
+;returns a Dictionary per Letter
+(check-expect
+  (words-by-first-letter 
+    (list "a" "b" "c")
+    (list "avellana" "almendra" "barro"))
+  (list 
+    (list "avellana" "almendra")
+    (list "barro")
+    '()))
+(define (words-by-first-letter ls d)
+  (cond
+    [(empty? ls) '()]
+    [else 
+      (cons 
+        (starts-with (first ls) d) 
+        (words-by-first-letter (rest ls) d))]
+  )
+)
+
+;Letter Dictionary->Dictionary
+;counts how many words in dict start with letter
+(check-expect 
+  (starts-with "a" (list "analysis" "beyond")) 
+  (list "analysis"))
+(check-expect 
+  (starts-with "a" (list "amigo" "among"))
+  (list "amigo" "among"))
+(check-expect 
+  (starts-with "a" (list "perro" "santo"))
+  '())
+(define (starts-with letter dict)
+  (cond
+    [(empty? dict) '()]
+    [else (
+      cond
+        [(string=? letter (first (explode (first dict))))
+           (cons (first dict) (starts-with letter (rest dict)))]
+        [else (starts-with letter (rest dict))]
+      )]
+  )
+)
 
 ;Dictionary->Number
 ;say how many times is used the most used letter of the dictionary
