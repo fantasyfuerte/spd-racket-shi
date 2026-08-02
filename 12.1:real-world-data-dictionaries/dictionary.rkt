@@ -94,6 +94,29 @@
   (greater (count-by-letter LETTERS dict))
 )
 
+;Dictionary->LetterCount
+;say how many times is used the most used letter of the dictionary
+(check-expect (most-frequent AS-LIST)
+(most-frequent.v2 AS-LIST))
+(define (most-frequent.v2 dict)
+  (make-lc 
+    (first (explode (first (longer (words-by-first-letter LETTERS dict)))))
+    (length (longer (words-by-first-letter LETTERS dict)))
+  )
+)
+
+;List-Of-Dictionaries->Dictionary
+;returns the longest dictionary
+(define (longer l)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cond
+       [(>= (length (first l)) (length(longer(rest l)))) (first l)] 
+       [else (longer (rest l))]
+      )]
+  )
+)
 
 ;List-Of-LetterCounts->LetterCount
 ;return the greater number on a list
