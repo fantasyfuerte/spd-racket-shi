@@ -30,6 +30,11 @@
 ;  20 
 ;  (make-date 2011 5 17 17 35 13))
 
+;a List-Of-Strings is one of:
+;--'()
+;--(cons String List-Of-Strings)
+;interpretation: an arbitrary large list of strings
+
 ;Track->Number
 ;given a track produces its playing time in milliseconds
 (define (total-time t)
@@ -42,5 +47,14 @@
   (cond
     [(empty? l) 0]
     [else (+ (total-time (first l)) (time-wasted (rest l)))]
+  )
+)
+
+;LTracks->List-Of-Strings
+;given a list of tracks returns a list of all album titles
+(define (select-all-album-titles l)
+  (cond 
+    [(empty? l) '()]
+    [else (cons (track-album (first l)) (select-all-album-titles (rest l)))]
   )
 )
