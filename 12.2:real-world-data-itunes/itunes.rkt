@@ -35,6 +35,26 @@
 ;--(cons String List-Of-Strings)
 ;interpretation: an arbitrary large list of strings
 
+(define-struct agroup [album tracks])
+;an AlbumGroup is a structure:
+;  (make agroup [String LTracks])
+;interpretation: (make-agroup n l) means
+;that the album n has a list l of tracks
+
+;a List-Of-AlbumGroups (LOAG) is one of:
+;-- '()
+;-- (cons AlbumGroup LOAG)
+;interpretation: an arbitrary large LOAG
+
+;LTracks->AlbumGroup
+;Given a list of tracks return LOAG
+(define (select-albums l)
+  (cond
+    [(empty? l) ...]
+    [else (... (first l) ... (track-album l) ... (select-albums (rest l)) ...)
+  )
+)
+
 ;String LTracks->LTracks
 ;given returns the tracks of a album
 (define (select-album-date a l d)
