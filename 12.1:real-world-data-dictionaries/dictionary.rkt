@@ -172,12 +172,15 @@
 (check-expect (starts-with# "a" (list "analysis" "beyond")) 1)
 (check-expect (starts-with# "a" (list "amigo" "among")) 2)
 (check-expect (starts-with# "a" (list "perro" "santo")) 0)
+(check-expect 
+  (starts-with# "b" (list "amigo" "bro" "before" "beware" "canela" "bien")) 3)
 (define (starts-with# letter dict)
   (cond
     [(empty? dict) 0]
+    [(string<? letter (substring (first dict) 0 1)) 0]
     [else (
       cond
-        [(string=? letter (first (explode (first dict))))
+        [(string=? letter (substring (first dict) 0 1))
            (add1 (starts-with# letter (rest dict)))]
         [else (starts-with# letter (rest dict))]
       )]
