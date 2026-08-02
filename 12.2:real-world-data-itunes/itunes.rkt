@@ -59,6 +59,13 @@
   )
 )
 
+;LTracks->List-Of-Strings
+;given a list of tracks returns a list of all album titles without repeating
+;any album
+(define (select-all-album-titles/unique l)
+  (create-set (select-all-album-titles/unique l))
+)
+
 ;List-Of-Strings->List-Of-Strings
 ;removes repeated strings
 (check-expect
