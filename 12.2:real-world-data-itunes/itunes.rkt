@@ -37,6 +37,42 @@
 
 ;String LTracks->LTracks
 ;given returns the tracks of a album
+(define (select-album-date a l d)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cond
+        [(and 
+          (string=? a (track-album (first l)))
+          (is-after (track-played (first l)) d))
+          (cons (first l) (select-album-date a (rest l) d))]
+        [else (select-album-date a (rest l) d)]  
+      )
+    ]
+  )
+)
+
+;Date Date->Boolean
+;yields true if d1 is after d2
+(define (is-after d1 d2)
+  (cond
+    [(>(date-year d1) (date-year d2)) #true]
+    [(<(date-year d1) (date-year d2)) #false]
+    [(>(date-month d1) (date-month d2)) #true]
+    [(<(date-month d1) (date-month d2)) #false]
+    [(>(date-day d1) (date-day d2)) #true]
+    [(<(date-day d1) (date-day d2)) #false]
+    [(>(date-hour d1) (date-hour d2)) #true]
+    [(<(date-hour d1) (date-hour d2)) #false]
+    [(>(date-minute d1) (date-minute d2)) #true]
+    [(<(date-minute d1) (date-minute d2)) #false]
+    [(>(date-second d1) (date-second d2)) #true]
+    [(<(date-second d1) (date-second d2)) #false]
+  )
+)
+
+;String LTracks->LTracks
+;given returns the tracks of a album
 (define (select-album a l)
   (cond
     [(empty? l) '()]
@@ -78,7 +114,7 @@
 ;given a list of tracks returns a list of all album titles without repeating
 ;any album
 (define (select-all-album-titles/unique l)
-  (create-set (select-all-album-titles/unique l))
+  (create-set (select-all-album-titles l))
 )
 
 ;List-Of-Strings->List-Of-Strings
@@ -100,3 +136,5 @@
     ]
   )
 )
+
+(select-all-album-titles/unique itunes-tracks)
