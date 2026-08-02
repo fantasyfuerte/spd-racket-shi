@@ -23,39 +23,75 @@
   (explode "abcdefghijklmnopqrstuvwxyz")
 )
 
+(define-struct lc [letter count])
+;a LetterCount is a structure:
+;  (make-lc Letter Number)
+;interpretation: (make-lc l n) means
+;that l was counted n times
+
+;a List-Of-LetterCounts is one of:
+;-- '()
+;-- (cons LetterCount List-Of-LetterCounts)
+;interpretation: an abitrary large list of LetterCounts
+
 ;Dictionary->Number
 ;say how many times is used the most used letter of the dictionary
-(check-expect (most-frequent (list "arbol" "amigo" "perro")) 2)
-(check-expect (most-frequent (list "arbol" "amigo" "below" "before" "beware")) 3)
+(check-expect 
+  (most-frequent (list "arbol" "amigo" "perro")) 
+  (make-lc "a" 2))
+(check-expect 
+  (most-frequent (list "arbol" "amigo" "below" "before" "beware")) 
+  (make-lc "b" 3))
 (define (most-frequent dict)
   (greater (count-by-letter LETTERS dict))
 )
 
-;List-Of-Numbers->Number
+;List-Of-LetterCounts->LetterCount
 ;return the greater number on a list
-(check-expect (greater (list 1 2 3)) 3)
-(check-expect (greater (list 10 2 3)) 10)
-(check-expect (greater (list 50 2 3)) 50)
+(check-expect 
+  (greater (list 
+    (make-lc "a" 1)
+    (make-lc "b" 5)
+    (make-lc "c" 1)))
+  (make-lc "b" 5))
 (define (greater l)
   (cond 
-    [(empty? l) 0]
-    [else (max (first l) (greater (rest l)))]
+    [(empty? (rest l)) (first l)]
+    [else 
+      (cond
+       [(>= (lc-count (first l)) (lc-count(greater(rest l)))) (first l)] 
+       [else (greater (rest l))]
+      )]
   )
 )
 
-;Dictionary->List-Of-Numbers
+;Dictionary->List-Of-LetterCount
 ;count how many times is used a letter as the first of the word
 (check-expect 
   (count-by-letter (list "a" "b" "c") 
-  (list "amigo" "below" "car" "cool")) (list 1 1 2))
+  (list "amigo" "below" "car" "cool")) 
+  (list 
+    (make-lc "a" 1)
+    (make-lc "b" 1)
+    (make-lc "c" 2)
+  ))
 (check-expect 
   (count-by-letter (list "a" "b" "c") 
-  (list "amigo" "arbol" "car" "cool")) (list 2 0 2))
+  (list "amigo" "arbol" "car" "cool"))
+(list 
+    (make-lc "a" 2)
+    (make-lc "b" 0)
+    (make-lc "c" 2)
+  ))
 (define (count-by-letter ls dict)
   (cond
     [(empty? ls) '()]
     [else 
-      (cons (starts-with# (first ls) dict) (count-by-letter (rest ls) dict))]
+      (cons 
+        (make-lc (first ls)(starts-with# (first ls) dict))
+        (count-by-letter (rest ls) dict)
+      )
+    ]
   )
 )
 
@@ -75,3 +111,5 @@
       )]
   )
 )
+
+(most-frequent AS-LIST)
