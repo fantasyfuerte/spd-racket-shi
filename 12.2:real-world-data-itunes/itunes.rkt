@@ -35,6 +35,21 @@
 ;--(cons String List-Of-Strings)
 ;interpretation: an arbitrary large list of strings
 
+;String LTracks->LTracks
+;given returns the tracks of a album
+(define (select-album a l)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cond
+        [(string=? a (track-album (first l)))
+          (cons (first l) (select-album a (rest l)))]
+        [else (select-album a (rest l))]  
+      )
+    ]
+  )
+)
+
 ;Track->Number
 ;given a track produces its playing time in milliseconds
 (define (total-time t)
