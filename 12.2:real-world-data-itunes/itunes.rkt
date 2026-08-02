@@ -35,3 +35,12 @@
 (define (total-time t)
   (* (track-time t) (track-play# t))
 )
+
+(define (time-wasted l)
+  (cond
+    [(empty? l) 0]
+    [else (+ (total-time (first l)) (time-wasted (rest l)))]
+  )
+)
+
+(time-wasted itunes-tracks)
