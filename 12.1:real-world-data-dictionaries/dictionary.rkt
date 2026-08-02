@@ -23,6 +23,26 @@
   (explode "abcdefghijklmnopqrstuvwxyz")
 )
 
+;Dictionary->Number
+;say how many times is used the most used letter of the dictionary
+(check-expect (most-frequent (list "arbol" "amigo" "perro")) 2)
+(check-expect (most-frequent (list "arbol" "amigo" "below" "before" "beware")) 3)
+(define (most-frequent dict)
+  (greater (count-by-letter LETTERS dict))
+)
+
+;List-Of-Numbers->Number
+;return the greater number on a list
+(check-expect (greater (list 1 2 3)) 3)
+(check-expect (greater (list 10 2 3)) 10)
+(check-expect (greater (list 50 2 3)) 50)
+(define (greater l)
+  (cond 
+    [(empty? l) 0]
+    [else (max (first l) (greater (rest l)))]
+  )
+)
+
 ;Dictionary->List-Of-Numbers
 ;count how many times is used a letter as the first of the word
 (check-expect 
