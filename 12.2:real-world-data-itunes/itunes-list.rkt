@@ -27,6 +27,9 @@
 ;-- Date
 ;-- Number
 
+(define-struct customtrack [name artist album total play# favorites cool])
+;a CustomTrack is a Structure subset of Track
+
 (define la1 (list
     (list "Name" "Sweet Child O' Mine")
     (list "Artist" "Guns and Roses")
@@ -61,6 +64,20 @@
 ))
 
 ;a Key is a String
+
+;LAssoc->Track(Custom)
+;given a list of associations returns a track
+(define (track-as-struct la)
+  (make-customtrack 
+    (second(find-association "Name" la (list "" "Not Found")))
+    (second(find-association "Artist" la (list "" "Not Found")))
+    (second(find-association "Album" la (list "" "Not Found")))
+    (second(find-association "Total Time" la (list "" "Not Found")))
+    (second(find-association "Play Count" la (list "" "Not Found")))
+    (second(find-association "Favorites" la (list "" "Not Found")))
+    (second(find-association "Cool?" la (list "" "Not Found")))
+  )
+)
 
 ;LLists -> List-Of-Strings
 ;produces the strings asociated with a boolean value
