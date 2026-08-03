@@ -31,18 +31,24 @@
     (list "Name" "Sweet Child O' Mine")
     (list "Artist" "Guns and Roses")
     (list "Album" "Apetite for Destruction")
+    (list "Total Time" 213096)
+    (list "Play Count" 19)
   ))
 
 (define la2 (list 
     (list "Name" "Dai Dai")
     (list "Artist" "Shakira")
     (list "Album" "World Cup")
+    (list "Total Time" 218096)
+    (list "Play Count" 9)
   ))
 
 (define la3 (list 
     (list "Name" "Dynamite")
     (list "Artist" "BTS")
     (list "Album" "World Cup")
+    (list "Total Time" 203096)
+    (list "Play Count" 4)
   ))
 
 (define llists-example (list
@@ -52,6 +58,24 @@
 ))
 
 ;a Key is a String
+
+;LList->Number
+;produces the total amount of playtime
+(check-expect 
+  (total-time/list llists-example) 
+  (+ (* 4 203096) (* 9 218096) (* 19 213096))) 
+(define (total-time/list l)
+  (cond
+    [(empty? l) 0]
+    [else 
+    (+ 
+      (* (second (find-association "Total Time" (first l) (list "Total Time" 0)))
+      (second (find-association "Play Count" (first l) (list "Play Count" 0))))
+      (total-time/list (rest l))
+    )
+    ]
+  )
+)
 
 ;Key LAssoc Any->Association
 ;returns the first Association whose first item is equal to key
