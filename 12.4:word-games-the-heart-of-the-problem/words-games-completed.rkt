@@ -24,8 +24,18 @@
 
 ;Word->List-Of-Words
 ;finds all rearrangements of word
-(define (arrangements word)
-  (list word)
+(check-satisfied (arrangements (list "c" "a" "t"))
+(all-cat-arrangement?))
+(define (arrangements w)
+  (list w)
+)
+
+;List-Of-Words->Boolean
+;verifies the cat arrangements
+(define (all-cat-arrangements?  l)
+  (and (member? (list "c" "a" "t") l) 
+       (member? (list "a" "c" "t") l)
+       (member? (list "t" "a" "c") l))
 )
 
 ;List-Of-Strings->List-Of-Strings
