@@ -33,6 +33,7 @@
     (list "Album" "Apetite for Destruction")
     (list "Total Time" 213096)
     (list "Play Count" 19)
+    (list "Favorites" #true)
   ))
 
 (define la2 (list 
@@ -41,6 +42,7 @@
     (list "Album" "World Cup")
     (list "Total Time" 218096)
     (list "Play Count" 9)
+    (list "Favorites" #true)
   ))
 
 (define la3 (list 
@@ -49,6 +51,7 @@
     (list "Album" "World Cup")
     (list "Total Time" 203096)
     (list "Play Count" 4)
+    (list "Cool?" #true)
   ))
 
 (define llists-example (list
@@ -58,6 +61,34 @@
 ))
 
 ;a Key is a String
+
+;LLists -> List-Of-Strings
+;produces the strings asociated with a boolean value
+(check-expect
+  (boolean-attributes llists-example)
+  (list "Favorites" "Cool?"))
+(define (boolean-attributes l)
+  (cond
+    [(empty? l) '()]
+    [else (create-set(append (get-booleans(first l))(boolean-attributes(rest l))))]
+  )
+)
+
+;LAssoc->List-Of-Strings
+;given a track returns the key names of the boolean values
+(define (get-booleans l) 
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cond
+        [(boolean? (second (first l)))
+           (cons (first (first l)) (get-booleans (rest l)))]
+        [else (get-booleans (rest l))]
+      )
+    ]
+  )
+)
+
 
 ;LList->Number
 ;produces the total amount of playtime
@@ -93,5 +124,25 @@
         [(string=? (first (first LA)) k) (first LA)]
         [else (find-association k (rest LA) default)]
       )]
+  )
+)
+
+;List-Of-Strings->List-Of-Strings
+;removes repeated strings
+(check-expect
+  (create-set (list "1" "2" "3"))
+  (list "1" "2" "3"))
+(check-expect
+  (create-set (list "1" "1" "2" "3"))
+  (list "1" "2" "3"))
+(define (create-set l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cond 
+        [(member? (first l) (create-set (rest l))) (create-set (rest l))]
+        [else (cons (first l) (create-set (rest l)))]
+      )
+    ]
   )
 )
