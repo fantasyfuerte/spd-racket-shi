@@ -27,20 +27,47 @@
 ;-- Date
 ;-- Number
 
-(define llists-example (list  		        ;LList
-  (list  				 	;LAssoc
-    (list "Name" "Sweet Child O' Mine")  	;Association
+(define la1 (list
+    (list "Name" "Sweet Child O' Mine")
     (list "Artist" "Guns and Roses")
     (list "Album" "Apetite for Destruction")
-  )
-  (list 
+  ))
+
+(define la2 (list 
     (list "Name" "Dai Dai")
     (list "Artist" "Shakira")
     (list "Album" "World Cup")
-  )
-  (list 
+  ))
+
+(define la3 (list 
     (list "Name" "Dynamite")
     (list "Artist" "BTS")
     (list "Album" "World Cup")
-  )
+  ))
+
+(define llists-example (list
+  la1
+  la2
+  la3
 ))
+
+;a Key is a String
+
+;Key LAssoc Any->Association
+;returns the first Association whose first item is equal to key
+(check-expect 
+  (find-association "Name" la2 (list "Name" "NotFound"))
+  (list "Name" "Dai Dai")) 
+(check-expect 
+  (find-association "Namee" la3 (list "Name" "NotFound"))
+  (list "Name" "NotFound")) 
+(define (find-association k LA default)
+  (cond
+    [(empty? LA) default]
+    [else
+      (cond
+        [(string=? (first (first LA)) k) (first LA)]
+        [else (find-association k (rest LA) default)]
+      )]
+  )
+)
