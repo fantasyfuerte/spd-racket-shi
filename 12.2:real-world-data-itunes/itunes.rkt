@@ -46,17 +46,35 @@
 ;-- (cons AlbumGroup LOAG)
 ;interpretation: an arbitrary large LOAG
 
-;LTracks->AlbumGroup
+;LTracks->LOAG
 ;Given a list of tracks return LOAG
 (define (select-albums l)
   (cond
-    [(empty? l) ...]
-    [else (... (first l) ... (track-album l) ... (select-albums (rest l)) ...)
+    [(empty? l) '()]
+    [else (cons 
+      (make-agroup 
+        (track-album (first l)) 
+        (select-album (track-album (first l)) l))  
+      (select-albums (remove-album (track-album (first l))(rest l))))
+    ]
+ ) 
+)
+
+;String LTracks->LTracks
+;deletes the tracks who belongs to certain album
+(define (remove-album a l)
+  (cond
+    [(empty? l) '()]
+    [else (cond
+        [(string=? a (track-album (first l))) (remove-album a (rest l))]
+        [else (cons (first l) (remove-album a (rest l)))]
+      )
+    ]
   )
 )
 
 ;String LTracks->LTracks
-;given returns the tracks of a album
+;returns the tracks of a album
 (define (select-album-date a l d)
   (cond
     [(empty? l) '()]
