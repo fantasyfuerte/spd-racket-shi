@@ -2,6 +2,11 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-beginner-abbr-reader.ss" "lang")((modname word-games) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/batch-io)
+(define LOCATION "/usr/share/dict/words")
+;a Dictionary is a List-Of-Strings
+(define DICTIONARY (read-lines LOCATION))
+
 ;a List-Of-Strings is one of:
 ;--'()
 ;--(cons String List-Of-String)
@@ -23,22 +28,20 @@
   (list word)
 )
 
-;String->Word
-;converts s to the chosen word representation
-(check-expect(string->word "leo") (list "l" "e" "o"))
-(check-expect(string->word "hello") (list "h" "e" "l" "l" "o"))
-(define (string->word s)
- (explode s)
+;List-Of-Strings->List-Of-Strings
+;given a list of string search whose occur in the dictionary
+(check-expect (in-dictionary (list "cat" "tac" "act")) (list "cat" "act"))
+(define (in-dictionary l)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cond
+        [(member? (first l) DICTIONARY) (cons (first l) (in-dictionary (rest l)))]
+        [else (in-dictionary (rest l))]
+      )
+    ]
+  )
 )
-
-;Word->String
-;converts w to a string
-(check-expect (word->string (list "l" "e" "o")) "leo")
-(define (word->string w)
-  (implode w)
-)
-
-(define (in-dictionary l) l)
 
 ;String->List-Of-Strings
 ;finds all words that use the same letters as s
@@ -75,4 +78,19 @@
        (member? "art" w)
        (member? "tar" w) 
   )
+)
+
+;String->Word
+;converts s to the chosen word representation
+(check-expect(string->word "leo") (list "l" "e" "o"))
+(check-expect(string->word "hello") (list "h" "e" "l" "l" "o"))
+(define (string->word s)
+ (explode s)
+)
+
+;Word->String
+;converts w to a string
+(check-expect (word->string (list "l" "e" "o")) "leo")
+(define (word->string w)
+  (implode w)
 )
