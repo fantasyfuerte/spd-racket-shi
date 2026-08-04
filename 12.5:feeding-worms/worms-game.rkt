@@ -55,7 +55,7 @@
 (define (render-game wg)
   (place-image HEAD
     (posn-x (worm-head (game-worm wg)))
-    (posn-y (worm-head (game-worm wg)))
+    (- HEIGHT (posn-y (worm-head (game-worm wg))))
   MT)
 )
 
@@ -85,7 +85,35 @@
 
 ;WormGame->WormGame
 ;decides how the game changes on every clock tick
-(define (tick-game wg) wg)
+(define (tick-game wg)
+  (make-game
+    (move-worm (game-worm wg) (worm-direction (game-worm wg)))
+    (game-food wg)
+  )
+)
+
+;Worm Direction->Worm
+;advances the worm 1 px in d direction
+(define (move-worm w d)
+  (cond
+    [(string=? d "right") 
+      (make-worm (make-posn (+ 3 (posn-x (worm-head w))) (posn-y (worm-head w))) 
+        '()
+        (worm-direction w))]
+    [(string=? d "left") 
+      (make-worm (make-posn (- (posn-x (worm-head w)) 3) (posn-y (worm-head w))) 
+        '()
+        (worm-direction w))]
+    [(string=? d "up") 
+      (make-worm (make-posn (posn-x (worm-head w)) (+ 3 (posn-y (worm-head w)))) 
+        '()
+        (worm-direction w))]
+    [(string=? d "down") 
+      (make-worm (make-posn (posn-x (worm-head w)) (- (posn-y (worm-head w)) 3)) 
+        '()
+        (worm-direction w))]
+  )
+)
 
 ;WormGame->Boolean
 ;yields true if the worm has crashed into the wall or into herself
