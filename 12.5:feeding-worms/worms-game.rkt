@@ -41,7 +41,7 @@
 (define (main x)
   (big-bang 
     (make-game 
-      (make-worm (make-posn x 10) '() "right") 
+      (make-worm (make-posn x 40) '() "right") 
       (make-posn 30 60))
     [to-draw render-game]
     [on-key key-game]
@@ -52,11 +52,36 @@
 
 ;WormGame->Image
 ;renders the game
-(define (render-game wg) MT)
+(define (render-game wg)
+  (place-image HEAD
+    (posn-x (worm-head (game-worm wg)))
+    (posn-y (worm-head (game-worm wg)))
+  MT)
+)
 
 ;WormGame KeyEvent->WormGame
 ;handles the key events of the game
-(define (key-game wg ke) wg)
+(define (key-game wg ke)
+  (cond
+    [(or
+       (string=? ke "up") 
+       (string=? ke "down") 
+       (string=? ke "right") 
+       (string=? ke "left"))(make-game 
+                        (change-direction (game-worm wg) ke) (game-food wg))]
+    [else wg]
+  )
+)
+
+;Worm Direction->Direction
+;changes the direction of the worm
+(check-expect 
+  (change-direction 
+    (make-worm (make-posn 0 0) '() "up") "down")
+  (make-worm (make-posn 0 0) '() "down"))
+(define (change-direction w ke)
+  (make-worm (worm-head w) (worm-body w) ke)
+)
 
 ;WormGame->WormGame
 ;decides how the game changes on every clock tick
@@ -65,3 +90,5 @@
 ;WormGame->Boolean
 ;yields true if the worm has crashed into the wall or into herself
 (define (crashed? wg) #false)
+
+(main 40)
