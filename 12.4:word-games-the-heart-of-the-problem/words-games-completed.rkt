@@ -29,6 +29,7 @@ all-cat-arrangements?)
 (define (arrangements w)
   (cond
     [(empty? w) '()]
+    [(empty? (rest w)) (list( list (first w)))]
     [else (insert-everywhere/in-all-words (first w)(arrangements (rest w)))]
   )
 )
