@@ -25,9 +25,87 @@
 ;Word->List-Of-Words
 ;finds all rearrangements of word
 (check-satisfied (arrangements (list "c" "a" "t"))
-(all-cat-arrangement?))
+all-cat-arrangements?)
 (define (arrangements w)
-  (list w)
+  (cond
+    [(empty? w) '()]
+    [else (insert-everywhere/in-all-words (first w)(arrangements (rest w)))]
+  )
+)
+
+;1String List-Of-Words->List-Of-Words
+;inserts the 1String at the beginning, middle and end of every word
+(check-expect 
+  (insert-everywhere/in-all-words "c" 
+    (list  
+      (list "a" "t")
+      (list "t" "a")
+    )) 
+  (list (list "c" "a" "t") (list "a" "c" "t") (list "a" "t" "c") (list "c" "t" "a") (list "t" "c" "a") (list "t" "a" "c")))
+(define (insert-everywhere/in-all-words s l)
+  (cond
+    [(empty? l) '()]
+    [else (append 
+            (insert-everywhere s (first l))
+            (insert-everywhere/in-all-words s (rest l)))]
+  )
+)
+
+(define (create-set l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cond 
+        [(member? (first l) (create-set (rest l))) (create-set (rest l))]
+        [else (cons (first l) (create-set (rest l)))]
+      )
+    ]
+  )
+)
+
+;1String Word->List-Of-Words
+;inserts the character everywhere in the string
+(define (insert-everywhere s l)
+  (cond
+    [(empty? l) (list (list s))]
+    [else 
+    (create-set
+      (append
+        (list 
+          (insert-beginning s l) 
+          (insert-end s l) 
+          (append (list(first l)) (insert-beginning s (rest l)))
+         
+        )
+        (prepend (first l) (insert-everywhere s (rest l))))
+   )]
+  )
+)
+
+;1String List-Of-Words->List-Of-Words
+;puts a prefix s in every word
+(check-expect (prepend "c" (list (list "a" "t") (list "a" "r")))
+  (list (list "c" "a" "t")
+  (list "c" "a" "r")
+))
+(define (prepend s l)
+  (cond
+    [(empty? l) '()]
+    [else (cons (insert-beginning s (first l)) (prepend s (rest l)))]
+  )
+)
+
+;1String Word ->Word
+;inserts s at the beginning of the word
+(check-expect (insert-beginning "c" (list "a" "t")) (list "c" "a" "t"))
+(define (insert-beginning s w)
+  (append (list s) w)
+)
+
+;1String Word ->Word
+;inserts s at the end of the word
+(define (insert-end s w)
+  (append w (list s))
 )
 
 ;List-Of-Words->Boolean
