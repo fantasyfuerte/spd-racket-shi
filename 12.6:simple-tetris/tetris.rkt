@@ -6,12 +6,14 @@
 (require 2htdp/image)
 
 (define WIDTH 15)
-(define HEIGHT 15)
-(define SCENE-SIZE (* WIDTH HEIGHT))
+(define HEIGHT 20)
+(define SIZE 15)
+(define SCENE-SIZE (* WIDTH SIZE))
+(define MT (empty-scene (* WIDTH SIZE) (* HEIGHT SIZE)))
 (define BLOCK
   (overlay
-    (square (- HEIGHT 1) "solid" "red")
-    (square HEIGHT "outline" "black")))
+    (square (- SIZE 1) "solid" "red")
+    (square SIZE "outline" "black")))
 
 
 (define-struct tetris [block landscape])
@@ -35,7 +37,33 @@
 ;located at (x (- HEIGHT y))
 
 (define landscape0 empty)
-(define block-dropping (make-block 4 HEIGHT))
+(define block-dropping (make-block 4 0))
 (define tetris0 (make-tetris block-dropping landscape0))
 (define block-landed (make-block 0 (- HEIGHT 1)))
 (define block-on-block (make-block 0 (- HEIGHT 2)))
+
+;Any->Tetris
+(define (main x)
+  (big-bang (make-tetris (make-block (random WIDTH) 0) '())
+    [to-draw render-tetris] 
+    [on-key key-handler] 
+    [on-tick tick-tetris 1] 
+    [stop-when full?]
+  )
+)
+
+;Tetris->Image
+;renders the tetris
+(define (render-tetris t) MT) 
+
+;Tetris KeyEvent->Tetris
+;controlls the dropping block
+(define (key-handler t ke) t)
+
+;Tetris->Tetris
+;changes the position of the game every second
+(define (tick-tetris t) t)
+
+;Tetris->Boolean
+;yields true if the new resting block is at y = HEIGHT
+(define (full? t) #false)
