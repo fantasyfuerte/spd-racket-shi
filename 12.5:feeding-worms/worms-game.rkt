@@ -49,6 +49,9 @@
           (make-posn (- x (* 2 DISTANCE_PER_TICK)) (- 40 (* 2 DISTANCE_PER_TICK)))
           (make-posn (- x (* 3 DISTANCE_PER_TICK)) (- 40 (* 3 DISTANCE_PER_TICK)))
           (make-posn (- x (* 4 DISTANCE_PER_TICK)) (- 40 (* 4 DISTANCE_PER_TICK)))
+          (make-posn (- x (* 5 DISTANCE_PER_TICK)) (- 40 (* 5 DISTANCE_PER_TICK)))
+          (make-posn (- x (* 6 DISTANCE_PER_TICK)) (- 40 (* 6 DISTANCE_PER_TICK)))
+          (make-posn (- x (* 7 DISTANCE_PER_TICK)) (- 40 (* 7 DISTANCE_PER_TICK)))
         )
          "right") 
       (make-posn 30 60))
@@ -168,11 +171,11 @@
 )
 
 ;WormGame->Boolean
-;yields true if the worm has crashed into the wall or into herself
+;yields true if the worm has crashed into the wall or into himself
 (define (crashed? wg)
   (or
     (into-the-walls? (game-worm wg))
-    (into-himself wg)
+    (into-himself (worm-head (game-worm wg)) (worm-body (game-worm wg)))
   )
 )
 
@@ -187,9 +190,24 @@
   )
 )
 
-;Worm->Boolean
+;Posn List-Of-Posns->Boolean
 ;yields true if the worm has crashed into himself
-(define (into-himself w) #false)
+(define (into-himself h l)
+  (cond 
+    [(empty? l) #false]
+    [else
+      (cond
+        [(collide? h (first l)) #true]
+        [else (into-himself h (rest l))]
+      )]
+  )
+)
+
+;Posn Posn->Boolean
+;check if the head has collide with a body part
+(define (collide? h b)
+  (and (= (posn-x h) (posn-x b))
+       (= (posn-y h) (posn-y b))))
 
 ;Posn List-Of-Posns->List-Of-Posns
 ;moves the worms tail
