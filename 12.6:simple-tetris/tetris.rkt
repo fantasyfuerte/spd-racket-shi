@@ -54,7 +54,19 @@
 
 ;Tetris->Image
 ;renders the tetris
-(define (render-tetris t) MT) 
+(define (render-tetris t)
+  (render-dropping (tetris-block t)
+    (render-landscape (tetris-landscape t) MT)
+  )
+)
+
+;Block Image->Image
+;renders the dropping block into img
+(define (render-landscape b img) img)
+
+;Landscape Image->Image
+;renders the resting blocks into img
+(define (render-landscape l img) img)
 
 ;Tetris KeyEvent->Tetris
 ;controlls the dropping block
