@@ -6,12 +6,12 @@
 (require 2htdp/image)
 
 (define WIDTH 15)
-(define SIZE 15)
-(define SCENE-SIZE (* WIDTH SIZE))
+(define HEIGHT 15)
+(define SCENE-SIZE (* WIDTH HEIGHT))
 (define BLOCK
   (overlay
-    (square (- SIZE 1) "solid" "red")
-    (square SIZE "outline" "black")))
+    (square (- HEIGHT 1) "solid" "red")
+    (square HEIGHT "outline" "black")))
 
 
 (define-struct tetris [block landscape])
@@ -33,3 +33,9 @@
 ;(make-block N N)
 ;interpretation: (make-block x y) means a block
 ;located at (x (- HEIGHT y))
+
+(define landscape0 empty)
+(define block-dropping (make-block 4 HEIGHT))
+(define tetris0 (make-tetris block-dropping landscape0))
+(define block-landed (make-block 0 (- HEIGHT 1)))
+(define block-on-block (make-block 0 (- HEIGHT 2)))
