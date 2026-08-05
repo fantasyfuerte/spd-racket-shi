@@ -44,7 +44,12 @@
     (make-game 
       (make-worm 
         (make-posn x 40) 
-        (list (make-posn (- x DISTANCE_PER_TICK) (- 40 DISTANCE_PER_TICK)))
+        (list 
+          (make-posn (- x DISTANCE_PER_TICK) (- 40 DISTANCE_PER_TICK))
+          (make-posn (- x (* 2 DISTANCE_PER_TICK)) (- 40 (* 2 DISTANCE_PER_TICK)))
+          (make-posn (- x (* 3 DISTANCE_PER_TICK)) (- 40 (* 3 DISTANCE_PER_TICK)))
+          (make-posn (- x (* 4 DISTANCE_PER_TICK)) (- 40 (* 4 DISTANCE_PER_TICK)))
+        )
          "right") 
       (make-posn 30 60))
     [to-draw render-game]
@@ -57,10 +62,30 @@
 ;WormGame->Image
 ;renders the game
 (define (render-game wg)
+  (render-worm-tail (worm-body (game-worm wg))
+    (render-worm-head (worm-head (game-worm wg)))
+  )  
+)
+
+;Posn->Image
+;renders the worm's head
+(define (render-worm-head h)
   (place-image HEAD
-    (posn-x (worm-head (game-worm wg)))
-    (- HEIGHT (posn-y (worm-head (game-worm wg))))
+    (posn-x h)
+    (- HEIGHT (posn-y h))
   MT)
+)
+
+;List-Of-Posns->Image
+;renders the worm's tail into img
+(define (render-worm-tail l img)
+  (cond
+    [(empty? l) img]
+    [else (place-image BODY 
+            (posn-x (first l)) 
+            (- HEIGHT (posn-y (first l))) 
+            (render-worm-tail (rest l) img))]
+  )
 )
 
 ;WormGame KeyEvent->WormGame
@@ -165,9 +190,7 @@
 (define (move-tail h l)
   (cond
     [(empty? l) '()]
-    [else 
-      (cons h (move-tail (first l) (rest l)))
-    ]
+    [else (cons h (move-tail (first l) (rest l)))]
   )
 )
 
