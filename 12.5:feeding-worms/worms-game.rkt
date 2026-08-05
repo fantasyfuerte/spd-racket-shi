@@ -142,9 +142,14 @@
 ;WormGame->WormGame
 ;decides how the game changes on every clock tick
 (define (tick-game wg)
-  (make-game
-    (move-worm (game-worm wg) (worm-direction (game-worm wg)))
-    (game-food wg)
+  (cond
+    [(collide? (game-food wg) (worm-head (game-worm wg)))
+       (make-game
+         (move-worm (game-worm wg) (worm-direction (game-worm wg)))
+         (make-posn (random WIDTH) (random HEIGHT)))]
+    [else (make-game
+         (move-worm (game-worm wg) (worm-direction (game-worm wg)))
+         (game-food wg))] 
   )
 )
 
@@ -217,10 +222,10 @@
 )
 
 ;Posn Posn->Boolean
-;check if the head has collide with a body part
-(define (collide? h b)
-  (and (= (posn-x h) (posn-x b))
-       (= (posn-y h) (posn-y b))))
+;check if a has collided with b
+(define (collide? a b)
+  (and (< (abs (-(posn-x a)(posn-x b))) DISTANCE_PER_TICK )
+       (< (abs (-(posn-y a)(posn-y b))) DISTANCE_PER_TICK )))
 
 ;Posn List-Of-Posns->List-Of-Posns
 ;moves the worms tail
