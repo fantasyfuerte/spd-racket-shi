@@ -102,14 +102,25 @@
   )
 )
 
-;Worm Direction->Direction
+;Worm Direction->Worm
 ;changes the direction of the worm
 (check-expect 
   (change-direction 
     (make-worm (make-posn 0 0) '() "up") "down")
-  (make-worm (make-posn 0 0) '() "down"))
+  (make-worm (make-posn 0 0) '() "up"))
+(check-expect 
+  (change-direction 
+    (make-worm (make-posn 0 0) '() "up") "right")
+  (make-worm (make-posn 0 0) '() "right"))
+
 (define (change-direction w ke)
-  (make-worm (worm-head w) (worm-body w) ke)
+  (cond
+    [(and (string=? ke "down") (string=? (worm-direction w) "up")) w]
+    [(and (string=? ke "up") (string=? (worm-direction w) "down")) w]
+    [(and (string=? ke "right") (string=? (worm-direction w) "left")) w]
+    [(and (string=? ke "left") (string=? (worm-direction w) "right")) w]
+    [else (make-worm (worm-head w) (worm-body w) ke)]
+  )
 )
 
 ;WormGame->WormGame
