@@ -11,6 +11,7 @@
 (define HEIGHT 300)
 (define WIDTH 350)
 (define MT (empty-scene WIDTH HEIGHT))
+(define DISTANCE_PER_TICK (/(image-width HEAD) 2))
 
 (define-struct game [worm food])
 ;a WormGame is a structure:
@@ -45,7 +46,7 @@
       (make-posn 30 60))
     [to-draw render-game]
     [on-key key-game]
-    [on-tick tick-game]
+    [on-tick tick-game 0.1]
     [stop-when crashed?]
   )
 )
@@ -97,19 +98,31 @@
 (define (move-worm w d)
   (cond
     [(string=? d "right") 
-      (make-worm (make-posn (+ 3 (posn-x (worm-head w))) (posn-y (worm-head w))) 
+      (make-worm 
+        (make-posn 
+          (+(posn-x (worm-head w))DISTANCE_PER_TICK)
+          (posn-y (worm-head w))) 
         '()
         (worm-direction w))]
     [(string=? d "left") 
-      (make-worm (make-posn (- (posn-x (worm-head w)) 3) (posn-y (worm-head w))) 
-        '()
-        (worm-direction w))]
+      (make-worm 
+        (make-posn 
+          (- (posn-x (worm-head w))DISTANCE_PER_TICK) 
+          (posn-y (worm-head w))) 
+      '()
+      (worm-direction w))]
     [(string=? d "up") 
-      (make-worm (make-posn (posn-x (worm-head w)) (+ 3 (posn-y (worm-head w)))) 
-        '()
-        (worm-direction w))]
+      (make-worm 
+        (make-posn 
+          (posn-x (worm-head w))
+          (+ (posn-y (worm-head w))DISTANCE_PER_TICK)) 
+      '()
+      (worm-direction w))]
     [(string=? d "down") 
-      (make-worm (make-posn (posn-x (worm-head w)) (- (posn-y (worm-head w)) 3)) 
+      (make-worm 
+        (make-posn 
+          (posn-x (worm-head w))
+          (- (posn-y (worm-head w))DISTANCE_PER_TICK)) 
         '()
         (worm-direction w))]
   )
@@ -117,6 +130,26 @@
 
 ;WormGame->Boolean
 ;yields true if the worm has crashed into the wall or into herself
-(define (crashed? wg) #false)
+(define (crashed? wg)
+  (or
+    (into-the-walls? (game-worm wg))
+    (into-himself wg)
+  )
+)
+
+;Worm->Boolean
+;yields true if the worm has crashed into the walls
+(define (into-the-walls? w)
+  (or 
+    (>= (posn-y (worm-head w)) HEIGHT)
+    (<= (posn-y (worm-head w)) DISTANCE_PER_TICK)
+    (>= (posn-x (worm-head w)) WIDTH)
+    (<= (posn-x (worm-head w)) DISTANCE_PER_TICK)
+  )
+)
+
+;Worm->Boolean
+;yields true if the worm has crashed into himself
+(define (into-himself w) #false)
 
 (main 40)
