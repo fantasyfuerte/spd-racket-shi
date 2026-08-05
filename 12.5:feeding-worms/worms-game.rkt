@@ -5,11 +5,11 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
-(define APPLE (circle 5 "solid" "red"))
+(define APPLE (circle 10 "solid" "red"))
 (define BODY (circle 11 "solid" "gold"))
 (define HEAD (circle 13 "solid" "orange"))
-(define HEIGHT 300)
-(define WIDTH 350)
+(define HEIGHT 400)
+(define WIDTH 550)
 (define MT (empty-scene WIDTH HEIGHT))
 (define DISTANCE_PER_TICK (/(image-width HEAD) 2))
 
@@ -54,7 +54,7 @@
           (make-posn (- x (* 7 DISTANCE_PER_TICK)) (- 40 (* 7 DISTANCE_PER_TICK)))
         )
          "right") 
-      (make-posn 30 60))
+      (make-posn (random WIDTH) (random HEIGHT)))
     [to-draw render-game]
     [on-key key-game]
     [on-tick tick-game 0.1]
@@ -65,9 +65,22 @@
 ;WormGame->Image
 ;renders the game
 (define (render-game wg)
-  (render-worm-tail (worm-body (game-worm wg))
-    (render-worm-head (worm-head (game-worm wg)))
-  )  
+  (render-apple (game-food wg)
+    (render-worm-tail (worm-body (game-worm wg))
+      (render-worm-head (worm-head (game-worm wg)))
+    )
+  )
+)
+
+;Posn Image->Image
+;renders the worm's food
+(define (render-apple a img)
+  (place-image 
+    APPLE
+    (posn-x a)
+    (- HEIGHT (posn-y a))
+    img
+  )
 )
 
 ;Posn->Image
@@ -79,7 +92,7 @@
   MT)
 )
 
-;List-Of-Posns->Image
+;List-Of-Posns Image->Image
 ;renders the worm's tail into img
 (define (render-worm-tail l img)
   (cond
