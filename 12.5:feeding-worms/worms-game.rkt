@@ -6,7 +6,7 @@
 (require 2htdp/image)
 
 (define APPLE (circle 5 "solid" "red"))
-(define BODY (circle 10 "solid" "yellow"))
+(define BODY (circle 11 "solid" "gold"))
 (define HEAD (circle 13 "solid" "orange"))
 (define HEIGHT 300)
 (define WIDTH 350)
