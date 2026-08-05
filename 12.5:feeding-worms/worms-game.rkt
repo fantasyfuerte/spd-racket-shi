@@ -42,7 +42,10 @@
 (define (main x)
   (big-bang 
     (make-game 
-      (make-worm (make-posn x 40) '() "right") 
+      (make-worm 
+        (make-posn x 40) 
+        (list (make-posn (- x DISTANCE_PER_TICK) (- 40 DISTANCE_PER_TICK)))
+         "right") 
       (make-posn 30 60))
     [to-draw render-game]
     [on-key key-game]
@@ -102,28 +105,28 @@
         (make-posn 
           (+(posn-x (worm-head w))DISTANCE_PER_TICK)
           (posn-y (worm-head w))) 
-        '()
+        (move-tail (worm-head w) (worm-body w))
         (worm-direction w))]
     [(string=? d "left") 
       (make-worm 
         (make-posn 
           (- (posn-x (worm-head w))DISTANCE_PER_TICK) 
           (posn-y (worm-head w))) 
-      '()
+        (move-tail (worm-head w) (worm-body w))
       (worm-direction w))]
     [(string=? d "up") 
       (make-worm 
         (make-posn 
           (posn-x (worm-head w))
           (+ (posn-y (worm-head w))DISTANCE_PER_TICK)) 
-      '()
+        (move-tail (worm-head w) (worm-body w))
       (worm-direction w))]
     [(string=? d "down") 
       (make-worm 
         (make-posn 
           (posn-x (worm-head w))
           (- (posn-y (worm-head w))DISTANCE_PER_TICK)) 
-        '()
+        (move-tail (worm-head w) (worm-body w))
         (worm-direction w))]
   )
 )
@@ -151,5 +154,21 @@
 ;Worm->Boolean
 ;yields true if the worm has crashed into himself
 (define (into-himself w) #false)
+
+;Posn List-Of-Posns->List-Of-Posns
+;moves the worms tail
+(check-expect (move-tail
+  (make-posn 20 20)
+  (list (make-posn 20 40) (make-posn 40 40) (make-posn 40 60)))
+  (list (make-posn 20 20) (make-posn 20 40) (make-posn 40 40))
+)
+(define (move-tail h l)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cons h (move-tail (first l) (rest l)))
+    ]
+  )
+)
 
 (main 40)
