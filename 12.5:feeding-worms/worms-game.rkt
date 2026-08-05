@@ -46,12 +46,6 @@
         (make-posn x 40) 
         (list 
           (make-posn (- x DISTANCE_PER_TICK) (- 40 DISTANCE_PER_TICK))
-          (make-posn (- x (* 2 DISTANCE_PER_TICK)) (- 40 (* 2 DISTANCE_PER_TICK)))
-          (make-posn (- x (* 3 DISTANCE_PER_TICK)) (- 40 (* 3 DISTANCE_PER_TICK)))
-          (make-posn (- x (* 4 DISTANCE_PER_TICK)) (- 40 (* 4 DISTANCE_PER_TICK)))
-          (make-posn (- x (* 5 DISTANCE_PER_TICK)) (- 40 (* 5 DISTANCE_PER_TICK)))
-          (make-posn (- x (* 6 DISTANCE_PER_TICK)) (- 40 (* 6 DISTANCE_PER_TICK)))
-          (make-posn (- x (* 7 DISTANCE_PER_TICK)) (- 40 (* 7 DISTANCE_PER_TICK)))
         )
          "right") 
       (make-posn (random WIDTH) (random HEIGHT)))
@@ -145,11 +139,34 @@
   (cond
     [(collide? (game-food wg) (worm-head (game-worm wg)))
        (make-game
-         (move-worm (game-worm wg) (worm-direction (game-worm wg)))
+         (move-worm 
+           (make-worm 
+             (worm-head (game-worm wg)) 
+             (grow-worm (worm-body (game-worm wg)))
+             (worm-direction (game-worm wg))
+           )
+          (worm-direction (game-worm wg))
+         )
          (make-posn (random WIDTH) (random HEIGHT)))]
     [else (make-game
          (move-worm (game-worm wg) (worm-direction (game-worm wg)))
          (game-food wg))] 
+  )
+)
+
+;List-Of-Posns->List-Of-Posns
+;creates one more tail segment
+(define (grow-worm t)
+  (cond
+    [(empty? (rest t))
+      (list 
+        (first t)
+        (make-posn 
+          (+ DISTANCE_PER_TICK (posn-x (first t))) 
+          (+ DISTANCE_PER_TICK (posn-y (first t)))
+        ))
+    ]
+    [else (cons (first t) (grow-worm (rest t)))]
   )
 )
 
