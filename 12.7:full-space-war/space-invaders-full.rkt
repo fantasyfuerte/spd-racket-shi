@@ -106,9 +106,20 @@
 ;SIGS->Image
 ;renders an image of the game 
 (define (render-game si)
-  (render-tank (game-tank si) 
-    (render-ufo (game-ufo si)
-      BACKGROUND)) 
+  (render-rs (tank-rs (game-tank si))
+    (render-tank (game-tank si) 
+      (render-ufo (game-ufo si)
+        BACKGROUND))) 
+)
+
+;Number Image-> Image
+;places the number of remaining shots at the top right of the screen
+(define (render-rs n img)
+  (place-image (text (number->string n) 30 "green")
+    (- WIDTH 50)
+    50
+    img 
+  )
 )
 
 ;UFO Image->Image
