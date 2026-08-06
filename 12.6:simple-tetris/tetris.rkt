@@ -42,12 +42,12 @@
 (define block-landed (make-block 0 (- HEIGHT 1)))
 (define block-on-block (make-block 0 (- HEIGHT 2)))
 
-;Any->Tetris
+;Number->Tetris
 (define (main x)
   (big-bang (make-tetris (make-block (random WIDTH) 0) '())
     [to-draw render-tetris] 
     [on-key key-handler] 
-    [on-tick tick-tetris 1] 
+    [on-tick tick-tetris x] 
     [stop-when full?]
   )
 )
@@ -62,11 +62,25 @@
 
 ;Block Image->Image
 ;renders the dropping block into img
-(define (render-landscape b img) img)
+(define (render-dropping b img)
+  (place-image BLOCK (* SIZE (block-x b)) (* SIZE (block-y b)) img)
+)
 
 ;Landscape Image->Image
 ;renders the resting blocks into img
-(define (render-landscape l img) img)
+(define (render-landscape l img) 
+  (cond
+    [(empty? l) img]
+    [else 
+      (place-image 
+        BLOCK 
+        (* SIZE (block-x (first l)))
+        (* SIZE (block-y (first l))) 
+        (render-landscape (rest l) img)
+      )
+    ]
+  )
+)
 
 ;Tetris KeyEvent->Tetris
 ;controlls the dropping block
@@ -74,8 +88,42 @@
 
 ;Tetris->Tetris
 ;changes the position of the game every second
-(define (tick-tetris t) t)
+(define (tick-tetris t)
+  (cond
+    [(has-landed? t) (add-new t)]
+    [else (make-tetris (increment (tetris-block t)) (tetris-landscape t))]
+  )
+)
+
+;Tetris->Boolean
+;yields true if the block has landed
+(define (has-landed? t)
+  (or
+    (= (- HEIGHT 1) (block-y (tetris-block t))) 
+    (landed-on-block? (tetris-block t) (tetris-landscape t))
+  )
+)
+
+;Block Landscape->Boolean
+;yields true if the block landed on another block
+(define (landed-on-block? b l) #false)
+
+;Tetris->Tetris
+;add a new block to the game
+(define (add-new t)
+  (make-tetris 
+    (make-block (random WIDTH) 0) 
+    (cons (tetris-block t) (tetris-landscape t)))
+)
+
+;Block->Block
+;increments the y position of the block
+(define (increment b)
+  (make-block (block-x b) (add1 (block-y b)))
+)
 
 ;Tetris->Boolean
 ;yields true if the new resting block is at y = HEIGHT
 (define (full? t) #false)
+
+(main 0.1)
