@@ -5,6 +5,7 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
+;UFO
 (define UFO 
   (overlay/align "center" "bottom"
     (ellipse 90 20 "solid" "green")
@@ -12,6 +13,7 @@
   )
 )
 
+;TANK
 (define TANK
   (above
     (above/align "center"
@@ -28,11 +30,34 @@
     )
   )
 )
+(define TANK-VEL 5)
+(define Y-TANK (- HEIGHT (/ (image-height TANK) 2)))
 
+;SCENE
 (define HEIGHT 700)
 (define WIDTH 500)
-
 (define BACKGROUND (rectangle WIDTH HEIGHT "solid" "black"))
 
+(define-struct game [ufo tank])
+;a SIGS is a structure:
+;(make-game UFO Tank)
+;interpretation: (make-game u t) combines the tank and the ufo
+;in one state
 
-(place-image TANK 40 (- HEIGHT (/ (image-height TANK) 2)) BACKGROUND)
+;a Direction is one of:
+;-- "left"
+;-- "right"
+
+(define-struct ufo [pos dir vel shots])
+;an UFO is a structure:
+;(make-ufo Posn Direction Number Lists-Of-Shots)
+;interpretation: (make-ufo (make-posn 40 8) "left" 2 '()) means
+;that an ufo ,which is 40px from the left margin an 8px from the top
+;margin, is moving to the left at 2px per tick and has'nt fired any 
+;shots yet
+
+(define-struct tank [x dir shots])
+;a Tank is a structure:
+;(make-tank Number List-Of-Shots)
+;interpretation: (make-tank 5 "right" '()) represents a tank in x=5,
+;moving to the right, who haven't fired any shots
