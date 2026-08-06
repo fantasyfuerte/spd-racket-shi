@@ -255,7 +255,7 @@
 ;Number List-Of-Shots->List-Of-Shots
 ;Adds a new shot to tank-shots
 (define (fire-shot x l)
-  (cons (make-posn x Y-TANK) l)
+  (cons (make-posn x (- Y-TANK 40)) l)
 )
 
 ;SIGS->Boolean
