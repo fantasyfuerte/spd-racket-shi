@@ -23,7 +23,7 @@
     (ellipse 15 5 "solid" "green")
   )
 )
-(define MAX-UFO-VEL 10)
+(define MAX-UFO-VEL 40)
 (define UFO-DESCENDING-VEL 5)
 
 ;TANK
@@ -179,7 +179,15 @@
 
 ;Number->Direction
 ;produces the next moving direction of the ufo
-(define (change-ufo-dir x) "left")
+(check-expect (change-ufo-dir (- WIDTH (/ (image-width UFO) 2))) "left")
+(check-expect (change-ufo-dir (+ 0 (/ (image-width UFO) 2))) "right")
+(define (change-ufo-dir x)
+  (cond
+    [(>= x (- WIDTH (/ (image-width UFO) 2))) "left"]
+    [(<= x (+ 0 (/ (image-width UFO) 2))) "right"]
+    [else (if (>= (random 10) 5) "left" "right")]
+  )
+)
 
 ;List-Of-Shots->List-Of-Shots
 ;produces the next position of every ufo shot unless they're
