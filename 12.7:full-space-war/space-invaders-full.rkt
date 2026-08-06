@@ -17,6 +17,12 @@
     (circle 15 "solid" "seagreen")
   )
 )
+(define UFO-SHOT
+  (overlay/align "center" "top"
+    (ellipse 5 15 "solid" "seagreen")
+    (ellipse 15 5 "solid" "green")
+  )
+)
 
 ;TANK
 (define TANK
@@ -37,6 +43,15 @@
 )
 (define TANK-VEL 5)
 (define Y-TANK (- HEIGHT (/ (image-height TANK) 2)))
+(define TANK-SHOT 
+  (above
+    (triangle 10 "solid" "red") 
+    (overlay/align "center" "top"
+      (rectangle 10 30 "solid" "silver")
+      (triangle 20 "solid" "red")
+    )
+  )
+)
 
 (define-struct game [ufo tank])
 ;a SIGS is a structure:
@@ -93,7 +108,7 @@
   (place-image UFO
     (posn-x (ufo-pos u))
     (posn-y (ufo-pos u))
-    (render-shots (ufo-shots t) UFO-SHOT img))
+    (render-shots (ufo-shots u) UFO-SHOT img))
 )
 
 ;Tank Image->Image
@@ -104,6 +119,11 @@
     Y-TANK
     (render-shots (tank-shots t) TANK-SHOT img))
 )
+
+;List-Of-Shots Image Image->Image
+;renders shots
+(define (render-shots l shi img) img)
+
 
 ;SIGS->SIGS
 ;produces how the game changes after 1 tick
