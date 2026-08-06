@@ -217,7 +217,31 @@
 
 ;SIGS KeyEvent->SIGS
 ;handles any key press
-(define (key-handler si ke) si) 
+(define (key-handler si ke)
+  (cond
+    [(string=? " " ke)
+      (make-game 
+        (game-ufo si)
+        (make-tank (tank-x (game-tank si)) (tank-dir (game-tank si))
+          (fire-shot (tank-x (game-tank si)) (tank-shots (game-tank si))))
+      )]
+    [(string=? "left" ke)
+      (make-game
+        (game-ufo si)
+        (make-tank (tank-x (game-tank si)) "left" (tank-shots (game-tank si)))
+       )] 
+    [(string=? "right" ke)
+      (make-game
+        (game-ufo si)
+        (make-tank (tank-x (game-tank si)) "right" (tank-shots (game-tank si)))
+       )] 
+    [else si]
+  )
+)
+
+;Number List-Of-Shots->List-Of-Shots
+;Adds a new shot to tank-shots
+(define (fire-shot x l) l)
 
 ;SIGS->Boolean
 ;stops the game if:
