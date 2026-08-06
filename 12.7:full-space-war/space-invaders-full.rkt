@@ -23,6 +23,7 @@
     (ellipse 15 5 "solid" "green")
   )
 )
+(define MAX-UFO-VEL 10)
 
 ;TANK
 (define TANK
@@ -137,10 +138,44 @@
   )
 )
 
-
 ;SIGS->SIGS
 ;produces how the game changes after 1 tick
-(define (tick-handler si) si)
+(define (tick-handler si)
+  (make-game
+    (make-ufo 
+      (move-ufo (game-ufo si))
+      (change-ufo-dir (posn-x (ufo-pos (game-ufo si)))) 
+      (random MAX-UFO-VEL)
+      (move-ufo-shots (ufo-shots (game-ufo si)))
+    )
+    (make-tank
+      (move-tank (tank-x(game-tank si)) (tank-dir (game-tank si)))
+      (tank-dir (game-tank si))
+      (move-tank-shots (tank-shots (game-tank si)))
+    )
+  )
+)
+
+;UFO->Posn
+;produces the next position of the UFO
+(define (move-ufo u) (ufo-pos u))
+
+;Number->Direction
+;produces the next moving direction of the ufo
+(define (change-ufo-dir x) "left")
+
+;List-Of-Shots->List-Of-Shots
+;produces the next position of every ufo shot unless they're
+;under the canvas already
+(define (move-ufo-shots l) l)
+
+;Number Direction->Number
+;produces the next x coordinate of the tank
+(define (move-tank x dir) x)
+
+;List-Of-Shots->List-Of-Shots
+;produces the new location of every list of tank's shots
+(define (move-tank-shots l) l)
 
 ;SIGS KeyEvent->SIGS
 ;handles any key press
