@@ -63,7 +63,9 @@
 ;Block Image->Image
 ;renders the dropping block into img
 (define (render-dropping b img)
-  (place-image BLOCK (* SIZE (block-x b)) (* SIZE (block-y b)) img)
+  (place-image BLOCK 
+    (+ (* SIZE (block-x b))(/ SIZE 2))
+    (* SIZE (block-y b)) img)
 )
 
 ;Landscape Image->Image
@@ -74,7 +76,7 @@
     [else 
       (place-image 
         BLOCK 
-        (* SIZE (block-x (first l)))
+        (+ (* SIZE (block-x (first l))) (/ SIZE 2))
         (* SIZE (block-y (first l))) 
         (render-landscape (rest l) img)
       )
@@ -94,11 +96,29 @@
 
 ;Tetris->Tetris
 ;moves the dropping block to the right
-(define (move-right t) t)
+(define (move-right t)
+  (cond
+  [(= (block-x (tetris-block t)) (sub1 WIDTH)) t]
+  [else (make-tetris 
+    (make-block 
+      (add1 (block-x (tetris-block t)))
+      (block-y (tetris-block t)))
+    (tetris-landscape t))]
+  )
+)
 
 ;Tetris->Tetris
 ;moves the dropping block to the left
-(define (move-left t) t)
+(define (move-left t) 
+  (cond
+  [(= (block-x (tetris-block t)) 0) t]
+  [else (make-tetris 
+    (make-block 
+      (sub1 (block-x (tetris-block t)))
+      (block-y (tetris-block t)))
+    (tetris-landscape t))]
+  )
+)
 
 ;Tetris->Tetris
 ;changes the position of the game every second
@@ -152,4 +172,4 @@
 ;yields true if the new resting block is at y = HEIGHT
 (define (full? t) #false)
 
-(main 0.1)
+(main 0.5)
