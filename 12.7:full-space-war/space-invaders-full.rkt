@@ -280,6 +280,24 @@
 ;-- the UFO has been impacted
 ;-- the Tank has been impacted
 ;-- the UFO has come to the earth
-(define (stop? si) #false)
+(define (stop? si)
+  (or
+    (impacted-ufo? (ufo-pos (game-ufo si)) (tank-shots (game-tank si)))
+    (impacted-tank? (tank-x (game-tank si)) (ufo-shots (game-ufo si)))
+    (ufo-arrived? (posn y(ufo-pos (game-ufo))))
+  )
+)
+
+;Posn List-Of-Shots->Boolean
+;yields true if one tank-shot has impacted ufo
+(define (impacted-ufo? u l) #false)
+
+;Number List-Of-Shots->Boolean
+;yields true if one ufo-shot has impacted tank
+(define (impacted-tank? x l) #false)
+
+;Number->Boolean
+;yields true if ufo has arrived to earth
+(define (ufo-arrived? y) #false)
 
 (main 0)
