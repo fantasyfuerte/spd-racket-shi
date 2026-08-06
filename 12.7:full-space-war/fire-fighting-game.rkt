@@ -5,6 +5,17 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
+;SCENE
+(define WIDTH 1000)
+(define HEIGHT 700)
+(define SAND-AMOUNT 0.3)
+(define BACKGROUND 
+  (above 
+    (rectangle WIDTH (- HEIGHT (* SAND-AMOUNT HEIGHT)) "solid" "skyblue")
+    (rectangle WIDTH (* SAND-AMOUNT HEIGHT) "solid" "navajowhite")
+  )
+)
+
 (define-struct game [plane fires time])
 ;a Game is a structure:
 ;(make-game Plane List-Of-Fires Number)
@@ -29,3 +40,36 @@
 ;-- '()
 ;-- (cons Posn List-Of-Fires)
 ;interpretation: an arbitrary large list of fires
+
+;a Game is the state of the world
+(define IGS  ;INITIAL GAME STATE
+  (make-game
+    (make-plane 0 (make-water 50 '()))
+    '()
+    30))
+
+;Number->WorldProgram
+(define (main x)
+  (big-bang IGS 
+    [to-draw render-game]
+    [on-tick tick-handler]
+    [on-key key-handler]
+    [stop-when end?]
+  )
+)
+
+;Game->Image
+;renders the game
+(define (render-game g) BACKGROUND)
+
+;Game->Game
+;changes the game every clock tick
+(define (tick-handler g) g)
+
+;Game KeyEvent->Game
+;handles key presses
+(define (key-handler g ke) g)
+
+;Game->Boolean
+;ends the game when the remaining waters are 0 or when the time is 0
+(define (end? g) #false)
