@@ -5,9 +5,9 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
-(define WIDTH 15)
-(define HEIGHT 20)
-(define SIZE 15)
+(define WIDTH 10)
+(define HEIGHT 10)
+(define SIZE 50)
 (define SCENE-SIZE (* WIDTH SIZE))
 (define MT (empty-scene (* WIDTH SIZE) (* HEIGHT SIZE)))
 (define BLOCK
@@ -84,7 +84,21 @@
 
 ;Tetris KeyEvent->Tetris
 ;controlls the dropping block
-(define (key-handler t ke) t)
+(define (key-handler t ke)
+  (cond
+    [(string=? ke "right") (move-right t)]
+    [(string=? ke "left") (move-left t)]
+    [else t]
+  )
+)
+
+;Tetris->Tetris
+;moves the dropping block to the right
+(define (move-right t) t)
+
+;Tetris->Tetris
+;moves the dropping block to the left
+(define (move-left t) t)
 
 ;Tetris->Tetris
 ;changes the position of the game every second
@@ -106,7 +120,19 @@
 
 ;Block Landscape->Boolean
 ;yields true if the block landed on another block
-(define (landed-on-block? b l) #false)
+(define (landed-on-block? b l)
+  (cond
+    [(empty? l) #false]
+    [else 
+      (cond
+        [(and (= (block-x b) (block-x (first l)))
+              (= (add1 (block-y b)) (block-y (first l)))
+         ) #true]
+        [else (landed-on-block? b (rest l))]
+      )
+    ]
+  )
+)
 
 ;Tetris->Tetris
 ;add a new block to the game
