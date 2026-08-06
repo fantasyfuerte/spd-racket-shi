@@ -5,6 +5,11 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
+;SCENE
+(define HEIGHT 700)
+(define WIDTH 500)
+(define BACKGROUND (rectangle WIDTH HEIGHT "solid" "black"))
+
 ;UFO
 (define UFO 
   (overlay/align "center" "bottom"
@@ -33,11 +38,6 @@
 (define TANK-VEL 5)
 (define Y-TANK (- HEIGHT (/ (image-height TANK) 2)))
 
-;SCENE
-(define HEIGHT 700)
-(define WIDTH 500)
-(define BACKGROUND (rectangle WIDTH HEIGHT "solid" "black"))
-
 (define-struct game [ufo tank])
 ;a SIGS is a structure:
 ;(make-game UFO Tank)
@@ -61,3 +61,41 @@
 ;(make-tank Number List-Of-Shots)
 ;interpretation: (make-tank 5 "right" '()) represents a tank in x=5,
 ;moving to the right, who haven't fired any shots
+
+;GAME INITIAL STATE
+(define GIS 
+  (make-game 
+    (make-ufo (make-posn (/ WIDTH 2) 0) "left" 3 '())
+    (make-tank (/ WIDTH 2) "right" '())
+  ))
+
+;Any->WorldProgram
+(define (main x)
+  (big-bang GIS
+    [to-draw render-game]
+    [on-tick tick-handler]
+    [on-key key-handler]
+    [stop-when stop?]
+  )
+)
+
+;SIGS->Image
+;renders an image of the game 
+(define (render-game si) BACKGROUND)
+
+;SIGS->SIGS
+;produces how the game changes after 1 tick
+(define (tick-handler si) si)
+
+;SIGS KeyEvent->SIGS
+;handles any key press
+(define (key-handler si ke) si) 
+
+;SIGS->Boolean
+;stops the game if:
+;-- the UFO has been impacted
+;-- the Tank has been impacted
+;-- the UFO has come to the earth
+(define (stop? si) #false)
+
+(main 0)
