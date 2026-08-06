@@ -290,7 +290,18 @@
 
 ;Posn List-Of-Shots->Boolean
 ;yields true if one tank-shot has impacted ufo
-(define (impacted-ufo? u l) #false)
+(define (impacted-ufo? u l)
+  (cond
+    [(empty? l) #false]
+    [else 
+      (cond
+        [(and (<= (abs(-(posn-x u) (posn-x (first l))))(/(image-width UFO) 2))
+              (<= (abs(-(posn-y u) (posn-y (first l))))(/(image-height UFO)2))
+         )#true]
+        [else (impacted-ufo? u (rest l))]
+      )]
+  )
+)
 
 ;Number List-Of-Shots->Boolean
 ;yields true if one ufo-shot has impacted tank
