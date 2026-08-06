@@ -213,7 +213,20 @@
 
 ;List-Of-Shots->List-Of-Shots
 ;produces the new location of every list of tank's shots
-(define (move-tank-shots l) l)
+(define (move-tank-shots l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cond
+        [(>= (posn-y (first l)) HEIGHT) (move-tank-shots (rest l))] 
+        [else (cons
+                (make-posn (posn-x (first l))(- (posn-y (first l)) 25))
+                (move-tank-shots (rest l)))
+        ]
+      )
+    ]
+  )
+)
 
 ;SIGS KeyEvent->SIGS
 ;handles any key press
