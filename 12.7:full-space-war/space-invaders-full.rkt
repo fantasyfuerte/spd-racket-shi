@@ -196,7 +196,20 @@
 
 ;Number Direction->Number
 ;produces the next x coordinate of the tank
-(define (move-tank x dir) x)
+(check-expect (move-tank 20 "left")
+  (- 20 TANK-VEL))
+(check-expect (move-tank 40 "right")
+  (+ 40 TANK-VEL))
+(check-expect (move-tank (/(image-width TANK)2) "left")
+  (/ (image-width TANK)2))
+(define (move-tank x dir)
+  (cond
+    [(string=? dir "left") 
+      (if (= x (/ (image-width TANK) 2)) x (- x TANK-VEL))]
+    [(string=? dir "right") 
+      (if (= x (- WIDTH (/ (image-width TANK) 2))) x (+ x TANK-VEL))]
+  )
+)
 
 ;List-Of-Shots->List-Of-Shots
 ;produces the new location of every list of tank's shots
