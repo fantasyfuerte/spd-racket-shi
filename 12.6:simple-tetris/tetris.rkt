@@ -65,7 +65,7 @@
 (define (render-dropping b img)
   (place-image BLOCK 
     (+ (* SIZE (block-x b))(/ SIZE 2))
-    (* SIZE (block-y b)) img)
+    (+ (* SIZE (block-y b))(/ SIZE 2)) img)
 )
 
 ;Landscape Image->Image
@@ -77,7 +77,7 @@
       (place-image 
         BLOCK 
         (+ (* SIZE (block-x (first l))) (/ SIZE 2))
-        (* SIZE (block-y (first l))) 
+        (+ (* SIZE (block-y (first l))) (/ SIZE 2)) 
         (render-landscape (rest l) img)
       )
     ]
@@ -170,6 +170,25 @@
 
 ;Tetris->Boolean
 ;yields true if the new resting block is at y = HEIGHT
-(define (full? t) #false)
+(define (full? t) 
+  (cond
+    [(empty? (tetris-landscape t)) #false]
+    [else (above-height? (tetris-landscape t))]
+  )
+)
+
+;Landscape->Boolean
+;yields true if some resting block is above or equal to o
+(define (above-height? l)
+  (cond
+    [(empty? l) #false]
+    [else 
+      (cond
+        [(= 0 (block-y (first l))) #true]
+        [else (above-height? (rest l))]
+      )
+    ]
+  )
+)
 
 (main 0.5)
