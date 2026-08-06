@@ -161,21 +161,14 @@
 
 ;UFO->Posn
 ;produces the next position of the UFO
-(check-expect
-  (move-ufo 
-    (make-ufo (make-posn 50 50) "left" 10 '()))
-  (make-posn 40 (+ 50 UFO-DESCENDING-VEL))) 
-(check-expect
-  (move-ufo 
-    (make-ufo (make-posn 10 90) "right" 8 '()))
-  (make-posn 18 (+ 90 UFO-DESCENDING-VEL))) 
 (define (move-ufo u)
   (make-posn
     (cond
       [(string=? (ufo-dir u) "left") (- (posn-x (ufo-pos u)) (ufo-vel u))]
       [(string=? (ufo-dir u) "right") (+ (posn-x (ufo-pos u)) (ufo-vel u))]
     )
-    (+ UFO-DESCENDING-VEL (posn-y (ufo-pos u)))
+    (+ (if (> (random 10) 8.5) (random 20) 0)
+       (posn-y (ufo-pos u)))
   )
 )
 
