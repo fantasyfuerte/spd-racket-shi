@@ -55,6 +55,7 @@
     )
   )
 )
+(define TANK-AVAILABLE-SHOTS 5)
 
 (define-struct game [ufo tank])
 ;a SIGS is a structure:
@@ -74,11 +75,11 @@
 ;margin, is moving to the left at 2px per tick and has'nt fired any 
 ;shots yet
 
-(define-struct tank [x dir shots])
+(define-struct tank [x dir shots rs])
 ;a Tank is a structure:
-;(make-tank Number List-Of-Shots)
-;interpretation: (make-tank 5 "right" '()) represents a tank in x=5,
-;moving to the right, who haven't fired any shots
+;(make-tank Number List-Of-Shots Number)
+;interpretation: (make-tank 5 "right" '() 5) represents a tank in x=5,
+;moving to the right, who haven't fired any shots and has 5 remaining shots
 
 ;a List-Of-Shots is one of:
 ;--'()
@@ -89,7 +90,7 @@
 (define GIS 
   (make-game 
     (make-ufo (make-posn (/ WIDTH 2) 0) "left" 3 '())
-    (make-tank (/ WIDTH 2) "right" '())
+    (make-tank (/ WIDTH 2) "right" '() TANK-AVAILABLE-SHOTS)
   ))
 
 ;Any->WorldProgram
@@ -155,6 +156,7 @@
       (move-tank (tank-x(game-tank si)) (tank-dir (game-tank si)))
       (tank-dir (game-tank si))
       (move-tank-shots (tank-shots (game-tank si)))
+      (tank-rs (game-tank si))
     )
   )
 )
@@ -249,21 +251,26 @@
 ;handles any key press
 (define (key-handler si ke)
   (cond
-    [(string=? " " ke)
-      (make-game 
-        (game-ufo si)
-        (make-tank (tank-x (game-tank si)) (tank-dir (game-tank si))
-          (fire-shot (tank-x (game-tank si)) (tank-shots (game-tank si))))
-      )]
+    [(string=? " " ke) (if (>(tank-rs (game-tank si)) 0) 
+       (make-game 
+          (game-ufo si)
+          (make-tank (tank-x (game-tank si)) (tank-dir (game-tank si))
+            (fire-shot (tank-x (game-tank si)) (tank-shots (game-tank si)))
+          (sub1(tank-rs (game-tank si))))
+       )
+       si)]
     [(string=? "left" ke)
       (make-game
         (game-ufo si)
-        (make-tank (tank-x (game-tank si)) "left" (tank-shots (game-tank si)))
+        (make-tank (tank-x (game-tank si)) "left" (tank-shots (game-tank si))
+        (tank-rs (game-tank si)))
        )] 
     [(string=? "right" ke)
       (make-game
         (game-ufo si)
-        (make-tank (tank-x (game-tank si)) "right" (tank-shots (game-tank si)))
+        (make-tank (tank-x (game-tank si)) "right" (tank-shots (game-tank si))
+        (tank-rs (game-tank si))
+        )
        )] 
     [else si]
   )
