@@ -147,7 +147,8 @@
       (move-ufo (game-ufo si))
       (change-ufo-dir (posn-x (ufo-pos (game-ufo si)))) 
       (random MAX-UFO-VEL)
-      (move-ufo-shots (ufo-shots (game-ufo si)))
+      (move-ufo-shots 
+        (random-shot (ufo-pos (game-ufo si)) (ufo-shots (game-ufo si))))
     )
     (make-tank
       (move-tank (tank-x(game-tank si)) (tank-dir (game-tank si)))
@@ -192,7 +193,29 @@
 ;List-Of-Shots->List-Of-Shots
 ;produces the next position of every ufo shot unless they're
 ;under the canvas already
-(define (move-ufo-shots l) l)
+(define (move-ufo-shots l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cond
+        [(<= (posn-y (first l)) 0) (move-ufo-shots (rest l))] 
+        [else (cons
+                (make-posn (posn-x (first l))(+ (posn-y (first l)) 25))
+                (move-ufo-shots (rest l)))
+        ]
+      )
+    ]
+  )
+)
+
+;List-Of-Shots->List-Of-Shots
+;randomly adds a shot to list of shots
+(define (random-shot pos l)
+  (if (> (random 21) 19)
+    (cons (make-posn (posn-x pos) (posn-y pos)) l) 
+    l
+  )
+)
 
 ;Number Direction->Number
 ;produces the next x coordinate of the tank
