@@ -81,7 +81,29 @@
 
 ;SIGS->Image
 ;renders an image of the game 
-(define (render-game si) BACKGROUND)
+(define (render-game si)
+  (render-tank (game-tank si) 
+    (render-ufo (game-ufo si)
+      BACKGROUND)) 
+)
+
+;UFO Image->Image
+;renders the UFO and all his shots
+(define (render-ufo u img)
+  (place-image UFO
+    (posn-x (ufo-pos u))
+    (posn-y (ufo-pos u))
+    (render-shots (ufo-shots t) UFO-SHOT img))
+)
+
+;Tank Image->Image
+;renders the Tank and all his shots
+(define (render-tank t img)
+  (place-image TANK
+    (tank-x t)
+    Y-TANK
+    (render-shots (tank-shots t) TANK-SHOT img))
+)
 
 ;SIGS->SIGS
 ;produces how the game changes after 1 tick
