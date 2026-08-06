@@ -98,7 +98,13 @@
 ;moves the dropping block to the right
 (define (move-right t)
   (cond
-  [(= (block-x (tetris-block t)) (sub1 WIDTH)) t]
+  [(or 
+    (= (block-x (tetris-block t)) (sub1 WIDTH)) 
+    (blocking-block? 
+      (add1(block-x(tetris-block t)))
+      (block-y(tetris-block t)) 
+      (tetris-landscape t))
+   ) t]
   [else (make-tetris 
     (make-block 
       (add1 (block-x (tetris-block t)))
@@ -111,12 +117,33 @@
 ;moves the dropping block to the left
 (define (move-left t) 
   (cond
-  [(= (block-x (tetris-block t)) 0) t]
+  [(or (= (block-x (tetris-block t)) 0)
+        (blocking-block?
+          (sub1(block-x(tetris-block t)))
+          (block-y(tetris-block t))
+          (tetris-landscape t))
+   ) t]
   [else (make-tetris 
     (make-block 
-      (sub1 (block-x (tetris-block t)))
+      (sub1(block-x (tetris-block t)))
       (block-y (tetris-block t)))
     (tetris-landscape t))]
+  )
+)
+
+;Number Number Landscape->Boolean
+;yields true if there are a block in that spot
+(define (blocking-block? x y l)
+  (cond
+    [(empty? l) #false]
+    [else 
+      (cond 
+        [(and (= (block-x (first l)) x)
+              (= (block-y (first l)) y))
+        #true]
+        [else (blocking-block? x y (rest l))]
+      )
+    ]
   )
 )
 
@@ -191,4 +218,4 @@
   )
 )
 
-(main 0.5)
+(main 0.25)
