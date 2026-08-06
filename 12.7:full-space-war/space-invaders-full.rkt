@@ -25,7 +25,7 @@
   )
 )
 (define MAX-UFO-VEL 40)
-(define UFO-DESCENDING-VEL 2)
+(define UFO-DESCENDING-VEL 50)
 
 ;TANK
 (define TANK
@@ -167,7 +167,7 @@
       [(string=? (ufo-dir u) "left") (- (posn-x (ufo-pos u)) (ufo-vel u))]
       [(string=? (ufo-dir u) "right") (+ (posn-x (ufo-pos u)) (ufo-vel u))]
     )
-    (+ (if (> (random 10) 8.5) (random 20) 0)
+    (+ (if (> (random 10) 8.5) (random UFO-DESCENDING-VEL) 0)
        (posn-y (ufo-pos u)))
   )
 )
@@ -284,7 +284,7 @@
   (or
     (impacted-ufo? (ufo-pos (game-ufo si)) (tank-shots (game-tank si)))
     (impacted-tank? (tank-x (game-tank si)) (ufo-shots (game-ufo si)))
-    (ufo-arrived? (posn y(ufo-pos (game-ufo))))
+    (ufo-arrived? (posn-y(ufo-pos (game-ufo si))))
   )
 )
 
@@ -298,6 +298,8 @@
 
 ;Number->Boolean
 ;yields true if ufo has arrived to earth
-(define (ufo-arrived? y) #false)
+(define (ufo-arrived? y)
+  (>= y (+ Y-TANK 15))
+)
 
 (main 0)
