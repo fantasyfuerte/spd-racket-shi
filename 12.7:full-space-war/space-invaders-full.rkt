@@ -6,9 +6,10 @@
 (require 2htdp/image)
 
 ;SCENE
-(define HEIGHT 700)
-(define WIDTH 500)
+(define HEIGHT 800)
+(define WIDTH 900)
 (define BACKGROUND (rectangle WIDTH HEIGHT "solid" "black"))
+(define BULLETS-VEL 20)
 
 ;UFO
 (define UFO 
@@ -24,7 +25,7 @@
   )
 )
 (define MAX-UFO-VEL 40)
-(define UFO-DESCENDING-VEL 5)
+(define UFO-DESCENDING-VEL 2)
 
 ;TANK
 (define TANK
@@ -43,7 +44,7 @@
     )
   )
 )
-(define TANK-VEL 5)
+(define TANK-VEL 25)
 (define Y-TANK (- HEIGHT (/ (image-height TANK) 2)))
 (define TANK-SHOT 
   (above
@@ -200,7 +201,7 @@
       (cond
         [(<= (posn-y (first l)) 0) (move-ufo-shots (rest l))] 
         [else (cons
-                (make-posn (posn-x (first l))(+ (posn-y (first l)) 25))
+                (make-posn (posn-x (first l))(+ (posn-y (first l)) BULLETS-VEL))
                 (move-ufo-shots (rest l)))
         ]
       )
@@ -219,8 +220,8 @@
 
 ;Number Direction->Number
 ;produces the next x coordinate of the tank
-(check-expect (move-tank 20 "left")
-  (- 20 TANK-VEL))
+(check-expect (move-tank 100 "left")
+  (- 100 TANK-VEL))
 (check-expect (move-tank 40 "right")
   (+ 40 TANK-VEL))
 (check-expect (move-tank (/(image-width TANK)2) "left")
@@ -228,9 +229,9 @@
 (define (move-tank x dir)
   (cond
     [(string=? dir "left") 
-      (if (= x (/ (image-width TANK) 2)) x (- x TANK-VEL))]
+      (if (<= x (/ (image-width TANK) 2)) x (- x TANK-VEL))]
     [(string=? dir "right") 
-      (if (= x (- WIDTH (/ (image-width TANK) 2))) x (+ x TANK-VEL))]
+      (if (>= x (- WIDTH (/ (image-width TANK) 2))) x (+ x TANK-VEL))]
   )
 )
 
@@ -243,7 +244,7 @@
       (cond
         [(>= (posn-y (first l)) HEIGHT) (move-tank-shots (rest l))] 
         [else (cons
-                (make-posn (posn-x (first l))(- (posn-y (first l)) 25))
+                (make-posn (posn-x (first l))(- (posn-y (first l)) BULLETS-VEL))
                 (move-tank-shots (rest l)))
         ]
       )
