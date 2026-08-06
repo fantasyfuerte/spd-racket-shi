@@ -77,6 +77,11 @@
 ;interpretation: (make-tank 5 "right" '()) represents a tank in x=5,
 ;moving to the right, who haven't fired any shots
 
+;a List-Of-Shots is one of:
+;--'()
+;-- (cons Posn List-Of-Shots)
+;interpretation: an arbitrary large list of posns
+
 ;GAME INITIAL STATE
 (define GIS 
   (make-game 
@@ -122,7 +127,15 @@
 
 ;List-Of-Shots Image Image->Image
 ;renders shots
-(define (render-shots l shi img) img)
+(define (render-shots l shi img)
+  (cond
+    [(empty? l) img]
+    [else (place-image shi 
+      (posn-x (first l))
+      (posn-y (first l))
+      (render-shots (rest l) shi img))]
+  )
+)
 
 
 ;SIGS->SIGS
