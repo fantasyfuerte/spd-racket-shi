@@ -16,6 +16,18 @@
   )
 )
 
+;PLANE
+(define PLANE (overlay/xy
+  (overlay/align "left" "bottom"
+    (right-triangle 23 30 "solid" "yellow") 
+    (ellipse 60 20 "solid" "yellow")
+  )
+    60 8
+  (rectangle 2 25 "solid" "darkgray")
+))
+
+;FIRE
+
 (define-struct game [plane fires time])
 ;a Game is a structure:
 ;(make-game Plane List-Of-Fires Number)
