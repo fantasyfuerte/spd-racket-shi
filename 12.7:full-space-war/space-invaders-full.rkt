@@ -294,7 +294,19 @@
 
 ;Number List-Of-Shots->Boolean
 ;yields true if one ufo-shot has impacted tank
-(define (impacted-tank? x l) #false)
+(define (impacted-tank? x l)
+  (cond
+    [(empty? l) #false]
+    [else (cond
+            [(and 
+               (<= (abs(- (posn-x (first l)) x)) 
+                   (/(image-width TANK)2)) 
+               (<= (abs(- (posn-y (first l)) Y-TANK))
+                   (/(image-height TANK)2))) #true] 
+            [else (impacted-tank? x (rest l))]
+          )]
+  )
+)
 
 ;Number->Boolean
 ;yields true if ufo has arrived to earth
