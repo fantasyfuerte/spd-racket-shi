@@ -312,6 +312,14 @@
 
 ;Game->Boolean
 ;ends the game when the remaining waters are 0 or when the time is 0
-(define (end? g) #false)
+(define (end? g)
+  (or
+    (>= 0 (game-time g))
+    (and
+      (>= 0 (water-count (plane-waters (game-plane g))))
+      (= 0 (length (water-loads (plane-waters (game-plane g)))))
+    )
+  )
+)
 
 (main 0)
