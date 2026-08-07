@@ -34,8 +34,8 @@
 (define FIRE 
   (overlay 
     (star-polygon 10 11 3 "solid" "red")
-    (star-polygon 15 11 3 "solid" "yellow")
-    (star-polygon 20 11 3 "solid" "orange")
+    (star-polygon 12 11 3 "solid" "yellow")
+    (star-polygon 15 11 3 "solid" "orange")
   )
 )
 
@@ -166,11 +166,53 @@
 
 ;Number->Number
 ;decrements the remaining time
-(define (decrement-clock n) n)
+(define (decrement-clock n) (- n 0.02))
 
 ;Game KeyEvent->Game
 ;handles key presses
-(define (key-handler g ke) g)
+(define (key-handler g ke)
+  (cond
+    [(string=? ke "left")
+      (make-game
+        (make-plane 
+          (plane-x (game-plane g))
+          "left"
+          (plane-waters (game-plane g))
+        )
+        (game-fires g)
+        (game-time g)
+      )
+    ]
+    [(string=? ke "right")
+      (make-game
+        (make-plane 
+          (plane-x (game-plane g))
+          "right"
+          (plane-waters (game-plane g))
+        )
+        (game-fires g)
+        (game-time g)
+      )
+    ]
+    [(string=? ke " ") 
+      (make-game
+        (make-plane
+          (plane-x (game-plane g))
+          (plane-dir (game-plane g)) 
+          (drop-water 
+            (plane-x (game-plane g))
+            (plane-waters (game-plane g)))
+        )
+        (game-fires g)
+        (game-time g)
+      )]
+    [else g]
+  )
+)
+
+;Number List-Of-Posns->List-Of-Posns
+;adds a posn at (x,Y-PLANE) 
+(define (drop-water x l) l)
 
 ;Game->Boolean
 ;ends the game when the remaining waters are 0 or when the time is 0
