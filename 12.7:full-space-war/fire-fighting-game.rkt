@@ -26,6 +26,8 @@
   (rectangle 2 25 "solid" "darkgray")
 ))
 
+(define Y-PLANE 80)
+
 ;FIRE
 (define FIRE 
   (overlay 
@@ -41,12 +43,12 @@
 ;interpretation: (make-game p f t) combines the plane p
 ;and the list of fires f and the remaining time t
 
-(define-struct plane [x waters])
+(define-struct plane [x dir waters])
 ;a Plane is a structure:
-;(make-plane Number Loads)
-;interpretation: (make-plane 40 (make-water 20 '())) means
-;that there is a plane at x= 40 who recently hasn't dropped any
-;water and has 20 remaining waters
+;(make-plane Number Direction Loads)
+;interpretation: (make-plane 40 "left" (make-water 20 '())) means
+;that there is a plane moving to the left at x= 40 who recently 
+;hasn't dropped any water and has 20 remaining waters
 
 (define-struct water [count loads])
 ;a Water is a structure:
@@ -60,10 +62,14 @@
 ;-- (cons Posn List-Of-Fires)
 ;interpretation: an arbitrary large list of fires
 
+;a Direction is one of:
+;-- "left"
+;-- "right"
+
 ;a Game is the state of the world
 (define IGS  ;INITIAL GAME STATE
   (make-game
-    (make-plane 0 (make-water 50 '()))
+    (make-plane 0 "right" (make-water 50 '()))
     '()
     30))
 
@@ -87,11 +93,33 @@
 
 ;Plane Image->Image
 ;renders the plane of the game
-(define (render-plane p img) img)
+(define (render-plane p img)
+  (place-image 
+    (cond
+      [(string=? (plane-dir p) "right") PLANE]
+      [else (flip-horizontal PLANE)]
+    )
+    (plane-x p)
+    Y-PLANE
+    img
+  )
+)
 
 ;List-Of-Fires->Image
 ;renders the fires of the game
-(define (render-fire l img) img)
+(define (render-fire l img)
+  (cond
+    [(empty? l) img]
+    [else 
+      (place-image 
+        FIRE
+        (posn-x (first l))
+        (posn-y (first l)) 
+        (render-fire (rest l) img)
+      )
+    ]
+  )
+)
 
 ;Game->Game
 ;changes the game every clock tick
