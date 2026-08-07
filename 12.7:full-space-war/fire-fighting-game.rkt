@@ -160,8 +160,8 @@
 ;randomly creates fires at random places
 (define (randomize-fires l)
   (if 
-    (>= (random 40) 39)
-    (cons (make-posn (random WIDTH) (- HEIGHT(random (* 0.2 HEIGHT)))) l) l)
+    (and (>= (random 40) 39) (< (length l) 10))
+    (cons (make-posn (random WIDTH) (- (+ HEIGHT 10) (random (* 0.2 HEIGHT)))) l) l)
 )
 
 ;Number->Number
