@@ -28,7 +28,7 @@
   (make-transition "white" "black")
   (make-transition "black" "white")))
 
-;FMS-State FMS-State->Boolean
+;FSM-State FSM-State->Boolean
 ;checks the equality of states
 (check-expect (state=? "red" "yellow") #false)
 (check-expect (state=? "yellow" "yellow") #true)
