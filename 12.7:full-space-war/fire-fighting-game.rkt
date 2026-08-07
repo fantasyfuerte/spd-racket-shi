@@ -28,6 +28,8 @@
 
 (define Y-PLANE 80)
 
+(define PLANE-VEL 10)
+
 ;FIRE
 (define FIRE 
   (overlay 
@@ -137,7 +139,18 @@
 
 ;Number Direction->Number
 ;moves the plane
-(define (move-plane x dir) x)
+(define (move-plane x dir)
+  (cond
+    [(string=? dir "right")(if 
+      (>= x (+ WIDTH (image-width PLANE))) 
+      0 
+      (+ x PLANE-VEL))]
+    [else (if 
+      (<= x 0) 
+      WIDTH 
+      (- x PLANE-VEL))]
+  )
+)
 
 ;List-Of-Posns->List-Of-Posns
 ;moves the waters
@@ -158,3 +171,5 @@
 ;Game->Boolean
 ;ends the game when the remaining waters are 0 or when the time is 0
 (define (end? g) #false)
+
+(main 0)
