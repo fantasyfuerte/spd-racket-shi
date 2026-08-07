@@ -6,3 +6,12 @@
 (define qt1 '(1 2 3))
 
 (equal? qt qt1) ;#true
+
+'(1 "a" 2 #false 3 "c")
+(list 1 "a" 2 #false 3 "c")
+
+'(("alan" 1000)
+  ("barb" 2000)
+  ("carl" 1500))
+
+(list (list "alan" 1000) (list "barb" 2000) (list "carl" 1500))
