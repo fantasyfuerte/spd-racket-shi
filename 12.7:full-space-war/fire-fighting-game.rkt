@@ -42,6 +42,8 @@
 ;WATER
 (define WATER (circle 5 "solid" "blue"))
 
+(define WATER-DROP-VEL 15)
+
 (define-struct game [plane fires time])
 ;a Game is a structure:
 ;(make-game Plane List-Of-Fires Number)
@@ -150,7 +152,10 @@
     (make-plane
       (move-plane (plane-x (game-plane g)) (plane-dir (game-plane g)))
       (plane-dir (game-plane g))
-      (move-water (plane-waters (game-plane g)))
+      (make-water (water-count (plane-waters (game-plane g)))
+        (move-water 
+          (water-loads(plane-waters (game-plane g)))
+          (plane-dir (game-plane g))))
     )
     (randomize-fires (game-fires g))
     (decrement-clock (game-time g))
@@ -172,9 +177,23 @@
   )
 )
 
-;Water->Water
+;List-Of-Posns Direction->List-Of-Posns
 ;moves the waters
-(define (move-water l) l)
+(define (move-water l dir)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (if (>= (posn-y (first l)) HEIGHT)
+        (move-water (rest l) dir)
+        (cons 
+          (make-posn 
+            (if (string=? dir "left") 
+              (- (posn-x (first l)) (/ PLANE-VEL 2))
+              (+ (posn-x (first l)) (/ PLANE-VEL 2)))
+            (+ WATER-DROP-VEL (posn-y (first l)))) 
+          (move-water (rest l) dir)))]
+  )
+)
 
 ;List-Of-Fires->List-Of-Fires
 ;randomly creates fires at random places
