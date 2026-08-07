@@ -47,7 +47,7 @@
 
 (define-struct plane [x dir waters])
 ;a Plane is a structure:
-;(make-plane Number Direction Loads)
+;(make-plane Number Direction Water)
 ;interpretation: (make-plane 40 "left" (make-water 20 '())) means
 ;that there is a plane moving to the left at x= 40 who recently 
 ;hasn't dropped any water and has 20 remaining waters
@@ -88,8 +88,10 @@
 ;Game->Image
 ;renders the game
 (define (render-game g)
-  (render-fire (game-fires g)
-    (render-plane (game-plane g) BACKGROUND)
+  (render-water (water-loads (plane-waters (game-plane g)))
+    (render-fire (game-fires g)
+      (render-plane (game-plane g) BACKGROUND)
+    )
   )
 )
 
@@ -123,6 +125,10 @@
   )
 )
 
+;List-Of-Posn Image->Image
+;renders the water dropping
+(define (render-water l img) img)
+
 ;Game->Game
 ;changes the game every clock tick
 (define (tick-handler g) 
@@ -152,7 +158,7 @@
   )
 )
 
-;List-Of-Posns->List-Of-Posns
+;Water->Water
 ;moves the waters
 (define (move-water l) l)
 
@@ -212,7 +218,14 @@
 
 ;Number List-Of-Posns->List-Of-Posns
 ;adds a posn at (x,Y-PLANE) 
-(define (drop-water x l) l)
+(define (drop-water x w)
+  (if (= (water-count w) 0) w 
+    (make-water 
+      (sub1 (water-count w))
+      (cons (make-posn x Y-PLANE) (water-loads w))
+    )
+  )
+)
 
 ;Game->Boolean
 ;ends the game when the remaining waters are 0 or when the time is 0
