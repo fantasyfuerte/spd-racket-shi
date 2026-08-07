@@ -157,7 +157,9 @@
           (water-loads(plane-waters (game-plane g)))
           (plane-dir (game-plane g))))
     )
-    (randomize-fires (game-fires g))
+    (extinguish-fires 
+      (water-loads (plane-waters (game-plane g)))
+      (randomize-fires (game-fires g)))
     (decrement-clock (game-time g))
   )
 )
@@ -194,6 +196,23 @@
           (move-water (rest l) dir)))]
   )
 )
+
+;List-Of-Fires List-Of-Posns->List-Of-Fires
+;if any water load touches a fire this is turned down
+(define (extinguish-fires lw lf)
+  (cond
+    [(empty? lf) '()]
+    [else 
+      (cond
+        [(touch? lw (first lf)) (extinguish-fires lw (rest lf))]
+        [else (cons (first lf) (extinguish-fires lw (rest lf)))]
+      )
+    ]
+  )
+)
+
+;List-Of-Posns Posn->Boolean
+(define (touch? l f) #false)
 
 ;List-Of-Fires->List-Of-Fires
 ;randomly creates fires at random places
