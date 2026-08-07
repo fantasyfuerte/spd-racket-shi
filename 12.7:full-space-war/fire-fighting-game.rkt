@@ -39,6 +39,9 @@
   )
 )
 
+;WATER
+(define WATER (circle 5 "solid" "blue"))
+
 (define-struct game [plane fires time])
 ;a Game is a structure:
 ;(make-game Plane List-Of-Fires Number)
@@ -127,7 +130,18 @@
 
 ;List-Of-Posn Image->Image
 ;renders the water dropping
-(define (render-water l img) img)
+(define (render-water l img)
+  (cond
+    [(empty? l) img]
+    [else 
+      (place-image 
+        WATER 
+        (posn-x (first l)) 
+        (posn-y (first l)) 
+        (render-water (rest l) img))
+    ]
+  )
+)
 
 ;Game->Game
 ;changes the game every clock tick
