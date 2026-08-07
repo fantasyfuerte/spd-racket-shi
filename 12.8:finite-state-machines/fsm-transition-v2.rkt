@@ -66,8 +66,27 @@
 
 ;KeyEvent FSM->FSM-State
 ;returns the current state of the transition whose key is ke
-(define (state-by-key ke fsm) "red")
+(define (state-by-key ke fsm)
+  (cond
+    [(empty? fsm) "none"]
+    [else (cond
+            [(string=? ke (transition-key(first fsm)))
+              (transition-current (first fsm))]
+            [else (state-by-key ke (rest fsm))]
+          )
+    ]
+  )
+)
 
 ;FSM-State  FSM->FSM-State
 ;return the next state
-(define (find-next s fsm) s)
+(define (find-next s fsm)
+  (cond
+    [(empty? fsm) "none"]
+    [else (cond
+            [(state=? s (transition-current (first fsm)))
+              (transition-next (first fsm))]
+            [else (find-next s (rest fsm))]
+          )]
+  )
+)
