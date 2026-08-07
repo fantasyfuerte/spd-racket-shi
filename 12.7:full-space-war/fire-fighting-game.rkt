@@ -27,6 +27,13 @@
 ))
 
 ;FIRE
+(define FIRE 
+  (overlay 
+    (star-polygon 10 11 3 "solid" "red")
+    (star-polygon 15 11 3 "solid" "yellow")
+    (star-polygon 20 11 3 "solid" "orange")
+  )
+)
 
 (define-struct game [plane fires time])
 ;a Game is a structure:
@@ -72,7 +79,19 @@
 
 ;Game->Image
 ;renders the game
-(define (render-game g) BACKGROUND)
+(define (render-game g)
+  (render-fire (game-fires g)
+    (render-plane (game-plane g) BACKGROUND)
+  )
+)
+
+;Plane Image->Image
+;renders the plane of the game
+(define (render-plane p img) img)
+
+;List-Of-Fires->Image
+;renders the fires of the game
+(define (render-fire l img) img)
 
 ;Game->Game
 ;changes the game every clock tick
