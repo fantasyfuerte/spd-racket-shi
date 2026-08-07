@@ -37,9 +37,9 @@
 )
 
 ;a SimulationState.v1 is an FSM-State
-(define initial-state "white")
+(define initial-state "")
 
-;FSM->???
+;FSM->SimulationState.v1
 ;math the keys pressed with the given FSM
 (define (simulate an-fsm)
   (big-bang initial-state
@@ -55,3 +55,24 @@
 ;SimulationState.v1 KeyEvent->SimulationState.v1
 ;changes to the next
 (define (find-next-state.v1 s ke) s)
+
+(define-struct fs [fsm current])
+;a SimulationState.v2 is a structure:
+;  (make-fs FSM FSM-State
+
+;FSM FSM-State-> SimulationState.v2
+;match the keys pressed with the fiven FSM
+(define (simulate.v2 an-fsm s0)
+  (big-bang (make-fs an-fsm s0)
+    [to-draw state-as-colored-square]
+    [on-key find-next-state.v2]
+  )
+)
+
+;SimulationState.v2->Image
+;renders a world state as an image
+(define (state-as-colored-square s) empty-image)
+
+;SimulationState.v2 KeyEvent->SimulationState.v2
+;finds the next state from ke and s
+(define (find-next-state.v2 s ke) s)
