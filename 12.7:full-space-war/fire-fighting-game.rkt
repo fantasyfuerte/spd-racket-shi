@@ -123,7 +123,33 @@
 
 ;Game->Game
 ;changes the game every clock tick
-(define (tick-handler g) g)
+(define (tick-handler g) 
+  (make-game
+    (make-plane
+      (move-plane (plane-x (game-plane g)) (plane-dir (game-plane g)))
+      (plane-dir (game-plane g))
+      (move-water (plane-waters (game-plane g)))
+    )
+    (randomize-fires (game-fires g))
+    (decrement-clock (game-time g))
+  )
+)
+
+;Number Direction->Number
+;moves the plane
+(define (move-plane x dir) x)
+
+;List-Of-Posns->List-Of-Posns
+;moves the waters
+(define (move-water l) l)
+
+;List-Of-Fires->List-Of-Fires
+;randomly creates fires at random places
+(define (randomize-fires l) l)
+
+;Number->Number
+;decrements the remaining time
+(define (decrement-clock n) n)
 
 ;Game KeyEvent->Game
 ;handles key presses
