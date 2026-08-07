@@ -71,8 +71,28 @@
 
 ;SimulationState.v2->Image
 ;renders a world state as an image
-(define (state-as-colored-square s) empty-image)
+(define (state-as-colored-square s)
+  (square 50 "solid" (fs-current s))
+)
 
 ;SimulationState.v2 KeyEvent->SimulationState.v2
 ;finds the next state from ke and s
-(define (find-next-state.v2 s ke) s)
+(define (find-next-state.v2 s ke)
+  (make-fs (fs-fsm s) (get-current (fs-current s) (fs-fsm s)))
+)
+
+;FSM-State FSM->FSM
+;search the next state
+(define (get-current s fsm)
+  (cond
+    [(empty? fsm) s] 
+    [else 
+      (cond
+        [(state=? s 
+          (transition-current (first fsm))) 
+          (transition-next (first fsm))]
+        [else (get-current s (rest fsm))]
+      )
+    ]
+  )
+)
