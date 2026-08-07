@@ -212,7 +212,18 @@
 )
 
 ;List-Of-Posns Posn->Boolean
-(define (touch? l f) #false)
+(define (touch? l f)
+  (cond
+    [(empty? l) #false]
+    [else (or 
+            (and
+              (< (abs(- (posn-x (first l)) (posn-x f))) (/(image-width FIRE)2))
+              (< (abs(- (posn-y (first l)) (posn-y f))) (/(image-height FIRE)2))
+            )
+            (touch? (rest l) f)
+          )]
+  )
+)
 
 ;List-Of-Fires->List-Of-Fires
 ;randomly creates fires at random places
