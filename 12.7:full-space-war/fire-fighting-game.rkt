@@ -93,11 +93,13 @@
 ;Game->Image
 ;renders the game
 (define (render-game g)
-  (render-water (water-loads (plane-waters (game-plane g)))
-    (render-fire (game-fires g)
-      (render-plane (game-plane g) BACKGROUND)
+  (render-counts (game-time g) (water-count (plane-waters (game-plane g)))
+    (render-water (water-loads (plane-waters (game-plane g)))
+      (render-fire (game-fires g)
+        (render-plane (game-plane g) BACKGROUND)
+      )  
     )
-  )
+  )  
 )
 
 ;Plane Image->Image
@@ -142,6 +144,24 @@
         (posn-y (first l)) 
         (render-water (rest l) img))
     ]
+  )
+)
+
+;Number Number->Image
+;places the remaining time and water loads on the top right of the screen
+(define (render-counts t wc img)
+  (place-image
+    (above 
+      (above (text "Time remaining" 15 "black")
+             (text (number->string (round t)) 20 "black")
+      )
+      (above (text "WATER remaining" 15 "navy")
+             (text (number->string wc) 20 "navy")
+      )
+    )
+    (- WIDTH 80)
+    50
+    img
   )
 )
 
