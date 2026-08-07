@@ -19,6 +19,14 @@
 ;finite state machine can take from one state to another
 ;in reaction to keystrokes
 
+;FSM-State FSM-State->Boolean
+;checks the equality of states
+(check-expect (state=? "red" "yellow") #false)
+(check-expect (state=? "yellow" "yellow") #true)
+(define (state=? s1 s2)
+  (string=? s1 s2)
+)
+
 (define fsm-example (list
   (make-transition "black" "a" "gray")
   (make-transition "gray" "b" "grey")
@@ -28,4 +36,38 @@
   (make-transition "white" "f" "blue"))
 )
 
+(define-struct ss [fsm current])
+;a SimulationState is a structure:
+;  (make-ss FMS FMS-State)
 
+(define (simulate fsm state)
+  (big-bang (make-ss fsm state)
+    [to-draw state-as-colored-square]
+    [on-key find-next-state]
+  )
+)
+
+;SimulationState->Image
+;renders a world state as an image
+(define (state-as-colored-square s)
+  (square 50 "solid" (ss-current s))
+)
+
+;SimulationState KeyEvent->SimulationState
+;if the correct key is pressed go to the next state
+;if not go to the first
+(define (find-next-state s ke)
+  (cond
+    [(state=? (ss-current s) (state-by-key ke (ss-fsm s)))
+      (make-ss (ss-fsm s) (find-next (ss-current s) (ss-fsm s)))]
+    [else (make-ss (ss-fsm s) (transition-current (first (ss-fsm s))))]
+  )
+)
+
+;KeyEvent FSM->FSM-State
+;returns the current state of the transition whose key is ke
+(define (state-by-key ke fsm) "red")
+
+;FSM-State  FSM->FSM-State
+;return the next state
+(define (find-next s fsm) s)
