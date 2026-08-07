@@ -158,7 +158,11 @@
 
 ;List-Of-Fires->List-Of-Fires
 ;randomly creates fires at random places
-(define (randomize-fires l) l)
+(define (randomize-fires l)
+  (if 
+    (>= (random 40) 39)
+    (cons (make-posn (random WIDTH) (- HEIGHT(random (* 0.2 HEIGHT)))) l) l)
+)
 
 ;Number->Number
 ;decrements the remaining time
