@@ -15,3 +15,10 @@
   ("carl" 1500))
 
 (list (list "alan" 1000) (list "barb" 2000) (list "carl" 1500))
+
+(define x 3)
+
+'(1 2 x 4 5)
+
+'(1 (+ 1 1) 3)
+
