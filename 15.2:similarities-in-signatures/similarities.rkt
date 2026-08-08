@@ -50,6 +50,8 @@
   )
 )
 
+;ex 253
+
 ;[Number -> Boolean]
 (define (even* n)
   (= (modulo n 2) 0)
@@ -67,6 +69,8 @@
 ;[[List-of Number] -> Boolean]
 (define (length>5 l) (> (length l) 5))
 
+;ex 254
+
 ;[[List-of Numbers] [Number Number -> Boolean] -> [List-of Numbers]]
 
 ;[[List-of String] [String String -> Boolean] -> [List-of String]]
@@ -74,3 +78,11 @@
 ;[X] [[List-of X] [X X -> Boolean] -> [List-of X]]
 
 ;[[List-of IR] [IR IR -> Boolean] -> [List-of IR]]
+
+;ex 255
+
+;[[List-of Number] [Number-> Number] [List-of Number]]
+
+;[[List-of String] [String-> String] [List-of String]]
+
+;[X] [[List-of X] [X-> X] [List-of X]]
