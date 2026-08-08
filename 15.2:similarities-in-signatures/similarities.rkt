@@ -13,3 +13,39 @@
     ]
   )
 )
+
+;[Number Number] [List-of Number] Number [Number Number -> Number] -> Number
+(define (pr* l bs jn)
+  (cond
+    [(empty? l) bs]
+    [else
+      (jn (first l)
+        (pr* (rest l) bs jn)
+      )
+    ]
+  )
+)
+
+;[Posn Image] [List-of Posn] Image [Posn Image -> Image] -> Image
+(define (im* l bs jn)
+  (cond
+    [(empty? l) bs]
+    [else
+      (jn (first l)
+        (im* (rest l) bs jn)
+      )
+    ]
+  )
+)
+
+;[X Y] [List-of X] Y [X Y -> Y] -> Y
+(define (a* l bs jn)
+  (cond
+    [(empty? l) bs]
+    [else
+      (jn (first l)
+        (a* (rest l) bs jn)
+      )
+    ]
+  )
+)
