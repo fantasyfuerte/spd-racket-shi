@@ -40,3 +40,11 @@
     [else (cons (+ n (first l)) (sum n (rest l)))]
   )
 )
+
+(define (plus5.v2 l)
+  (sum 5 l)
+)
+
+(define (add1*.v2 l)
+  (sum 1 l)
+)
