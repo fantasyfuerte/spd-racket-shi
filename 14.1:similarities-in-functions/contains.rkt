@@ -12,3 +12,21 @@
     ]
   )
 )
+
+;List-Of-Strings->Boolean
+;yields true if "atom" is in los
+(define (contains-atom? l)
+  (contains? l "atom")
+)
+
+;List-Of-Strings->Boolean
+;yields true if "basic" is in los
+(define (contains-basic? l)
+  (contains? l "basic")
+)
+
+;List-Of-Strings->Boolean
+;yields true if "zoo" is in los
+(define (contains-zoo? l)
+  (contains? l "zoo")
+)
