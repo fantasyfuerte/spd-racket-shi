@@ -19,6 +19,7 @@
          (tr ,@(make-row '(1 2 3 4)))
          (tr ,@(make-row '(5 10 15 20)))
        )
+      ,(make-ranking `,one-list)
      )
    )
 ) 
@@ -38,7 +39,37 @@
 (define (make-cell n)
   `(td ,(number->string n)))
 
+(define one-list
+  '("Asia: Heat of the Moment"
+    "U2: One"
+    "The White Stripes: Seven Nation Army"))
+
+(define (ranking los)
+  (reverse (add-ranks (reverse los)))
+)
+
+(define (add-ranks los)
+  (cond
+    [(empty? los) '()]
+    [else (cons (list (length los) (first los)) (add-ranks (rest los)))]
+  )
+)
+
+;List-Of-Strings->...nested list...
+;produces a list representation of an HTML table
+(define (make-ranking l)
+`(table ((border "1")) 
+   ,@(make-ranking-row (ranking l))
+ )
+)
+(define (make-ranking-row l)
+  (cond
+    [(empty? l) '()]
+    [else
+      (cons
+        `(tr (td ,(number->string (first (first l))))
+             (td ,(second (first l))))
+        (make-ranking-row (rest l)))]))
 
 (define my-page (web-page "Leo" "Yes, I did it"))
-
 (show-in-browser my-page)
