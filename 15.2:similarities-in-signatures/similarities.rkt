@@ -66,3 +66,11 @@
 
 ;[[List-of Number] -> Boolean]
 (define (length>5 l) (> (length l) 5))
+
+;[[List-of Numbers] [Number Number -> Boolean] -> [List-of Numbers]]
+
+;[[List-of String] [String String -> Boolean] -> [List-of String]]
+
+;[X] [[List-of X] [X X -> Boolean] -> [List-of X]]
+
+;[[List-of IR] [IR IR -> Boolean] -> [List-of IR]]
