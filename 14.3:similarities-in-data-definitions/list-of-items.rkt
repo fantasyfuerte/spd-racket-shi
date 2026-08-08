@@ -27,3 +27,9 @@
 ;[List-of People]->[List-of People]
 ;dumb function who produces strings
 (define (people-processor l) l)
+
+;a [List X Y] is a structure:
+;  (cons X (cons Y '()))
+
+;a Point is a [List Number Number]
+;a Credential is a [List String Number]
