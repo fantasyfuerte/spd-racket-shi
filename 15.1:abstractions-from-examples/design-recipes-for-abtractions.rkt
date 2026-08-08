@@ -77,13 +77,31 @@
 
 ;now the functions are the same
 
-(define (map l f)
+(define (map* l f)
   (cond
     [(empty? l) '()]
     [else 
       (cons
         (f (first l))
-        (cf*.v2 (rest l) f))
+        (map* (rest l) f))
     ]
   )
+)
+
+;3-Validate the new function
+;here we define the original functions in terms of the abstraction
+;and the we start to test
+
+;List-of-numbers->List-of-numbers
+(check-expect (cf*.abstracted '(20 20 40)) (cf* '(20 20 40)))
+(define (cf*.abstracted l)
+  (map* l C2F)
+)
+
+;Inventory->List-of-strings
+(check-expect 
+  (names.abstracted `( ,(make-IR "test" 20) ,(make-IR "test" 20))) 
+  (names `( ,(make-IR "test" 20) ,(make-IR "test" 20))))
+(define (names.abstracted l)
+  (map* l IR-name)
 )
