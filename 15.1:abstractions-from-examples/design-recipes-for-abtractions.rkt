@@ -88,7 +88,7 @@
   )
 )
 
-;3-Validate the new function
+;3- Validate the new function
 ;here we define the original functions in terms of the abstraction
 ;and the we start to test
 
@@ -105,3 +105,7 @@
 (define (names.abstracted l)
   (map* l IR-name)
 )
+
+;4- Find a signature
+;we must find a signature, but for now we just use the originals an we left
+;the map* without signature
