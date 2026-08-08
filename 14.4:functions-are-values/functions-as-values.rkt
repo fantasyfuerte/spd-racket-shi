@@ -10,3 +10,12 @@
 
 (define (i x y) (x 'a y 'b)) ;here x must be a function that consumes
 ;three arguments: a symbol ('a), a parameter y and another symbol 'b
+
+(check-expect (function=at-1.2-3-and-5.775? f f) #true)
+(define (function=at-1.2-3-and-5.775? f1 f2)
+  (and
+    (= (f1 1.2) (f2 1.2))
+    (= (f1 3) (f2 3))
+    (= (f1 5.775) (f2 5.775)) 
+  )
+)
