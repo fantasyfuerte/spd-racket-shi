@@ -29,3 +29,14 @@
     ]
   )
 )
+
+;Lon Number->Lon
+;adds n to each iten on l
+(check-expect (sum 5 '(1 2 3)) '(6 7 8))
+(check-expect (sum 1 '(1 2 3)) '(2 3 4))
+(define (sum n l)
+  (cond
+    [(empty? l) '()]
+    [else (cons (+ n (first l)) (sum n (rest l)))]
+  )
+)
