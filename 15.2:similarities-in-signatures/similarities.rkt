@@ -49,3 +49,20 @@
     ]
   )
 )
+
+;[Number -> Boolean]
+(define (even* n)
+  (= (modulo n 2) 0)
+)
+
+;[Boolean String -> Boolean]
+(define (cocaine b s) b)
+
+;[Number Number Number -> Number]
+(define (sum3 n n1 n2) (+ n n1 n2))
+
+;[Number -> [List-of Number]]
+(define (do-list n) (list n))
+
+;[[List-of Number] -> Boolean]
+(define (length>5 l) (> (length l) 5))
