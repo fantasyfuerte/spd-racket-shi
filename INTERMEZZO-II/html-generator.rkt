@@ -14,7 +14,14 @@
               (content "text-html"))))
      (body
        (h1 ,title)
-       (p "I, " ,author ", made this page.")))) 
+       (p "I, " ,author ", made this page.")
+       (table ((border "1"))
+         (tr (td "1") (td "2") (td "3") (td "4"))
+         (tr (td "1") (td "2") (td "3") (td "4"))
+       )
+     )
+   )
+) 
 
 (define my-page (web-page "Leo" "Yes, I did it"))
 
