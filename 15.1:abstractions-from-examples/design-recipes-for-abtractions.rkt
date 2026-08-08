@@ -44,3 +44,46 @@
 
 ;Here the only thing in what functions differ is in which function
 ;they apply to each item on the list
+
+;2- Abstract
+;in this case we replace the function they're calling for a name, and
+;we put that name into a parameter
+
+;List-of-numbers->List-of-numbers
+;converts a list of celsius to fahrenheit
+(define (cf*.v2 l f)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cons
+        (f (first l))
+        (cf*.v2 (rest l) f))
+    ]
+  )
+)
+
+;Inventory->List-of-strings
+;extracts the names of toys from an inventory
+(define (names.v2 i f)
+  (cond
+    [(empty? i) '()]
+    [else
+      (cons 
+        (f (first i))
+        (names.v2 (rest i) f))
+    ]
+  )
+)
+
+;now the functions are the same
+
+(define (map l f)
+  (cond
+    [(empty? l) '()]
+    [else 
+      (cons
+        (f (first l))
+        (cf*.v2 (rest l) f))
+    ]
+  )
+)
