@@ -33,3 +33,14 @@
 
 ;a Point is a [List Number Number]
 ;a Credential is a [List String Number]
+
+(define-struct layer [stuff])
+;a Layer is a structure
+;  (make-layer Any)
+
+;an [L T] is one of:
+;-- T
+;-- (make-layer T)
+
+;an LStr is a [L String] 
+;an LNum is a [L[Number] 
