@@ -44,3 +44,7 @@
 
 ;an LStr is a [L String] 
 ;an LNum is a [L[Number] 
+
+;an [NEList-of ITEM] is one of
+;-- (cons ITEM '())
+;-- (cons ITEM [NEList-of ITEM]
