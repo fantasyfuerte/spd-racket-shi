@@ -48,3 +48,25 @@
 ;an [NEList-of ITEM] is one of
 ;-- (cons ITEM '())
 ;-- (cons ITEM [NEList-of ITEM]
+
+;a [Maybe X] is one of:
+;-- #false
+;-- X
+
+;String [List-of String] -> [Maybe [List-of String]]
+;this mean that the function receives a String and a [List-of String]
+;and returns false or a [List-of String]
+
+(check-expect (occur "a" '("b" "a" "d" "e")) 
+              (list "d" "e"))
+(check-expect (occur "a" '("b" "c" "d")) #false)
+(define (occur s los)
+  (cond
+    [(empty? los) #false]
+    [else 
+      (cond
+        [(string=? s (first los)) (rest los)]
+        [else (occur s (rest los))]
+      )]
+  )
+)
