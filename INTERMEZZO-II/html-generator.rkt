@@ -16,12 +16,28 @@
        (h1 ,title)
        (p "I, " ,author ", made this page.")
        (table ((border "1"))
-         (tr (td "1") (td "2") (td "3") (td "4"))
-         (tr (td "1") (td "2") (td "3") (td "4"))
+         (tr ,@(make-row '(1 2 3 4)))
+         (tr ,@(make-row '(5 10 15 20)))
        )
      )
    )
 ) 
+
+;List-Of-Numbers-> ...nested list...
+;creates a row for an HTML table from 1
+(define (make-row l)
+  (cond
+    [(empty? l) '()]
+    [else (cons (make-cell (first l))
+                (make-row (rest l)))]
+  )
+)
+
+;Number-> ...nested list...
+;creates a cell for an HTML table from a number
+(define (make-cell n)
+  `(td ,(number->string n)))
+
 
 (define my-page (web-page "Leo" "Yes, I did it"))
 
