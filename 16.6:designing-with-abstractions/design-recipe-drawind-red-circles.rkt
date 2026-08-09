@@ -12,4 +12,11 @@
 
 [List-of Posn] -> Image
 ;adds the Posns on l to the empty scene
-(define (dots l) MT-SCENE)
+(define (dots l)
+  (local(
+    ;Posn Image -> Image
+    ;places a dot in an image 
+    (define (add-dot p scene) scene)
+  )
+  (foldr add-dot MT-SCENE l))
+)
