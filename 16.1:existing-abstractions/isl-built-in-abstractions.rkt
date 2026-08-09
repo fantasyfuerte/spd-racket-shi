@@ -15,3 +15,15 @@
 (ormap odd? (list 1 4 2 8))
 
 (foldr + 0 '( 1 2 3 4 5))
+
+;[X] [X -> Number] [NEList-of X] -> X
+;finds the (first) item in lx that maximized f
+;if (argmax f (list x1 ... xn)) == xi
+;then (>- (f xi) (f x1)), (>= (f xi) (fx2)), ...
+;(define (argmax f lx) ...)
+
+;returns the list element who maximize the function
+
+(define (f x)
+  (if (> x 3) 0 (sqr x))
+)
