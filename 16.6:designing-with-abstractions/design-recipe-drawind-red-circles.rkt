@@ -12,6 +12,8 @@
 
 [List-of Posn] -> Image
 ;adds the Posns on l to the empty scene
+(check-expect (dots (list (make-posn 4 9)))
+(place-image DOT 4 9 MT-SCENE))
 (define (dots l)
   (local(
     ;Posn Image -> Image
