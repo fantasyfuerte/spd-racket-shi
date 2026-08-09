@@ -10,7 +10,7 @@
 (define MT-SCENE (empty-scene 200 200))
 (define DOT (circle 5 "solid" "red"))
 
-[List-of Posn] -> Image
+;[List-of Posn] -> Image
 ;adds the Posns on l to the empty scene
 (check-expect (dots (list (make-posn 4 9)))
 (place-image DOT 4 9 MT-SCENE))
@@ -18,7 +18,9 @@
   (local(
     ;Posn Image -> Image
     ;places a dot in an image 
-    (define (add-dot p scene) scene)
+    (define (add-dot p scene)
+      (place-image DOT (posn-x p) (posn-y p) scene)
+    )
   )
   (foldr add-dot MT-SCENE l))
 )
