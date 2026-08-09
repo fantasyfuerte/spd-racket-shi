@@ -81,19 +81,19 @@ all-cat-arrangements?)
 ;1String Word->List-Of-Words
 ;inserts the character everywhere in the string
 (define (insert-everywhere s l)
-  (cond
-    [(empty? l) (list (list s))]
-    [else 
-    (create-set
-      (append
-        (list 
-          (insert-beginning s l) 
-          (insert-end s l) 
-          (append (list(first l)) (insert-beginning s (rest l)))
-         
-        )
-        (prepend (first l) (insert-everywhere s (rest l))))
-   )]
+  (cond 
+    [(empty? l)(list (list s))]
+    [else
+    (local(
+    (define at-beginning (insert-beginning s l))
+    (define at-end (insert-end s l))
+    (define after-first (append (list (first l)) (insert-beginning s (rest l))))
+    (define rest-results (prepend (first l) (insert-everywhere s (rest l))))
+    (define all-results 
+      (append (list at-beginning at-end after-first) rest-results))
+    )
+    (create-set all-results)
+    )]
   )
 )
 
