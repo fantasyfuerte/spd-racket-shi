@@ -9,9 +9,9 @@
     (list (make-posn 3 1) (make-posn 0 0)))
   (list (make-posn 6 1) (make-posn 3 0)))
 (define (add-3-to-all lop)
-  (map add3-to-posn lop)
-)
-
-(define (add3-to-posn p) 
-  (make-posn (+ 3 (posn-x p)) (posn-y p))
+  (local(
+  (define (add3-to-posn p)
+    (make-posn (+ 3 (posn-x p)) (posn-y p))
+  ))
+  (map add3-to-posn lop))  
 )
