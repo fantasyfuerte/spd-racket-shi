@@ -25,3 +25,17 @@
         (make-address "Shriram" "Krishna" "Yellow")))
 
 (check-expect (listing ex0) " Matthew Robert Shriram ")
+
+(define (build-l*st n f)
+  (cond
+    [(= n 0) '()]
+    [else (add-at-end (build-l*st (sub1 n) f) (f (sub1 n)))]
+  )
+)
+
+(define (add-at-end l i)
+  (cond
+    [(empty? l) (cons i '())]
+    [else (cons (first l) (add-at-end (rest l) i))]
+  ) 
+)
