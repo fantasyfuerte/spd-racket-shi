@@ -10,8 +10,10 @@
   (list (make-posn 6 1) (make-posn 3 0)))
 (define (add-3-to-all lop)
   (local(
-  (define (add3-to-posn p)
-    (make-posn (+ 3 (posn-x p)) (posn-y p))
-  ))
+    ;Posn -> Posn
+    ;adds 3 to the x-coordinate of p
+    (define (add3-to-posn p)
+      (make-posn (+ 3 (posn-x p)) (posn-y p))
+    ))
   (map add3-to-posn lop))  
 )
