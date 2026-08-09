@@ -16,3 +16,18 @@
     ]
   )
 )
+
+;Nelon->Number
+;determines the largest number on l
+(define (sup.v2 l)
+  (cond
+    [(empty? (rest l)) (first l)]
+    [else
+    (local(
+    (define largest-in-rest (sup.v (rest l)))
+    (if (> (first l) largest-in-rest) 
+        (first l)
+        largest-in-rest)
+    ))]
+  )
+)
