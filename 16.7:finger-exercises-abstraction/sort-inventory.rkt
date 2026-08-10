@@ -55,3 +55,10 @@
   )
   (filter is-in-l2? l1))
 )
+
+(define (zero-to-nsub1 n)
+  (local(
+    (define (f x) x)
+  )
+  (build-list n f))
+)
