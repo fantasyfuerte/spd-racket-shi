@@ -29,7 +29,7 @@
 ;interpretation: (make-lc l n) means
 ;that l was counted n times
 
-;Dictionary->[List-Of Dictionary]
+;[List-of 1String] Dictionary->[List-Of Dictionary]
 ;returns a Dictionary per Letter
 (check-expect
   (words-by-first-letter 
@@ -40,37 +40,17 @@
     (list "barro")
     '()))
 (define (words-by-first-letter ls d)
-  (cond
-    [(empty? ls) '()]
-    [else 
-      (cons 
-        (starts-with (first ls) d) 
-        (words-by-first-letter (rest ls) d))]
+  (local(
+    (define (starts-with letter)
+      (local(
+        (define (is-letter-first? i)
+          (string=? letter (first (explode i)))
+        )
+      )
+      (filter is-letter-first? d))
+    )
   )
-)
-
-;Letter Dictionary->Dictionary
-;counts how many words in dict start with letter
-(check-expect 
-  (starts-with "a" (list "analysis" "beyond")) 
-  (list "analysis"))
-(check-expect 
-  (starts-with "a" (list "amigo" "among"))
-  (list "amigo" "among"))
-(check-expect 
-  (starts-with "a" (list "perro" "santo"))
-  '())
-(define (starts-with letter dict)
-  (cond
-    [(empty? dict) '()]
-    [(string<? letter (substring (first dict) 0 1)) '()]
-    [else (
-      cond
-        [(string=? letter (substring (first dict) 0 1))
-           (cons (first dict) (starts-with letter (rest dict)))]
-        [else (starts-with letter (rest dict))]
-      )]
-  )
+  (map starts-with ls))
 )
 
 ;Dictionary->LetterCount
@@ -90,11 +70,22 @@
 (check-expect (most-frequent AS-LIST)
 (most-frequent.v2 AS-LIST))
 (define (most-frequent.v2 dict)
-  (make-lc 
-    (first (explode (first (longer (words-by-first-letter LETTERS dict)))))
-    (length (longer (words-by-first-letter LETTERS dict)))
+  (local(
+    (define words (words-by-first-letter LETTERS dict))
+    (define largest (longer words))
+    (define f (first largest)) 
+    (define letter (first (explode f)))
+    (define amount (length largest))
   )
+  (make-lc letter amount))
 )
+
+;(define (most-frequent.v2 dict)
+;  (make-lc 
+;    (first (explode (first (longer (words-by-first-letter LETTERS dict)))))
+;    (length (longer (words-by-first-letter LETTERS dict)))
+;  )
+;)
 
 ;[List-Of Dictionaries]->Dictionary
 ;returns the longest dictionary
