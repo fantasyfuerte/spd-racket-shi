@@ -145,13 +145,14 @@
 ;[List-of Posn] Image Image->Image
 ;renders shots
 (define (render-shots l shi img)
-  (cond
-    [(empty? l) img]
-    [else (place-image shi 
-      (posn-x (first l))
-      (posn-y (first l))
-      (render-shots (rest l) shi img))]
+  (local(
+    ;Posn Image->Image
+    ;paint shot in the img
+    (define (paint-shot p i)
+      (place-image shi (posn-x p) (posn-y p) i)
+    )
   )
+  (foldr paint-shot img l))
 )
 
 ;SIGS->SIGS
