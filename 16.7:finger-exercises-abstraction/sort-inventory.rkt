@@ -62,3 +62,10 @@
   )
   (build-list n f))
 )
+
+(define (one-to-one/n n)
+  (local(
+    (define (f x) (/ 1 (add1 x)))
+  )
+  (build-list n f))
+)
