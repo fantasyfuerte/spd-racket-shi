@@ -178,14 +178,16 @@
 ;UFO->Posn
 ;produces the next position of the UFO
 (define (move-ufo u)
-  (make-posn
-    (cond
-      [(string=? (ufo-dir u) "left") (- (posn-x (ufo-pos u)) (ufo-vel u))]
-      [(string=? (ufo-dir u) "right") (+ (posn-x (ufo-pos u)) (ufo-vel u))]
-    )
-    (+ (if (> (random 10) 8.5) (random UFO-DESCENDING-VEL) 0)
-       (posn-y (ufo-pos u)))
+  (local(
+    (define dir (ufo-dir u))
+    (define x (posn-x (ufo-pos u)))
+    (define y (posn-y (ufo-pos u)))
+    (define delta-y (if (> (random 10) 8.5) (random UFO-DESCENDING-VEL) 0))
+    (define vel (ufo-vel u))
+    (define new-x (if (string=? dir "left") (- x vel) (+ x vel)))
+    (define new-y (+ y delta-y))
   )
+  (make-posn new-x new-y))
 )
 
 ;Number->Direction
