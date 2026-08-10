@@ -69,3 +69,12 @@
   )
   (build-list n f))
 )
+
+(define (first-n-odds n)
+  (local(  
+    (define (f x)
+      (add1(* 2 x))  
+    )
+  )
+  (build-list n f))
+)
