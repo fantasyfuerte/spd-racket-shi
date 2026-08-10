@@ -80,27 +80,12 @@
     ;yiels true if the track is from a album and is recent than d 
     (define (good? i)
       (and (string=? a (track-album i))
-           (<= d (track-added i))
+           (is-after (track-added i) d)
       )
     )
   )
   (filter good? l))
 )
-
-;(define (select-album-date a l d)
-;  (cond
-;    [(empty? l) '()]
-;    [else 
-;      (cond
-;        [(and 
-;          (string=? a (track-album (first l)))
-;          (is-after (track-played (first l)) d))
-;          (cons (first l) (select-album-date a (rest l) d))]
-;        [else (select-album-date a (rest l) d)]  
-;      )
-;    ]
-;  )
-;)
 
 ;Date Date->Boolean
 ;yields true if d1 is after d2
@@ -118,6 +103,7 @@
     [(<(date-minute d1) (date-minute d2)) #false]
     [(>(date-second d1) (date-second d2)) #true]
     [(<(date-second d1) (date-second d2)) #false]
+    [else #false]
   )
 )
 
