@@ -110,16 +110,14 @@
 ;String LTracks->LTracks
 ;given returns the tracks of a album
 (define (select-album a l)
-  (cond
-    [(empty? l) '()]
-    [else 
-      (cond
-        [(string=? a (track-album (first l)))
-          (cons (first l) (select-album a (rest l)))]
-        [else (select-album a (rest l))]  
-      )
-    ]
+  (local(
+    ;Track-> Boolean
+    ;yields true if the track is from album a
+    (define (from-album? i)
+      (string=? a (track-album i))
+    )
   )
+  (filter from-album? l))
 )
 
 ;Track->Number
