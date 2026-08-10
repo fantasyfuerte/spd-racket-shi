@@ -241,12 +241,17 @@
 (check-expect (move-tank (/(image-width TANK)2) "left")
   (/ (image-width TANK)2))
 (define (move-tank x dir)
-  (cond
-    [(string=? dir "left") 
-      (if (<= x (/ (image-width TANK) 2)) x (- x TANK-VEL))]
-    [(string=? dir "right") 
-      (if (>= x (- WIDTH (/ (image-width TANK) 2))) x (+ x TANK-VEL))]
-  )
+  (local(
+    (define tankwall (/ (image-width TANK) 2)) ;ufowall but with tank
+    ;Number->Boolean
+    (define can-move? 
+      (if (string=? dir "left") 
+        (>= (- x TANK-VEL) tankwall)
+        (<= (+ x TANK-VEL) (- WIDTH tankwall))))    
+    (define (move n) (if (string=? dir "left") (- x TANK-VEL) (+ x TANK-VEL))) 
+    (define newX (if can-move? (move x) x))
+  )  
+  newX)
 )
 
 ;[List-of Posn]->[List-of Posn]
