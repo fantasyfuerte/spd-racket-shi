@@ -325,16 +325,21 @@
 ;Posn [List-of Posn]->Boolean
 ;yields true if one tank-shot has impacted ufo
 (define (impacted-ufo? u l)
-  (cond
-    [(empty? l) #false]
-    [else 
-      (cond
-        [(and (<= (abs(-(posn-x u) (posn-x (first l))))(/(image-width UFO) 2))
-              (<= (abs(-(posn-y u) (posn-y (first l))))(/(image-height UFO)2))
-         )#true]
-        [else (impacted-ufo? u (rest l))]
-      )]
+  (local(
+    (define ufo-x (posn-x u))
+    (define ufo-y (posn-y u))
+    (define ufo-area-h (/ (image-width UFO) 2))
+    (define ufo-area-v (/ (image-height UFO) 2))
+    ;Posn->Boolean
+    ;yields true if p has impacted ufo
+    (define (has-impacted? p)
+      (and
+        (<= (abs(- ufo-x (posn-x p))) ufo-area-h)
+        (<= (abs(- ufo-y (posn-y p))) ufo-area-v)
+      )
+    )
   )
+  (ormap has-impacted? l))
 )
 
 ;Number [List-of Posn]->Boolean
