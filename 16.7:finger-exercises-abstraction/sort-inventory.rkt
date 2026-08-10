@@ -32,3 +32,13 @@
   (filter below-ua? l))
 )
 
+;String [List-of InventoryItem] -> [List-of InventoryItem]
+;produces a list of all those items whose names isn't ty
+(define (recall ty l)
+  (local(
+    ;InventoryItem -> Boolean
+    ;yields true if the isn't ty
+    (define (not-ty? i) (not (string=? (inv-i-ty i) ty)))    
+  )
+  (filter not-ty? l))
+)
