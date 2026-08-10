@@ -274,21 +274,6 @@
   moved-shots)
 )
 
-;(define (move-tank-shots l)
-;  (cond
-;    [(empty? l) '()]
-;    [else
-;      (cond
-;        [(>= (posn-y (first l)) HEIGHT) (move-tank-shots (rest l))] 
-;        [else (cons
-;                (make-posn (posn-x (first l))(- (posn-y (first l)) BULLETS-VEL))
-;                (move-tank-shots (rest l)))
-;        ]
-;      )
-;    ]
-;  )
-;)
-
 ;SIGS KeyEvent->SIGS
 ;handles any key press
 (define (key-handler si ke)
