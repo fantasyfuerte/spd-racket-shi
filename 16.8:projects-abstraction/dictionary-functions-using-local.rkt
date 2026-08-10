@@ -80,24 +80,15 @@
   (make-lc letter amount))
 )
 
-;(define (most-frequent.v2 dict)
-;  (make-lc 
-;    (first (explode (first (longer (words-by-first-letter LETTERS dict)))))
-;    (length (longer (words-by-first-letter LETTERS dict)))
-;  )
-;)
-
-;[List-Of Dictionaries]->Dictionary
+;[List-Of Dictionary]->Dictionary
 ;returns the longest dictionary
 (define (longer l)
-  (cond
-    [(empty? l) '()]
-    [else 
-      (cond
-       [(>= (length (first l)) (length(longer(rest l)))) (first l)] 
-       [else (longer (rest l))]
-      )]
+  (local(
+    (define (find-greater a b)
+      (if (>= (length a) (length b)) a b)
+    )
   )
+  (foldr find-greater '() l))
 )
 
 ;[List-Of LetterCounts]->LetterCount
