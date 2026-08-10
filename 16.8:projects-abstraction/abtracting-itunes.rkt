@@ -73,21 +73,34 @@
 )
 
 ;String LTracks->LTracks
-;returns the tracks of a album
-(define (select-album-date a l d)
-  (cond
-    [(empty? l) '()]
-    [else 
-      (cond
-        [(and 
-          (string=? a (track-album (first l)))
-          (is-after (track-played (first l)) d))
-          (cons (first l) (select-album-date a (rest l) d))]
-        [else (select-album-date a (rest l) d)]  
+;returns the tracks of a album after d date
+(define (select-album-date a d l)
+  (local(
+    ;Track -> Boolean
+    ;yiels true if the track is from a album and is recent than d 
+    (define (good? i)
+      (and (string=? a (track-album i))
+           (<= d (track-added i))
       )
-    ]
+    )
   )
+  (filter good? l))
 )
+
+;(define (select-album-date a l d)
+;  (cond
+;    [(empty? l) '()]
+;    [else 
+;      (cond
+;        [(and 
+;          (string=? a (track-album (first l)))
+;          (is-after (track-played (first l)) d))
+;          (cons (first l) (select-album-date a (rest l) d))]
+;        [else (select-album-date a (rest l) d)]  
+;      )
+;    ]
+;  )
+;)
 
 ;Date Date->Boolean
 ;yields true if d1 is after d2
