@@ -211,11 +211,11 @@
 (define (move-ufo-shots l)
   (local(
     ;Posn->Posn
-    ;moves increases the y of the posn
+    ;increases the y of the posn
     (define (move-bullet p)
       (make-posn (posn-x p) (+ (posn-y p) BULLETS-VEL)))
     ;Posn->Boolean
-    ;yields true if posn-y is greater than HEIGHT
+    ;yields true if posn-y is lower than HEIGHT
     (define (is-visible? p) (<= (posn-y p) HEIGHT))
     (define filtered-bullets (filter is-visible? l))
     (define moved-shots (map move-bullet filtered-bullets))
@@ -244,10 +244,13 @@
   (local(
     (define tankwall (/ (image-width TANK) 2)) ;ufowall but with tank
     ;Number->Boolean
+    ;yields true if tank can move
     (define can-move? 
       (if (string=? dir "left") 
         (>= (- x TANK-VEL) tankwall)
         (<= (+ x TANK-VEL) (- WIDTH tankwall))))    
+    ;Number->Number
+    ;produces the next x coordinate
     (define (move n) (if (string=? dir "left") (- x TANK-VEL) (+ x TANK-VEL))) 
     (define newX (if can-move? (move x) x))
   )  
@@ -257,19 +260,34 @@
 ;[List-of Posn]->[List-of Posn]
 ;produces the new location of every list of tank's shots
 (define (move-tank-shots l)
-  (cond
-    [(empty? l) '()]
-    [else
-      (cond
-        [(>= (posn-y (first l)) HEIGHT) (move-tank-shots (rest l))] 
-        [else (cons
-                (make-posn (posn-x (first l))(- (posn-y (first l)) BULLETS-VEL))
-                (move-tank-shots (rest l)))
-        ]
-      )
-    ]
+  (local(
+    ;Posn->Posn
+    ;decreases the y of the posn
+    (define (move-bullet p)
+      (make-posn (posn-x p) (- (posn-y p) BULLETS-VEL)))
+    ;Posn->Boolean
+    ;yields true if posn-y is greater than zero
+    (define (is-visible? p) (>= (posn-y p) 0))
+    (define filtered-bullets (filter is-visible? l))
+    (define moved-shots (map move-bullet filtered-bullets))
   )
+  moved-shots)
 )
+
+;(define (move-tank-shots l)
+;  (cond
+;    [(empty? l) '()]
+;    [else
+;      (cond
+;        [(>= (posn-y (first l)) HEIGHT) (move-tank-shots (rest l))] 
+;        [else (cons
+;                (make-posn (posn-x (first l))(- (posn-y (first l)) BULLETS-VEL))
+;                (move-tank-shots (rest l)))
+;        ]
+;      )
+;    ]
+;  )
+;)
 
 ;SIGS KeyEvent->SIGS
 ;handles any key press
