@@ -344,18 +344,22 @@
 
 ;Number [List-of Posn]->Boolean
 ;yields true if one ufo-shot has impacted tank
-(define (impacted-tank? x l)
-  (cond
-    [(empty? l) #false]
-    [else (cond
-            [(and 
-               (<= (abs(- (posn-x (first l)) x)) 
-                   (/(image-width TANK)2)) 
-               (<= (abs(- (posn-y (first l)) Y-TANK))
-                   (/(image-height TANK)2))) #true] 
-            [else (impacted-tank? x (rest l))]
-          )]
+(define (impacted-tank? t l)
+  (local(
+    (define tank-x t)
+    (define tank-y Y-TANK)
+    (define tank-area-h (/ (image-width TANK) 2))
+    (define tank-area-v (/ (image-height TANK) 2))
+    ;Posn->Boolean
+    ;yields true if p has impacted tank
+    (define (has-impacted? p)
+      (and
+        (<= (abs(- tank-x (posn-x p))) tank-area-h)
+        (<= (abs(- tank-y (posn-y p))) tank-area-v)
+      )
+    )
   )
+  (ormap has-impacted? l))
 )
 
 ;Number->Boolean
