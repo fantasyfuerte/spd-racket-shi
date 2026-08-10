@@ -209,18 +209,18 @@
 ;produces the next position of every ufo shot unless they're
 ;under the canvas already
 (define (move-ufo-shots l)
-  (cond
-    [(empty? l) '()]
-    [else
-      (cond
-        [(<= (posn-y (first l)) 0) (move-ufo-shots (rest l))] 
-        [else (cons
-                (make-posn (posn-x (first l))(+ (posn-y (first l)) BULLETS-VEL))
-                (move-ufo-shots (rest l)))
-        ]
-      )
-    ]
+  (local(
+    ;Posn->Posn
+    ;moves increases the y of the posn
+    (define (move-bullet p)
+      (make-posn (posn-x p) (+ (posn-y p) BULLETS-VEL)))
+    ;Posn->Boolean
+    ;yields true if posn-y is greater than HEIGHT
+    (define (is-visible? p) (<= (posn-y p) HEIGHT))
+    (define filtered-bullets (filter is-visible? l))
+    (define moved-shots (map move-bullet filtered-bullets))
   )
+  moved-shots)
 )
 
 ;[List-of Posn]->[List-of Posn]
