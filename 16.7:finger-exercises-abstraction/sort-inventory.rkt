@@ -38,7 +38,20 @@
   (local(
     ;InventoryItem -> Boolean
     ;yields true if the isn't ty
-    (define (not-ty? i) (not (string=? (inv-i-ty i) ty)))    
+    (define (not-ty? i) (not (string=? (inv-i-name i) ty)))    
   )
   (filter not-ty? l))
+)
+
+;[List-of String] [List-of String] -> [List-of String]
+;produces the names who are in both lists
+(define (selection l1 l2)
+  (local(
+    ;String -> Boolean
+    ;yields true if i is in l2
+    (define (is-in-l2? i) 
+      (member? i l2)
+    )
+  )
+  (filter is-in-l2? l1))
 )
