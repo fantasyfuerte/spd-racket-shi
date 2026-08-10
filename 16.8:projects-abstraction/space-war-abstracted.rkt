@@ -106,10 +106,12 @@
 ;SIGS->Image
 ;renders an image of the game 
 (define (render-game si)
-  (render-rs (tank-rs (game-tank si))
-    (render-tank (game-tank si) 
-      (render-ufo (game-ufo si)
-        BACKGROUND))) 
+  (local(
+    (define ufoimg (render-ufo (game-ufo si) BACKGROUND))
+    (define tank-img (render-tank (game-tank si) ufoimg))
+    (define full-game (render-rs (tank-rs(game-tank si)) tank-img))
+  )
+  full-game)
 )
 
 ;Number Image-> Image
