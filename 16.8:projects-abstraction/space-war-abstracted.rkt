@@ -195,11 +195,14 @@
 (check-expect (change-ufo-dir (- WIDTH (/ (image-width UFO) 2))) "left")
 (check-expect (change-ufo-dir (+ 0 (/ (image-width UFO) 2))) "right")
 (define (change-ufo-dir x)
-  (cond
-    [(>= x (- WIDTH (/ (image-width UFO) 2))) "left"]
-    [(<= x (+ 0 (/ (image-width UFO) 2))) "right"]
-    [else (if (>= (random 10) 5) "left" "right")]
+  (local (
+    (define ufowall (/ (image-width UFO) 2)) ;minimum distance from walls 
+    (define dir
+      (cond [(>= x (- WIDTH ufowall)) "left"]
+            [(<= x ufowall) "right"]
+            [else (if (>= (random 10) 5) "left" "right")])) 
   )
+  dir)
 )
 
 ;[List-of Posn]->[List-of Posn]
