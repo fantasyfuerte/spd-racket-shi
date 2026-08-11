@@ -20,3 +20,11 @@
 (define (append-from-fold l1 l2)
   (foldr (lambda (a b) (cons a b)) l2 l1)
 )
+
+;exercise 291
+(check-expect (map-via-fold add1 '(1 2 3)) '(2 3 4))
+(check-expect (map-via-fold 
+  (lambda (x) (number->string x)) '(1 2 3)) '("1" "2" "3"))
+(define (map-via-fold f l)
+  (foldr (lambda (a b) (cons (f a) b)) '() l)
+)
