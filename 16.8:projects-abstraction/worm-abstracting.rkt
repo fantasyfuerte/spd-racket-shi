@@ -89,13 +89,16 @@
 ;[List-of Posn] Image->Image
 ;renders the worm's tail into img
 (define (render-worm-tail l img)
-  (cond
-    [(empty? l) img]
-    [else (place-image BODY 
-            (posn-x (first l)) 
-            (- HEIGHT (posn-y (first l))) 
-            (render-worm-tail (rest l) img))]
+  (local (
+    ;Posn -> Number
+    ;returns the y coordinate substracting HEIGHT
+    (define (p-y x) (- HEIGHT (posn-y x)))
+    ;Posn Image -> Image
+    (define (put a b)
+      (place-image BODY (posn-x a) (p-y a) b) 
+    )
   )
+  (foldr put img l))
 )
 
 ;WormGame KeyEvent->WormGame
