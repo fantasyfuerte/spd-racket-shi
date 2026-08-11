@@ -38,5 +38,10 @@
 (check-expect [(sorted <) '(1 2 3 4 5)] #true)
 (define (sorted cmp)
   (lambda (l)
-    (local((define (sorted/l l) ...))
-      ...)))
+    (local((define (sorted/l l)
+      (cond
+        [(empty? (rest l)) #true]
+        [else (and (cmp (first l) (second l))
+                   (sorted/l (rest l)))]
+         )))
+      (if (empty? l) #true (sorted/l l)))))
