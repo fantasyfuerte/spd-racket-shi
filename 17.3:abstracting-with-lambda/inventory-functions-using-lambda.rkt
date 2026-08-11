@@ -26,24 +26,11 @@
   (filter (lambda (i) (member? i l2)) l1))
 
 (define (zero-to-nsub1 n)
-  (local(
-    (define (f x) x)
-  )
-  (build-list n f))
-)
+  (build-list n (lambda (x) x)))
 
 (define (one-to-one/n n)
-  (local(
-    (define (f x) (/ 1 (add1 x)))
-  )
-  (build-list n f))
-)
+  (build-list n (lambda (x) (/ 1 (add1 x)))))
+
 
 (define (first-n-odds n)
-  (local(  
-    (define (f x)
-      (add1(* 2 x))  
-    )
-  )
-  (build-list n f))
-)
+  (build-list n (lambda (x) (add1(* 2 x)))))
