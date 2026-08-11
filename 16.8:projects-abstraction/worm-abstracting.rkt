@@ -138,22 +138,30 @@
 ;WormGame->WormGame
 ;decides how the game changes on every clock tick
 (define (tick-game wg)
-  (cond
-    [(collide? (game-food wg) (worm-head (game-worm wg)))
-       (make-game
-         (move-worm 
-           (make-worm 
-             (worm-head (game-worm wg)) 
-             (grow-worm (worm-body (game-worm wg)))
-             (worm-direction (game-worm wg))
-           )
-          (worm-direction (game-worm wg))
-         )
-         (make-posn (random WIDTH) (random HEIGHT)))]
-    [else (make-game
-         (move-worm (game-worm wg) (worm-direction (game-worm wg)))
-         (game-food wg))] 
+  (local (
+    ;Worm->Worm
+    ;applies grow-worm to the worm's body
+    (define (grow w)
+      (make-worm 
+        (worm-head w) 
+        (grow-worm (worm-body w)) 
+        (worm-direction w)))    
+    ;Posn->Posn
+    ;randomize the food
+    (define (randomize food)
+      (make-posn 
+        (+ (image-width APPLE) (random (- WIDTH (image-width APPLE))))
+        (+ (image-height APPLE) (random (- HEIGHT (image-height APPLE)))))
+      )
+    
+    (define worm (game-worm wg))
+    (define food (game-food wg))
+    (define collided (collide? food (worm-head worm)))
+    (define moved-worm (move-worm worm (worm-direction worm)))
+    (define new-worm (if collided (grow moved-worm) moved-worm))
+    (define new-food (if collided (randomize food) food))
   )
+  (make-game new-worm new-food))
 )
 
 ;[List-of Posns]->[List-of Posns]
