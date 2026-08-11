@@ -9,3 +9,17 @@
 (define lexample '(1 2 3 4 5))
 
 (map (lambda (x) (add1 x)) lexample)
+
+;exercise 281
+(lambda (x) (< x 10))
+
+(lambda (x y) (number->string (* x y)))
+
+(lambda (x) (if (even? x) 0 1))
+
+(define-struct ir [name desc price])
+(lambda (i1 i2) (> (ir-price i1) (ir-price i1)))
+
+(require 2htdp/image)
+(define DOT (circle 3 "solid" red))
+(lambda (p i) (place-image DOT (posn-x p) (posn-y p) i))
