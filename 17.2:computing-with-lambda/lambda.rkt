@@ -26,3 +26,10 @@
 (define th 10)
 (filter (lambda (ir) (<= (ir-price ir) th))
         (list (make-ir "bear" 10) (make-ir "doll" 33)))
+
+(((lambda (x) x) (lambda (x) x))5)
+
+(((lambda (x) (x x)) (lambda (x) x))10)
+
+;it simplifies itself to (f f) infinitely
+;(((lambda (x) (x x)) (lambda (x) (x x))) 5)
