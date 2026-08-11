@@ -18,13 +18,7 @@
 ;String [List-of InventoryItem] -> [List-of InventoryItem]
 ;produces a list of all those items whose names isn't ty
 (define (recall ty l)
-  (local(
-    ;InventoryItem -> Boolean
-    ;yields true if the isn't ty
-    (define (not-ty? i) (not (string=? (inv-i-name i) ty)))    
-  )
-  (filter not-ty? l))
-)
+  (filter (lambda (i) (not (string=? (inv-i-name i) ty))) l))
 
 ;[List-of String] [List-of String] -> [List-of String]
 ;produces the names who are in both lists
