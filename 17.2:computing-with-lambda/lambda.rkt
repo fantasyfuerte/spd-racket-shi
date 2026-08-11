@@ -12,3 +12,17 @@
 
 (compare 5)
 
+(f-lambda (f-lambda 42))
+((lambda (x) (* 10 x)) ((lambda (x) (* 10 x)) 42))
+
+(map (lambda (x) (* 10 x)) '(1 2 3))
+
+(foldl (lambda (name rst)
+       (string-append name ", " rst))
+        "etc."
+       '("Matthew" "Robby"))
+
+(define-struct ir [name price])
+(define th 10)
+(filter (lambda (ir) (<= (ir-price ir) th))
+        (list (make-ir "bear" 10) (make-ir "doll" 33)))
