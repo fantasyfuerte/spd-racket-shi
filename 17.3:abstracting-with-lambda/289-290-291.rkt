@@ -14,3 +14,9 @@
 (define (start-with-a? l)
   (andmap (lambda (x) (string=? "a" (first (explode x)))) l) 
 )
+
+;exercise 290
+(check-expect (append-from-fold '(1 2 3) '(4 5 6)) '(1 2 3 4 5 6))
+(define (append-from-fold l1 l2)
+  (foldr (lambda (a b) (cons a b)) l2 l1)
+)
