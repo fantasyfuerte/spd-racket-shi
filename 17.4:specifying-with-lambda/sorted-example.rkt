@@ -51,3 +51,17 @@
                (sorted? cmp (rest l)))]
   )
 )
+
+(check-expect [(sorted-variant-of '(3 2) <) '(2 3)] #true)
+(check-expect [(sorted-variant-of '(3 2) <) '(3)] #false)
+(define (sorted-variant-of k cmp)
+  (lambda (l)
+    (and (sorted? cmp l)
+         (contains? l k))))
+
+;[List-of X] [List-of X] -> Boolean
+;are all items in list k members of list l
+(check-expect (contains? '(1 2 3) '(1 4 3)) #false)
+(check-expect (contains? '(1 2 3 4) '(1 3)) #true)
+(define (contains? l k)
+  (andmap (lambda (in-k) (member? in-k l)) k))
