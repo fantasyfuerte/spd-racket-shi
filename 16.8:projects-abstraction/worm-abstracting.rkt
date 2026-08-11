@@ -183,38 +183,25 @@
 ;Worm Direction->Worm
 ;advances the worm 1 px in d direction
 (define (move-worm w d)
-  (cond
-    [(string=? d "right") 
+  (local (
+    (define worm-x (posn-x (worm-head w)))
+    (define worm-y (posn-y (worm-head w)))
+    (define h-move (cond 
+      [(string=? "left" d) ( - worm-x DISTANCE_PER_TICK)]  
+      [(string=? "right" d) ( + worm-x DISTANCE_PER_TICK)]  
+      [else worm-x]))
+    (define v-move (cond 
+      [(string=? "down" d) ( - worm-y DISTANCE_PER_TICK)]  
+      [(string=? "up" d) ( + worm-y DISTANCE_PER_TICK)]  
+      [else worm-y]))
+    (define new-worm 
       (make-worm 
-        (make-posn 
-          (+(posn-x (worm-head w))DISTANCE_PER_TICK)
-          (posn-y (worm-head w))) 
-        (move-tail (worm-head w) (worm-body w))
-        (worm-direction w))]
-    [(string=? d "left") 
-      (make-worm 
-        (make-posn 
-          (- (posn-x (worm-head w))DISTANCE_PER_TICK) 
-          (posn-y (worm-head w))) 
-        (move-tail (worm-head w) (worm-body w))
-      (worm-direction w))]
-    [(string=? d "up") 
-      (make-worm 
-        (make-posn 
-          (posn-x (worm-head w))
-          (+ (posn-y (worm-head w))DISTANCE_PER_TICK)) 
-        (move-tail (worm-head w) (worm-body w))
-      (worm-direction w))]
-    [(string=? d "down") 
-      (make-worm 
-        (make-posn 
-          (posn-x (worm-head w))
-          (- (posn-y (worm-head w))DISTANCE_PER_TICK)) 
-        (move-tail (worm-head w) (worm-body w))
-        (worm-direction w))]
+        (make-posn h-move v-move) 
+        (move-tail (worm-head w) (worm-body w)) 
+        d))
   )
+  new-worm)
 )
-
 ;WormGame->Boolean
 ;yields true if the worm has crashed into the wall or into himself
 (define (crashed? wg)
