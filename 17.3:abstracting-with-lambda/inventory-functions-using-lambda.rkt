@@ -13,13 +13,7 @@
 ;Number [List-of InventoryItem] -> [List-of InventoryItem]
 ;produces a list of all those items whose sales price is below ua
 (define (eliminate-expensive ua l)
-  (local(
-    ;InventoryItem -> Boolean
-    ;yields true if the sales price is below ua
-    (define (below-ua? i) (> (inv-i-sales-price i) ua))    
-  )
-  (filter below-ua? l))
-)
+  (filter (lambda (i) (> (inv-i-sales-price i) ua)) l))
 
 ;String [List-of InventoryItem] -> [List-of InventoryItem]
 ;produces a list of all those items whose names isn't ty
