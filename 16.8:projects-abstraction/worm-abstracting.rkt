@@ -224,15 +224,13 @@
 
 ;Posn [List-of Posns]->Boolean
 ;yields true if the worm has crashed into himself
-(define (into-himself h l)
-  (cond 
-    [(empty? l) #false]
-    [else
-      (cond
-        [(collide? h (first l)) #true]
-        [else (into-himself h (rest l))]
-      )]
+(define (into-himself h l) 
+  (local (
+  ;Posn -> Boolean
+  ;yields true if the head has collided with p
+  (define (has-collided? p) (collide? p h))
   )
+  (ormap has-collided? l))
 )
 
 ;Posn Posn->Boolean
@@ -256,4 +254,3 @@
 )
 
 (main 40)
-
