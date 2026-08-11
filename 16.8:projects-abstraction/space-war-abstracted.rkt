@@ -158,21 +158,26 @@
 ;SIGS->SIGS
 ;produces how the game changes after 1 tick
 (define (tick-handler si)
-  (make-game
-    (make-ufo 
-      (move-ufo (game-ufo si))
-      (change-ufo-dir (posn-x (ufo-pos (game-ufo si)))) 
-      (random MAX-UFO-VEL)
-      (move-ufo-shots 
-        (random-shot (ufo-pos (game-ufo si)) (ufo-shots (game-ufo si))))
+  (local(
+    (define ufo (game-ufo si))
+    (define new-ufo 
+      (make-ufo 
+        (move-ufo ufo)
+        (change-ufo-dir (posn-x (ufo-pos ufo))) 
+        (random MAX-UFO-VEL)
+        (move-ufo-shots 
+          (random-shot (ufo-pos ufo) (ufo-shots ufo))))
     )
-    (make-tank
-      (move-tank (tank-x(game-tank si)) (tank-dir (game-tank si)))
-      (tank-dir (game-tank si))
-      (move-tank-shots (tank-shots (game-tank si)))
-      (tank-rs (game-tank si))
+    (define tank (game-tank si))
+    (define new-tank 
+      (make-tank
+        (move-tank (tank-x tank) (tank-dir tank))
+        (tank-dir tank)
+        (move-tank-shots (tank-shots tank))
+        (tank-rs tank))
     )
   )
+  (make-game new-ufo new-tank))
 )
 
 ;UFO->Posn
