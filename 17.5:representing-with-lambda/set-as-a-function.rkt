@@ -17,10 +17,10 @@
 (define (mk-set f)
   (lambda (n)
     (f n)
-  )
-)
+  ))
 
 (define odds (mk-set odd?))
+(define divisible-by-10 (mk-set (lambda (x) (= 0 (modulo x 10)))))
 
 ;Number Set -> Set
 ;adds a number to a set
@@ -32,3 +32,12 @@
         (equal? e n)))))
 
 (define odds-and-4 (add-element 4 odds))
+
+;Set Set -> Set
+;creates a new set combining the two given sets
+(define (union s1 s2) 
+  (mk-set 
+    (lambda (n) 
+      (or (is-in-set? n s1) (is-in-set? n s2)))))
+
+(define new-union (union divisible-by-10 odds))
