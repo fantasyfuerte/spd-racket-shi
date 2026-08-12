@@ -20,3 +20,19 @@
 (define (mk-point x y)
   (lambda (p)
     (and (= (posn-x p) x) (= (posn-y p) y))))
+
+;Number Number Number -> Shape
+;creates a representation for a circle of radius r
+;located at (center-x, center-y)
+(check-expect (inside? (mk-circle 3 4 5) (make-posn 0 0)) #true)
+(check-expect (inside? (mk-circle 3 4 5) (make-posn 10 9)) #false)
+(define (mk-circle center-x center-y r)
+  (lambda (p) 
+   (local (
+     (define distance (sqrt
+      (+ (sqr (- center-x (posn-x p))) 
+         (sqr (- center-y (posn-x p))))))
+  )
+  (<= distance r)) 
+  )
+)
