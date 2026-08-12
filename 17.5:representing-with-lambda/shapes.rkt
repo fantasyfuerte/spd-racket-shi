@@ -9,3 +9,14 @@
 
 ;Shape Posn -> Boolean
 (define (inside? s p) (s p))
+
+;Posn -> Boolean
+(lambda (p) (and (= (posn-x p) 3) (= (posn-y p) 4)))
+
+;Number Number -> Shape
+;represents a point at (x,y)
+(check-expect (inside? (mk-point 3 4) (make-posn 3 4)) #true)
+(check-expect (inside? (mk-point 3 4) (make-posn 3 9)) #false)
+(define (mk-point x y)
+  (lambda (p)
+    (and (= (posn-x p) x) (= (posn-y p) y))))
