@@ -27,3 +27,7 @@
       )
       (or same-count in-area)
      )))
+
+(check-satisfied (random-posns/bad 3)
+  (n-inside-playground? 3))
+(define (random-posns/bad n) (build-list n (lambda (x) (make-posn 0 0))))
