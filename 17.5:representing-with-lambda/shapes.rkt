@@ -36,3 +36,20 @@
   (<= distance r)) 
   )
 )
+
+;Number Number Number Number -> Shape
+;represents a width by height rectangle whose upper-left corner is
+;located at (ul-x, ul-y)
+(check-expect (inside? (mk-rect 0 0 10 3)
+  (make-posn 0 0))
+  #true)
+(check-expect (inside? (mk-rect 2 3 10 3)
+  (make-posn 4 5))
+  #true)
+(check-expect (inside? (mk-rect 0 0 10 5)
+  (make-posn 1 1))
+  #true)
+(define (mk-rect ul-x ul-y width height)
+  (lambda (p)
+    (and (<= ul-x (posn-x p) (+ ul-x width))
+         (<= ul-y (posn-y p) (+ ul-y height)))))
