@@ -53,3 +53,19 @@
   (lambda (p)
     (and (<= ul-x (posn-x p) (+ ul-x width))
          (<= ul-y (posn-y p) (+ ul-y height)))))
+
+(define circle1 (mk-circle 3 4 5))
+(define rectangle1 (mk-rect 0 3 10 3))
+
+;Shape Shape -> Shape
+;combines the two shapes into one
+(define (mk-combination s1 s2)
+  ;Posn -> Boolean
+  (lambda (p)
+    (or (inside? s1 p) (inside? s1 p))
+))
+
+(define union1 (mk-combination circle1 rectangle1))
+(check-expect (inside? union1 (make-posn 0 0)) #true)
+(check-expect (inside? union1 (make-posn 0 9)) #false)
+(check-expect (inside? union1 (make-posn -1 3)) #true)
