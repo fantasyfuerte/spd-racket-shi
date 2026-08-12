@@ -4,12 +4,15 @@
 
 ;X [List-of X] -> [Maybe [List-of X]]
 ;returns the first sublist of l that starts with x, #false otherwise
+(check-satisfied 
+  (find "leo" '("leo" "john" "lucia")) 
+  (found? "leo" '("leo" "john" "lucia")))
 (define (find x l)
   (cond
     [(empty? l) #false]
     [else (if (equal? (first l) x) l (find x (rest l)))]))
 
-(define (found x ld)
+(define (found? x ld)
   (lambda (l)
     (and 
       (or (false? l)(string=? x (first l)))
