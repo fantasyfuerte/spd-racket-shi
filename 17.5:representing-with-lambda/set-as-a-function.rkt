@@ -20,6 +20,7 @@
   ))
 
 (define odds (mk-set odd?))
+(define even (mk-set even?))
 (define divisible-by-10 (mk-set (lambda (x) (= 0 (modulo x 10)))))
 
 ;Number Set -> Set
@@ -40,4 +41,12 @@
     (lambda (n) 
       (or (is-in-set? n s1) (is-in-set? n s2)))))
 
+;Set Set -> Set
+;creates a new set with the elements in common of the two given sets
+(define (intersect s1 s2) 
+  (mk-set 
+    (lambda (n) 
+      (and (is-in-set? n s1) (is-in-set? n s2)))))
+
 (define new-union (union divisible-by-10 odds))
+(define new-intersection (intersect even divisible-by-10))
