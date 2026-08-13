@@ -4,12 +4,6 @@
 
 (require 2htdp/abstraction)
 
-(for/list ([i 10]) i)
-;this is the equivalent of (build-list 10 (lambda (i) i))
-
-(for/list ([i 10] [j '(a b c d e f g h i j)])
-  (list i j))
-
 (define-struct pair [item index])
 ;a Pair is a structure:
 ;  (make-pair Any N)
@@ -41,3 +35,10 @@
 (define (enumerate lx)
   (for/list ([x lx] [ith (length lx)])
     (list (+ ith 1) x)))
+
+(define width 2)
+(for/list ([width 3] [height width])
+  (list width height))
+
+(for*/list ([width 10] [height width])
+  (list width height))
