@@ -34,3 +34,10 @@
   )
  (reverse (foldl listing '() l)))
 )
+
+;[List-of X] -> [List-of [List N X]]
+;pairs each item in lx with its index
+(check-expect (enumerate '(a b c)) '((1 a) (2 b) (3 c)))
+(define (enumerate lx)
+  (for/list ([x lx] [ith (length lx)])
+    (list (+ ith 1) x)))
