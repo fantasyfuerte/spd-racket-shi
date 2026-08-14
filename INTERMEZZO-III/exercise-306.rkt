@@ -19,3 +19,14 @@
 ;v2
 (check-expect (n-list.v2 5) '(1 2 3 4 5))
 (define (n-list.v2 n) (for/list ([x n] [i (in-naturals 1)]) i))
+
+;Number -> [List-of Numbers]
+;creates the list [0 1/n]
+
+;v1
+(check-expect (1/n-list.v1 3) `(,(/ 1 1) ,(/ 1 2) ,(/ 1 3)))
+(define (1/n-list.v1 n) (for/list ([x n] [i (in-naturals 1)]) (/ 1 i)))
+
+;v2
+(check-expect (1/n-list.v2 3) `(,(/ 1 1) ,(/ 1 2) ,(/ 1 3)))
+(define (1/n-list.v2 n) (for/list ([x n]) (/ 1 (add1 x))))
