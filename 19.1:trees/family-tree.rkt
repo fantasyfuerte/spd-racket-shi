@@ -44,3 +44,18 @@
               (count-persons (child-mother ft)))]
   )
 )
+
+;FT Number -> Number
+;produces the average age
+(define (average-age ft year)
+  (/ (total-age ft year) (count-persons ft))
+)
+
+;FT Number -> Number
+;produces the sum of all ages of the family tree
+(define (total-age ft year)
+  (cond
+    [(no-parent? ft) 0]
+    [else (+ (total-age (child-mother ft) year) 
+             (total-age (child-mother ft) year)
+             (- year (child-date ft)))]))
