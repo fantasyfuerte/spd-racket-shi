@@ -10,3 +10,14 @@
     [(cons n r) (+ n (sum-items r))]
   )
 )
+
+;[NEList-of X] -> X
+;produces the last item of the list
+(check-expect (last '(1 2)) 2)
+(check-expect (last '(1 2 "a" 5 "c")) "c")
+(define (last l)
+  (match l
+    [(cons x '()) x]
+    [(cons x b) (last b)]
+  )
+)
