@@ -27,3 +27,9 @@
 (define (and-map f l) 
   (for/and ([i l]) (if (f i) i #false))
 )
+
+;[X -> Boolean] [List-of X] -> [X or #false]
+;produces the first value who pass the condition, otherwise #false
+(define (or-map f l) 
+  (for/or ([i l]) (if (f i) i #false))
+)
