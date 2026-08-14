@@ -23,3 +23,24 @@
 
 (define Gustav (make-child Fred Eva "Gustav" 1988 "brown"))
 
+;FT -> Boolean
+;yields true if a family tree has someone with blue eyes
+(define (blue-eyed-child? ft)
+  (cond
+    [(no-parent? ft) #false]
+    [else (or (string=? "blue" (child-eyes ft))
+              (blue-eyed-child? (child-father ft))
+              (blue-eyed-child? (child-mother ft)))]
+  )
+)
+
+;FT -> Boolean
+;yields true if a family tree has someone with blue eyes
+(define (count-persons ft)
+  (cond
+    [(no-parent? ft) 0]
+    [else (+ 1
+              (count-persons (child-father ft))
+              (count-persons (child-mother ft)))]
+  )
+)
