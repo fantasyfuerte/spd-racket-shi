@@ -36,6 +36,10 @@
   (for/list ([x lx] [ith (length lx)])
     (list (+ ith 1) x)))
 
+(define (enumerate.v2 lx)
+  (for/list ([x lx] [ith (in-naturals 1)])
+    (list ith items)))
+
 (define width 2)
 (for/list ([width 3] [height width])
   (list width height))
