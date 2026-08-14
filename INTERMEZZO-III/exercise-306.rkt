@@ -8,3 +8,14 @@
 ;creates the list [0 n)
 (check-expect (n-1-list 5) '(0 1 2 3 4))
 (define (n-1-list n) (for/list ([x n]) x))
+
+;Number -> [List-of Numbers]
+;creates the list [0 n]
+
+;v1
+(check-expect (n-list.v1 5) '(1 2 3 4 5))
+(define (n-list.v1 n) (for/list ([x n]) (add1 x)))
+
+;v2
+(check-expect (n-list.v2 5) '(1 2 3 4 5))
+(define (n-list.v2 n) (for/list ([x n] [i (in-naturals 1)]) i))
