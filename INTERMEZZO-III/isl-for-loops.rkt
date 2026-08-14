@@ -45,7 +45,11 @@
 
 ;[List-of X] [List-of Y] -> [List-of [List-of X Y]]
 ;produces pairs of all items from these lists
-(check-expect (my-cross '(1 2 3) '(a b c)) '( (1 a) (1 b) (1 c) (2 a) (2 b) (2 c) (3 a) (3 b) (3 c)))
+(check-expect 
+  (my-cross '(1 2 3) '(a b c)) 
+  '((1 a) (1 b) (1 c) 
+     (2 a) (2 b) (2 c) 
+     (3 a) (3 b) (3 c)))
 (define (my-cross l1 l2)
   (local (
     ;X [List-of Y] -> [List-of [List-of X Y]]
@@ -55,3 +59,12 @@
   )
   (foldr append '() m))
 )
+
+;[List-of X] [List-of Y] -> [List-of [List X Y]]
+;generates all pairs of items from l1 and l2
+(check-satisfied (cross '(a b c) '(1 2))
+                 (lambda (c) (= (length c) 6)))
+(check-expect (cross '(1 2 3) '(a b c)) (my-cross '(1 2 3) '(a b c)))
+(define (cross l1 l2)
+  (for*/list ([x1 l1] [x2 l2])
+    (list x1 x2)))
