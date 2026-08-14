@@ -1,0 +1,15 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname exercise-305-euro-converter) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+
+(require 2htdp/abstraction)
+
+(define EXCHANGE-RATE 1.06)
+
+;[List-of Numbers] -> [List-of Numbers]
+;converts a list of USD to euros
+(define (convert-euro l)
+  (for/list ([i l])
+    (/ i 1.06)
+  )
+)
