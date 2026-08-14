@@ -30,3 +30,8 @@
 ;v2
 (check-expect (1/n-list.v2 3) `(,(/ 1 1) ,(/ 1 2) ,(/ 1 3)))
 (define (1/n-list.v2 n) (for/list ([x n]) (/ 1 (add1 x))))
+
+;Number -> [List-of Numbers]
+;creates a list of the first n even numbers
+(check-expect (n-even 5) '(1 3 5 7 9))
+(define (n-even n) (for/list ([i n]) (add1 (* 2 i))))
