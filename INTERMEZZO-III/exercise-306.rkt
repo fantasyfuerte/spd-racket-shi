@@ -35,3 +35,14 @@
 ;creates a list of the first n even numbers
 (check-expect (n-even 5) '(1 3 5 7 9))
 (define (n-even n) (for/list ([i n]) (add1 (* 2 i))))
+
+;Number -> [List-of [List-of Number]]
+;creates an identity matrix of n x n
+(check-expect (identityM 3) (list (list 1 0 0) (list 0 1 0) (list 0 0 1)))
+(define (identityM n) 
+  (for/list ([i n]) 
+    (for/list ([j n])
+      (if (= j i) 1 0)
+    )
+  )
+)
