@@ -42,3 +42,16 @@
 
 (for*/list ([width 10] [height width])
   (list width height))
+
+;[List-of X] [List-of Y] -> [List-of [List-of X Y]]
+;produces pairs of all items from these lists
+(check-expect (my-cross '(1 2 3) '(a b c)) '( (1 a) (1 b) (1 c) (2 a) (2 b) (2 c) (3 a) (3 b) (3 c)))
+(define (my-cross l1 l2)
+  (local (
+    ;X [List-of Y] -> [List-of [List-of X Y]]
+    ;combine x element with all the elements of l2
+    (define (combine x) (map (lambda (i) (list x i)) l2)) 
+    (define m (map (lambda (x) (append (combine x))) l1))
+  )
+  (foldr append '() m))
+)
