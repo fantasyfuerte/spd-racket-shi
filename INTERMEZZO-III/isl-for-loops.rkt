@@ -84,3 +84,10 @@
 (define (or-map f l) 
   (for/or ([i l]) (if (f i) i #false))
 )
+
+;N -> Number
+;adds the even numbers between 0 and n (exclusive)
+(check-expect (sum-evens 2) 0)
+(check-expect (sum-evens 4) 2)
+(define (sum-evens n)
+  (for/sum ([i (in-range 0 n 2)]) i))
