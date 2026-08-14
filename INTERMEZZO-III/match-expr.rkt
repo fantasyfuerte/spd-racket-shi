@@ -21,3 +21,17 @@
     [(cons x b) (last b)]
   )
 )
+
+(define-struct layer [color doll])
+;an RD is one of:
+;-- "doll"
+;-- (make-layer String RD)
+
+(check-expect (depth (make-layer "d" "doll")) 1)
+(check-expect (depth (make-layer "d" (make-layer "red" "doll"))) 2)
+(define (depth d)
+  (match d
+    ["doll" 0]
+    [(layer x y) (add1 (depth y))]
+  )
+)
