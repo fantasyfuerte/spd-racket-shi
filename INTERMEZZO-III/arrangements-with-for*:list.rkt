@@ -23,7 +23,7 @@
 (check-satisfied (arrangements (list "r" "a" "t")) all-words-from-rat?)
 
 ;[X -> Boolean] [List-of X] -> [X or #false]
-;produces the last value who pass the condition, otherewise #false
+;produces the last value who pass the condition, otherwise #false
 (define (and-map f l) 
-  (for/and ([i l]) (f i))
+  (for/and ([i l]) (if (f i) i #false))
 )
