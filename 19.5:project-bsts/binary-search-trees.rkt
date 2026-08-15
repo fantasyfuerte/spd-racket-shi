@@ -40,3 +40,12 @@
     [(contains-bt? (node-right bt) n) (search (node-right bt) n)] 
   )
 )
+
+;a BST (short for binary search tree) is a BT according to
+;the following conditions:
+;-- NONE is always a BST
+;-- (make-node ssn0 name- L R) is a BST if
+;   -- L is a BST
+;   -- R is a BST
+;   -- all ssn fields in L are smallere than ssn0
+;   -- all ssn fields in R are larger than ssn0
