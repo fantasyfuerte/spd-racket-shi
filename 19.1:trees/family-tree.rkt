@@ -59,3 +59,18 @@
     [else (+ (total-age (child-mother ft) year) 
              (total-age (child-mother ft) year)
              (- year (child-date ft)))]))
+
+;FT -> [List-of String]
+;produces a list with the eye colors of the family
+(check-expect (eye-colors NP) '())
+(check-expect (eye-colors Carl) '("green"))
+(check-expect (eye-colors Carl) '("green"))
+(define (eye-colors ft)
+  (cond 
+    [(no-parent? ft) '()]
+    [else (cons (child-eyes ft) 
+            (append (eye-colors (child-father ft))
+                    (eye-colors (child-mother ft))))]
+                    
+  )
+)
