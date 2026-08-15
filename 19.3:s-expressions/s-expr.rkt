@@ -78,3 +78,20 @@
     [else (depth-sl sexp)]
   ))
 )
+
+;S-expr Symbol Symbol -> S-expr
+;produces an s-expr with all the occurrences of old replaced by new
+(check-expect (substitute '(h h (u u)) 'u 'e) '(h h (e e)))
+(check-expect (substitute 'old 'old 'new) 'new)
+(define (substitute sexp old new)
+  (local (
+    ;Atom -> Atom
+    ;if atoms is a symbol equal to old replace it with new
+    (define (sub-atom a) 
+      (if (and(symbol? a)(symbol=? a old))new a))
+  ) 
+  (cond
+    [(atom? sexp) (sub-atom sexp)]
+    [else (map (lambda (x) (substitute x old new)) sexp)]
+  ))  
+)
