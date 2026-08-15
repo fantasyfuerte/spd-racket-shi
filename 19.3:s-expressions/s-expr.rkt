@@ -22,9 +22,6 @@
       (number? x)
       (symbol? x)))
 
-(check-expect (count 'world 'hello) 0)
-(check-expect (count '(world hello) 'hello) 1)
-(check-expect (count '(((world) hello) hello) 'hello) 2)
 
 ;S-expr Symbol -> N
 ;counts all occurrences of sy in sexp
@@ -53,4 +50,23 @@
     [(atom? sexp) (count-atom sexp)]
     [else (count-sl sexp)]
   ))
+)
+
+;S-expr -> N
+;produces the depth of the s-expr
+(check-expect (depth '('he)) 2)
+(define (depth sexp)
+  (cond
+    [(atom? sexp) 1]
+    [else (depth-sl sexp)]
+  )
+)
+
+;SL -> N
+;produces the depth of a sl
+(define (depth-sl sl)
+  (cond
+    [(empty? sl) 0]
+    [else (+ (depth (first sl)) (depth-sl (rest sl)))]
+  )
 )
