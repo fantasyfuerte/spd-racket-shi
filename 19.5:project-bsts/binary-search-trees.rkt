@@ -41,11 +41,33 @@
   )
 )
 
+(define bt15 (make-node 15 'a NONE NONE))
+(define bt24 (make-node 24 'b NONE NONE))
+(define bt89 (make-node 89 'c NONE NONE))
+(define bt29 (make-node 29 'd bt15 bt24))
+(define bt63 (make-node 63 'e bt29 bt89))
+
 ;a BST (short for binary search tree) is a BT according to
 ;the following conditions:
 ;-- NONE is always a BST
 ;-- (make-node ssn0 name- L R) is a BST if
 ;   -- L is a BST
 ;   -- R is a BST
-;   -- all ssn fields in L are smallere than ssn0
+;   -- all ssn fields in L are smaller than ssn0
 ;   -- all ssn fields in R are larger than ssn0
+
+;BT -> [List-of Number]
+;produces a list of ssns from left to right as they appear
+(check-expect (inorder NONE) '())
+(check-expect (inorder bt24) '(24))
+(check-expect (inorder (make-node 66 's bt89 NONE)) '(89 66))
+(check-expect (inorder (make-node 66 's NONE bt24)) '(66 24))
+(check-expect (inorder (make-node 66 's bt89 bt24)) '(89 66 24))
+(check-expect (inorder bt63) '(15 29 24 63 89))
+(define (inorder bt)
+  (cond
+    [(equal? NONE bt) '()]
+    [else 
+      (append 
+        (inorder (node-left bt)) 
+        (cons (node-ssn bt) (inorder (node-right bt))))]))
