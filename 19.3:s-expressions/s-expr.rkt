@@ -15,4 +15,9 @@
 ;-- '()
 ;-- (cons S-expr SL)
 
-
+;Any->Boolean
+;yields true if x is an atom
+(define (atom? x)
+  (or (string? x)
+      (number? x)
+      (symbol? x)))
