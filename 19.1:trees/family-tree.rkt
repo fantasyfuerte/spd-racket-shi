@@ -74,3 +74,24 @@
                     
   )
 )
+
+;FT -> Boolean
+;yields true if a family tree has some ancestor with blue eyes
+(check-expect (blue-eyed-ancestor? Gustav) #true)
+(check-expect (blue-eyed-ancestor? Eva) #false)
+(define (blue-eyed-ancestor? ft)
+  (cond
+    [(no-parent? ft) #false]
+    [else (or (blue-eyed? (child-mother ft))
+              (blue-eyed? (child-father ft))
+              (blue-eyed-ancestor? (child-father ft))
+              (blue-eyed-ancestor? (child-mother ft)))]
+  )
+)
+
+(define (blue-eyed? ft)
+  (cond
+    [(no-parent? ft) #false]
+    [else (string=? "blue" (child-eyes ft))]
+  )
+)
