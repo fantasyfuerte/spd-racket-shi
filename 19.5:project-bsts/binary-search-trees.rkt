@@ -28,7 +28,7 @@
           (contains-bt? (node-left bt) n) 
           (contains-bt? (node-right bt) n))]))
 
-;BT Number -> Symbol
+;BT Number -> [Symbol or #false]
 ;produces the name of the node who's ssn is n
 (check-expect (search bt1 12) 'd)
 (define (search bt n)
@@ -46,6 +46,11 @@
 (define bt89 (make-node 89 'c NONE NONE))
 (define bt29 (make-node 29 'd bt15 bt24))
 (define bt63 (make-node 63 'e bt29 bt89))
+(define bst1 (make-node 1 'a NONE NONE))
+(define bst3 (make-node 3 'b NONE NONE))
+(define bst5 (make-node 5 'c NONE NONE))
+(define bst2 (make-node 2 'd bst1 bst3))
+(define bst4 (make-node 4 'e bst2 bst5))
 
 ;a BST (short for binary search tree) is a BT according to
 ;the following conditions:
@@ -71,3 +76,17 @@
       (append 
         (inorder (node-left bt)) 
         (cons (node-ssn bt) (inorder (node-right bt))))]))
+
+;BST Number -> [Symbol or #false]
+;produces the name of the node with ssn equal to n, otherwise #false
+(check-expect (search-bst bst4 10) #false)
+(check-expect (search-bst bst4 3) 'b)
+(define (search-bst bst n)
+  (cond 
+    [(equal? bst NONE) #false] 
+    [else 
+      (if (= n (node-ssn bst)) (node-name bst)
+          (cond
+            [(< n (node-ssn bst)) (search-bst (node-left bst) n)]
+            [else (search-bst (node-right bst) n)]
+          ))]))
