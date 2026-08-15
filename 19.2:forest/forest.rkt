@@ -50,9 +50,5 @@
 (check-expect (blue-eyed-child-in-forest? ff2) #true)
 (check-expect (blue-eyed-child-in-forest? ff3) #true)
 (define (blue-eyed-child-in-forest? f)
-  (cond
-    [(empty? f) #false]
-    [else (or (blue-eye-child? (first f))
-              (blue-eye-child-in-forest? (rest f)))]
-  )
+  (ormap blue-eyed-child? f)
 )
