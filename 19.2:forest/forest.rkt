@@ -52,3 +52,35 @@
 (define (blue-eyed-child-in-forest? f)
   (ormap blue-eyed-child? f)
 )
+
+;[List-of FT] -> Number
+;produces the average of the ages in the forest
+(define (average-age/forest f year)
+  (local (
+    (define (average-age ft)
+      (/ (total-age ft year) (count-persons ft)))
+    (define avg-list (map average-age f))
+    (define total (foldr + 0 avg-list))
+  )
+  (/ total (length f)))
+)
+
+;FT -> Boolean
+;yields true if a family tree has someone with blue eyes
+(define (count-persons ft)
+  (cond
+    [(no-parent? ft) 0]
+    [else (+ 1
+              (count-persons (child-father ft))
+              (count-persons (child-mother ft)))]
+  )
+)
+
+;FT Number -> Number
+;produces the sum of all ages of the family tree
+(define (total-age ft year)
+  (cond
+    [(no-parent? ft) 0]
+    [else (+ (total-age (child-mother ft) year) 
+             (total-age (child-mother ft) year)
+             (- year (child-date ft)))]))
