@@ -2,12 +2,6 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname forest) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
-;an FF (short for FamilyForest) is one of:
-;--'()
-;--(cons FT FF)
-;interpretation: a family-forest represents several families
-;(say, a town) and their ancestor trees
-
 (define-struct child [father mother name date eyes])
 ;interpretation: (make-child a b c d f) combines the father a,
 ;the mother b, the name c, the birth date d and the color of eyes f
@@ -50,7 +44,7 @@
   )
 )
 
-;FF -> Boolean
+;[List-of FT] -> Boolean
 ;does the forest contain any child with "blue" eyes
 (check-expect (blue-eyed-child-in-forest? ff1) #false)
 (check-expect (blue-eyed-child-in-forest? ff2) #true)
