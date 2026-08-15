@@ -54,19 +54,27 @@
 
 ;S-expr -> N
 ;produces the depth of the s-expr
-(check-expect (depth '('he)) 2)
+(check-expect (depth '(he)) 2)
+(check-expect (depth 10) 1)
+(check-expect (depth "a") 1)
+(check-expect (depth 'x) 1)
+(check-expect (depth '()) 1)
+(check-expect (depth (cons 10 '())) 2)
+(check-expect (depth (cons 10 (cons 5 '()))) 3)
+(check-expect (depth (cons (cons 10 '()) '())) 3)
 (define (depth sexp)
+  (local(
+    ;SL->N 
+    ;produces the depth of an sl
+    (define (depth-sl sl)
+      (cond
+        [(empty? sl) 1]
+        [else (+ (depth (first sl)) (depth-sl (rest sl)))]
+      )
+    )
+  )
   (cond
     [(atom? sexp) 1]
     [else (depth-sl sexp)]
-  )
-)
-
-;SL -> N
-;produces the depth of a sl
-(define (depth-sl sl)
-  (cond
-    [(empty? sl) 0]
-    [else (+ (depth (first sl)) (depth-sl (rest sl)))]
-  )
+  ))
 )
