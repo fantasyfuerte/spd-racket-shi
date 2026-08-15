@@ -16,14 +16,27 @@
     (make-node 11 'c NONE 
       (make-node 12 'd NONE NONE)))) 
 
-;BT Symbol -> Boolean
+;BT Number -> Boolean
 ;yields true if finds n in bt 
-(check-expect (contains-bt? bt1 'd) #true) 
-(check-expect (contains-bt? bt1 'e) #false) 
+(check-expect (contains-bt? bt1 5) #true) 
+(check-expect (contains-bt? bt1 40) #false) 
 (define (contains-bt? bt n)
   (cond
     [(equal? bt NONE) #false]
     [else 
-      (or (equal? n (node-name bt))
+      (or (equal? n (node-ssn bt))
           (contains-bt? (node-left bt) n) 
           (contains-bt? (node-right bt) n))]))
+
+;BT Number -> Symbol
+;produces the name of the node who's ssn is n
+(check-expect (search bt1 12) 'd)
+(define (search bt n)
+  (cond
+    [(equal? bt NONE) #false]
+    [(not(contains-bt? bt n)) #false]
+    [(equal? (node-ssn bt) n) (node-name bt)]
+    [(contains-bt? (node-left bt) n) (search (node-left bt) n)] 
+    [(contains-bt? (node-right bt) n) (search (node-right bt) n)] 
+  )
+)
