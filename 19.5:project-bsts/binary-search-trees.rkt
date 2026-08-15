@@ -5,9 +5,25 @@
 (define-struct no-info [])
 (define NONE (make-no-info))
 
-(define-struct node [ssn name left right])
+(define-struct node [name ssn left right])
 ;a BT (short for BinaryTree is one of:
 ;-- NONE
 ;-- (make-node Number Symbol BT BT)
 
+(define bt1 
+  (make-node 10 'a 
+    (make-node 5 'b NONE NONE) 
+    (make-node 11 'c NONE 
+      (make-node 12 'd NONE NONE)))) 
 
+;BT Number -> Boolean
+;yields true if finds n in bt 
+(check-expect (contains-bt? bt1 11) #true) 
+(check-expect (contains-bt? bt1 41) #false) 
+(define (contains-bt? bt n)
+  (cond
+    [(equal? bt NONE) #false]
+    [else 
+      (or (equal? n (node-name bt))
+          (contains-bt? (node-left bt) n) 
+          (contains-bt? (node-right bt) n))]))
