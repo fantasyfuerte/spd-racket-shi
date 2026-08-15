@@ -38,3 +38,27 @@
 (define ff1 (list Carl Bettina))
 (define ff2 (list Fred Eva))
 (define ff3 (list Fred Eva Carl))
+
+;FT -> Boolean
+;yields true if a family tree has someone with blue eyes
+(define (blue-eyed-child? ft)
+  (cond
+    [(no-parent? ft) #false]
+    [else (or (string=? "blue" (child-eyes ft))
+              (blue-eyed-child? (child-father ft))
+              (blue-eyed-child? (child-mother ft)))]
+  )
+)
+
+;FF -> Boolean
+;does the forest contain any child with "blue" eyes
+(check-expect (blue-eyed-child-in-forest? ff1) #false)
+(check-expect (blue-eyed-child-in-forest? ff2) #true)
+(check-expect (blue-eyed-child-in-forest? ff3) #true)
+(define (blue-eyed-child-in-forest? f)
+  (cond
+    [(empty? f) #false]
+    [else (or (blue-eye-child? (first f))
+              (blue-eye-child-in-forest? (rest f)))]
+  )
+)
