@@ -90,3 +90,16 @@
             [(< n (node-ssn bst)) (search-bst (node-left bst) n)]
             [else (search-bst (node-right bst) n)]
           ))]))
+
+;BST N Symbol -> BST
+;produces the same bst with a new node properly placed
+(check-expect (create-bst bst1 2 'n) 
+  (make-node 1 'a NONE (make-node 2 'n NONE NONE))) 
+(define (create-bst b n s)
+  (cond
+    [(no-info? b) (make-node n s NONE NONE)]
+    [else (if (> n (node-ssn b)) 
+              (make-node (node-ssn b) (node-name b) 
+                (node-left b) (create-bst (node-right b) n s)) 
+              (make-node (node-ssn b) (node-name b) 
+                (create-bst (node-left b) n s)(node-right b)))]))
