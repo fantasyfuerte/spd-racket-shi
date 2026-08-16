@@ -27,3 +27,15 @@
     [else (if (string? (first d)) 
           (add1 (how-many (rest d))) 
           (+ (how-many (first d)) (how-many (rest d))))]))
+
+(define-struct dir [name content])
+
+;a Dir.v2 is a structure
+; (make-dir String LOFD)
+
+;an LOFD (short for list of files and directories) is one of:
+;-- '()
+;-- (cons File.v2 LOFD)
+;-- (cons Dir.v2 LOFD)
+
+;a File.v2 is a String
