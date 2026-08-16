@@ -28,7 +28,7 @@
           (add1 (how-many.v1 (rest d))) 
           (+ (how-many.v1 (first d)) (how-many.v1 (rest d))))]))
 
-(define-struct dir [name content])
+(define-struct dir [name content size readability])
 
 ;a Dir.v2 is a structure
 ; (make-dir String LOFD)
@@ -42,11 +42,12 @@
 
 (define m2dir 
   (make-dir "TS" 
-    (list (make-dir "Text" (list "part1" "part2" "part3")) 
+    (list (make-dir "Text" (list "part1" "part2" "part3") 30 "all") 
           "read" 
           (make-dir "Libs" 
-            (list (make-dir "Code" (list "hang" "draw")) 
-                  (make-dir "Docs" (list "red")))))))
+            (list (make-dir "Code" (list "hang" "draw") 40 "all") 
+                  (make-dir "Docs" (list "red") 10 "all")) 300 "all"))
+            640 "all"))
 
 ;Dir.v2 -> Number
 ;determine how many files a directory has
