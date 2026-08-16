@@ -36,3 +36,10 @@
 (define (ls d)
   (append (map (lambda (d) (dir-name d)) (dir-dirs d)) 
           (map (lambda (f) (file-name f)) (dir-files d))))
+
+;Dir -> Number
+;produces the total size of all the files in the directory tree
+(define (du d)
+  (+ (foldr (lambda (a b) (+ (file-size a) b)) 0 (dir-files d)) 
+     (foldr (lambda (a b) (+ (du a) b)) 0 (dir-dirs d))))
+
