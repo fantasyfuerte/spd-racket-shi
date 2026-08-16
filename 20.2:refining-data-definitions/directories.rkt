@@ -20,13 +20,13 @@
 
 ;Dir.v1 -> Number
 ;determines how many file a directory has
-(check-expect (how-many m1dir) 7)
-(define (how-many d)
+(check-expect (how-many.v1 m1dir) 7)
+(define (how-many.v1 d)
   (cond
     [(empty? d) 0]
     [else (if (string? (first d)) 
-          (add1 (how-many (rest d))) 
-          (+ (how-many (first d)) (how-many (rest d))))]))
+          (add1 (how-many.v1 (rest d))) 
+          (+ (how-many.v1 (first d)) (how-many.v1 (rest d))))]))
 
 (define-struct dir [name content])
 
@@ -42,8 +42,29 @@
 
 (define m2dir 
   (make-dir "TS" 
-    (list (make-dir "Text" (list "part1" "part2" "part3)) 
+    (list (make-dir "Text" (list "part1" "part2" "part3")) 
           "read" 
           (make-dir "Libs" 
             (list (make-dir "Code" (list "hang" "draw")) 
                   (make-dir "Docs" (list "red")))))))
+
+;Dir.v2 -> Number
+;determine how many files a directory has
+(check-expect (how-many.v2 m2dir) 7)
+(define (how-many.v2 d)
+  (cond
+    [(empty? (dir-content d)) 0]
+    [else (count-lofd (dir-content d))]
+  )
+)
+
+;LOFD -> Number
+(define (count-lofd lofd)
+  (cond
+    [(empty? lofd) 0]
+    [(dir? (first lofd))(+ 
+                        (how-many.v2 (first lofd)) 
+                        (count-lofd (rest lofd)))]
+    [else (add1 (count-lofd (rest lofd)))]
+  )
+)
