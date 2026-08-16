@@ -19,10 +19,6 @@
   (local (;S-expr->S-expr
           (define (for-sexp sexp)
             (cond
-              [(atom? sexp) (for-atom sexp)]
-              [else (for-sl sexp)]))
-          ;SL -> S-expr
-          (define (for-sl sl) (map for-sexp sl))
-          ;Atom -> S-expr
-          (define (for-atom at) (if (equal? at old) new at)))
+              [(atom? sexp) (if (equal? sexp old) new sexp)]
+              [else (map for-sexp sexp)])))
     (for-sexp sexp)))
