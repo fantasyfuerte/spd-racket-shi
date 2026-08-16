@@ -76,15 +76,7 @@
 
 (define-struct dir.v3 [name dir files])
 ;a Dir.v3 is a structure:
-;(make-dir.v3 String Dir* File*)
-
-;a Dir* is one of:
-;-- '()
-;-- (cons Dir.v3 Dir*)
-
-;a File.* is one of:
-;-- '()
-;-- (cons File.v3 File*)
+;(make-dir.v3 String [List-of Dir.v3] [List-of File.v3])
 
 (define m3dir (make-dir.v3 "TS" 
   (list 
