@@ -103,3 +103,9 @@
                 (node-left b) (create-bst (node-right b) n s)) 
               (make-node (node-ssn b) (node-name b) 
                 (create-bst (node-left b) n s)(node-right b)))]))
+
+;[List-of [List Number Symbol]] -> BST
+;produces a binary search tree
+(define (create-bst-from-list l)
+  (foldr (lambda (a b) (create-bst b (first a) (second a))) NONE l)
+)
