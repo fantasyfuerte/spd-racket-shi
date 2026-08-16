@@ -43,3 +43,18 @@
   (+ (foldr (lambda (a b) (+ (file-size a) b)) 0 (dir-files d)) 
      (foldr (lambda (a b) (+ (du a) b)) 0 (dir-dirs d))))
 
+;a Path is [List-of String]
+;interpretation: directions into a directory tree
+
+;Dir String -> [Path or #false]
+;if the file exist returns his path
+(define (find dir name) 
+  (cond
+    [(not(find? dir name)) #false]
+    [else (cons (dir-name dir) 
+      (if (ormap (lambda (x) (string=? (file-name x) name)) 
+                 (dir-files dir)) 
+          (cons name '())
+          (find (first (filter (lambda (x) (find? x name)) 
+                  (dir-dirs dir))) 
+                name)))]))
