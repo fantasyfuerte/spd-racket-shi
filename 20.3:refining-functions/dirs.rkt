@@ -58,3 +58,17 @@
           (find (first (filter (lambda (x) (find? x name)) 
                   (dir-dirs dir))) 
                 name)))]))
+
+;Dir String -> [List-of Path]
+;produces a list of paths with all the occurrences of name
+(define (find-all dir name)
+  (local (
+    (define all-paths 
+      (map 
+      (lambda (x) (cons (dir-name dir) (find x name))) 
+      (dir-dirs dir))) 
+    (define list-of-paths (cons (find dir name) all-paths))
+    (define res (if (find? dir name) list-of-paths  '())) 
+  )
+  list-of-paths)
+)
