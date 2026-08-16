@@ -39,3 +39,11 @@
 ;-- (cons Dir.v2 LOFD)
 
 ;a File.v2 is a String
+
+(define m2dir 
+  (make-dir "TS" 
+    (list (make-dir "Text" (list "part1" "part2" "part3)) 
+          "read" 
+          (make-dir "Libs" 
+            (list (make-dir "Code" (list "hang" "draw")) 
+                  (make-dir "Docs" (list "red")))))))
