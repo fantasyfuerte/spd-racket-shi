@@ -16,3 +16,17 @@
 (define (how-many d)
   (+ (length (dir-files d)) 
      (foldr (lambda (a b) (+ (how-many a) b)) 0 (dir-dirs d))))
+
+;Dir String -> Boolean
+;determines whether or not a file with name n occur in a directory tree
+(check-expect (find? O "terersfsf") #false)
+(check-expect (find? O "prueba.txt") #true)
+(check-expect (find? O "prueba2.txt") #true)
+(define (find? dir name) 
+  (cond
+    [(empty? (dir-files dir)) #false] 
+    [else (or (ormap 
+                (lambda (f) (string=? (file-name f) name)) 
+                (dir-files dir))
+              (ormap (lambda (d) (find? d name)) 
+                (dir-dirs dir)))]))
