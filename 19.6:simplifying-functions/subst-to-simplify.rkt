@@ -16,9 +16,6 @@
   (substitute '(((world) bye ) bye) 'bye '42)
   '(((world) 42) 42))
 (define (substitute sexp old new)
-  (local (;S-expr->S-expr
-          (define (for-sexp sexp)
-            (cond
-              [(atom? sexp) (if (equal? sexp old) new sexp)]
-              [else (map for-sexp sexp)])))
-    (for-sexp sexp)))
+  (cond
+    [(atom? sexp) (if (equal? sexp old) new sexp)]
+    [else (map (lambda (x) (substitute x old new)) sexp)]))
