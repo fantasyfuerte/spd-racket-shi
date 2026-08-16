@@ -17,3 +17,13 @@
     (list 
       (list "hang" "draw") 
       (list "read"))))
+
+;Dir.v1 -> Number
+;determines how many file a directory has
+(check-expect (how-many m1dir) 7)
+(define (how-many d)
+  (cond
+    [(empty? d) 0]
+    [else (if (string? (first d)) 
+          (add1 (how-many (rest d))) 
+          (+ (how-many (first d)) (how-many (rest d))))]))
