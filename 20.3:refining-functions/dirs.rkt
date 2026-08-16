@@ -8,8 +8,8 @@
   (create-dir 
 "/Users/macbook/School/año pasado/2do semestre/DPOO/Videos I/Videos I/"))
 
-;a Dir.v3 is a structure:
-;(make-dir.v3 String [List-of Dir.v3] [List-of File.v3])
+;a Dir is a structure:
+;(make-dir String [List-of Dir] [List-of File])
 
 ;Dir -> Number
 ;determine how many files a directory has
@@ -30,3 +30,9 @@
                 (dir-files dir))
               (ormap (lambda (d) (find? d name)) 
                 (dir-dirs dir)))]))
+
+;Dir -> [List-of Strings]
+;lists the names of all files and directories in a given dir
+(define (ls d)
+  (append (map (lambda (d) (dir-name d)) (dir-dirs d)) 
+          (map (lambda (f) (file-name f)) (dir-files d))))
