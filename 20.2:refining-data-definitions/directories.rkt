@@ -97,3 +97,10 @@
         (list (make-file "hang" 8 "") (make-file "draw" 2 "")))
       (make-dir.v3 "Docs" '() (list (make-file "read" 19 "")))) '()))
   (list (make-file "read" 10 ""))))
+
+;Dir.v3 -> Number
+;determine how many files a directory has
+(check-expect (how-many.v3 m3dir) 7)
+(define (how-many.v3 d)
+  (+ (length (dir.v3-files d)) 
+     (foldr (lambda (a b) (+ (how-many.v3 a) b)) 0 (dir.v3-dir d))))
