@@ -72,3 +72,25 @@
   )
   list-of-paths)
 )
+
+;Dir -> [List-of Path]
+;produces a list with all the paths of the dir
+(define (my-ls-R dir)
+  (local (
+    ;[List-of Dir] -> [List-of Path]
+    (define (list-dirs dl)
+      (cond
+        [(empty? dl) '()]
+        [else
+          (append 
+            (map (lambda (x) (cons (dir-name dir) x)) 
+                 (my-ls-R (first dl))) 
+            (list-dirs (rest dl)))]))
+    (define (list-files fl)
+      (cond 
+        [(empty? fl) '()]
+        [else 
+          (map (lambda (x)
+            (list (dir-name dir) (file-name x))) fl)])))
+  (append (list-dirs (dir-dirs dir))(list-files (dir-files dir)))
+))
