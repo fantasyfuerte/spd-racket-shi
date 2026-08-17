@@ -31,6 +31,49 @@
     [(mul? expr) (* (eval-expression (mul-left expr))
                     (eval-expression (mul-right expr)))]
     [(add? expr) (+ (eval-expression (add-left expr))
-                    (eval-expression (add-right expr)))]
+                    (eval-expression (add-right expr)))]))
+
+;a BSL-bool-expr is one of:
+;-- #true
+;-- #false
+;-- Or
+;-- And
+;-- Not
+
+(define-struct b-or [left right])
+;an Or is a structure:
+;  (make-b-or BSL-bool-expr BSL-bool-expr)
+;interpretation: represents the or logic operator
+
+(define-struct b-and [left right])
+;an And is a structure:
+;  (make-b-and BSL-bool-expr BSL-bool-expr)
+;interpretation: represents the and logic operator
+
+(define-struct b-not [exp])
+;a Not is a structure:
+;  (make-b-not BSL-bool-expr)
+;interpretation: represents the not logic operator
+
+;a BSL-bool-value is one of:
+;-- #true
+;-- #false
+
+
+;BSL-bool-expr -> BSL-bool-value
+;computes the value of a bsl bool expression
+(check-expect (eval-bool-expression #true) #true)
+(check-expect (eval-bool-expression (make-b-or #true #false)) #true)
+(check-expect (eval-bool-expression (make-b-not #true)) #false)
+(check-expect
+  (eval-bool-expression (make-b-or #false (make-b-not #false))) #true)
+(define (eval-bool-expression expr)
+  (cond
+    [(boolean? expr) expr]
+    [(b-or? expr) (or (eval-bool-expression (b-or-left expr))
+                    (eval-bool-expression (b-or-right expr)))]
+    [(b-and? expr) (and (eval-bool-expression (b-and-left expr))
+                    (eval-bool-expression (b-and-right expr)))]
+    [(b-not? expr) (not (eval-bool-expression (b-not-exp expr)))]
   )
 )
