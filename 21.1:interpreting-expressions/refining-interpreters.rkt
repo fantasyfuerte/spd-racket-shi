@@ -81,6 +81,10 @@
 )
 
 ;S-expr -> BSl-expr
+(check-expect (parse '(+ 1 1)) (make-add 1 1))
+(check-expect (parse '(* 20 8)) (make-mul 20 8))
+(check-expect (parse '3) 3)
+(check-error (parse '((((((hL))))))) WRONG)
 (define (parse s)
   (cond
     [(atom? s) (parse-atom s)]
