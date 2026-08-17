@@ -16,3 +16,21 @@
 ;a Mul is a structure 
 ; (make-mul BSL-expr BSL-expr)
 ;interpretation: (make-mul a b) means the multiplication of a and b
+
+;a Value is a Number
+
+;BSL-expr -> Value
+;computes the value of expr
+(check-expect (eval-expression 5) 5)
+(check-expect (eval-expression (make-add 2 2)) 4)
+(check-expect (eval-expression (make-mul 8 2)) 16)
+(check-expect (eval-expression (make-mul (make-add 2 2) 25)) 100)
+(define (eval-expression expr)
+  (cond
+    [(number? expr) expr]
+    [(mul? expr) (* (eval-expression (mul-left expr))
+                    (eval-expression (mul-right expr)))]
+    [(add? expr) (+ (eval-expression (add-left expr))
+                    (eval-expression (add-right expr)))]
+  )
+)
