@@ -116,3 +116,12 @@
 ;S-expr -> Boolean
 (define (atom? x) (or (number? x) (string? x) (symbol? x)))
 
+;SL-> [Value or error]
+;produces the value of a bsl expression represented as an s-expr
+(check-expect (interpreter-expr 5) 5)
+(check-expect (interpreter-expr '(+ 3 3)) 6)
+(check-expect (interpreter-expr '(* 10 3)) 30)
+(check-error (interpreter-expr '(* 3)) WRONG)
+(define (interpreter-expr exp)
+  (eval-expression (parse exp))
+)
