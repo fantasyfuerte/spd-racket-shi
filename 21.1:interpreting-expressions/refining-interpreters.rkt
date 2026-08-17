@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname refining-interpreters) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(define WRONG "an error has occurred")
+
 ;a BSL-expr is one of:
 ;-- Number
 ;-- Add
@@ -77,3 +79,36 @@
     [(b-not? expr) (not (eval-bool-expression (b-not-exp expr)))]
   )
 )
+
+;S-expr -> BSl-expr
+(define (parse s)
+  (cond
+    [(atom? s) (parse-atom s)]
+    [else (parse-sl s)]))
+
+;Atom -> BLS-expr
+(define (parse-atom s)
+  (cond
+    [(number? s) s]
+    [else (error WRONG)]
+  )
+)
+
+;SL -> BSL-expr
+(define (parse-sl s)
+  (local (
+    (define L (length s)))
+    (cond
+      [(< L 3) (error WRONG)]
+      [(and (= L 3) (symbol? (first s)))
+         (cond
+           [(symbol=? (first s) '+)
+              (make-add (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) '*)
+              (make-mul (parse (second s)) (parse (third s)))]
+           [else (error WRONG)])])))
+
+
+;S-expr -> Boolean
+(define (atom? x) (or (number? x) (string? x) (symbol? x)))
+
