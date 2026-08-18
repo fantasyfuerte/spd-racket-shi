@@ -126,3 +126,25 @@
 (define (interpreter-expr exp)
   (eval-expression (parse exp))
 )
+
+;BSL-expr Symbol Number -> BSL-expr
+;replaces the occurrences of x with v in exp
+(check-expect (subst 'x 'x 10) 10)
+(check-expect (subst (make-add 3 'r) 'r 40) (make-add 3 40))
+(define (subst exp x v)
+  (local(
+    (define subst-atom
+      (cond
+        [(equal? exp x) v] 
+        [else exp]
+      )) 
+  )
+  (cond
+    [(atom? exp) subst-atom]
+    [(mul? exp) (make-mul (subst (mul-left exp) x v) 
+                          (subst (mul-right exp) x v))]
+    [(add? exp) (make-add (subst (add-left exp) x v) 
+                          (subst (add-right exp) x v))]
+  ))
+)
+
