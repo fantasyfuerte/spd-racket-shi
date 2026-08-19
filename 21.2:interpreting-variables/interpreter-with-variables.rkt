@@ -127,7 +127,13 @@
   (eval-expression (parse exp))
 )
 
-;BSL-expr Symbol Number -> BSL-expr
+;a BSL-var-expr is one of:
+;-- Number
+;-- Symbol
+;-- Add
+;-- Mul
+
+;BSL-var-expr Symbol Number -> BSL-expr
 ;replaces the occurrences of x with v in exp
 (check-expect (subst 'x 'x 10) 10)
 (check-expect (subst (make-add 3 'r) 'r 40) (make-add 3 40))
@@ -148,3 +154,18 @@
   ))
 )
 
+;BSL-var-expr -> Boolean
+;determines whether a BSL-var-expr is also a BSL-expr
+(check-expect (numeric? (make-add 5 5)) #true)
+(check-expect (numeric? (make-add 'y 5)) #false)
+(check-expect (numeric? (make-add (make-mul 2 2) 5)) #true)
+(check-expect (numeric? (make-add (make-mul 'u 2) 5)) #false)
+(define (numeric? expr)
+  (cond
+    [(atom? expr) (if (symbol? expr) #false #true)]
+    [(mul? expr) (and (numeric? (mul-left expr)) 
+                      (numeric? (mul-right expr)))]
+    [(add? expr) (and (numeric? (add-left expr)) 
+                      (numeric? (add-right expr)))]
+  )
+)
