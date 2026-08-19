@@ -169,3 +169,12 @@
                       (numeric? (add-right expr)))]
   )
 )
+
+;BSL-var-expr -> [Value or error]
+;determines an expression value if this expression is numeric
+;otherwise throws an error
+(check-expect (eval-variable (make-add 5 5)) 10)
+(check-error (eval-variable 'x ) "unknown var")
+(define (eval-variable exp) 
+  (if (numeric? exp) (eval-expression exp) (error "unknown var")) 
+)
