@@ -178,3 +178,22 @@
 (define (eval-variable exp) 
   (if (numeric? exp) (eval-expression exp) (error "unknown var")) 
 )
+
+;an AL (short for association list) is [List-of Association]
+;an Association is a list of two items:
+;  (list Symbol Number)
+
+;BSL-var-expr AL -> [Value or #false]
+;eval the expression if possible otherwise false
+(check-expect (eval-variable* (make-add 'x 5) (list (list 'x 2))) 7)
+(check-expect (eval-variable* 
+              (make-mul 'x 'y) 
+              (list 
+                (list 'x 8)(list 'y 4))) 32)
+(define (eval-variable* ex da)
+  (local(
+    (define subst-al 
+      (foldr (lambda (a b) (subst b (first a) (second a))) ex da)) 
+  )
+  (eval-variable subst-al))
+)
