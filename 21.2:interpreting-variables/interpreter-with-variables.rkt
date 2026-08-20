@@ -197,3 +197,46 @@
   )
   (eval-variable subst-al))
 )
+
+;BSL-var-expr AL -> [Value or #false]
+;just search the variables when needed
+(check-expect (eval-var-lookup (make-add 'x 5) (list (list 'x 2))) 7)
+(check-expect (eval-var-lookup 
+              (make-mul 'x 'y) 
+              (list 
+                (list 'x 8)(list 'y 4))) 32)
+(check-error (eval-var-lookup 
+              (make-mul 'x 'y) 
+              (list 
+                (list 'o 8)(list 'y 4))) "undefined variable")
+(define (eval-var-lookup ex da)
+  (local (
+    ;Atom -> [Number or Error]
+    (define (sub-atom ex)
+      (cond
+        [(number? ex) ex]
+        [(symbol? ex) (get-value ex da)]
+        [else (error "unknown data type")]
+      ))
+  )
+  (cond
+    [(atom? ex) (sub-atom ex)]
+    [(mul? ex) (*
+                 (eval-var-lookup (mul-left ex) da) 
+                 (eval-var-lookup (mul-right ex) da))]
+    [(add? ex) (+
+                 (eval-var-lookup (add-left ex) da) 
+                 (eval-var-lookup (add-right ex) da))]
+  ))
+)
+
+(define (get-value ex da)
+  (cond
+    [(empty? da) (error "undefined variable")]
+    [else 
+      (if 
+        (symbol=? (first (first da)) ex) 
+        (second (first da))
+        (get-value ex (rest da)))]
+  )
+)
