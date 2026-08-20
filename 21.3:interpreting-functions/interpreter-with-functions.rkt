@@ -252,6 +252,10 @@
 
 (define-struct func [name body])
 ;a Function is a Structure
-;  (make-func String BSL-var-func-expr)
+;  (make-func Symbol BSL-var-func-expr)
 ;interpretation: (make-func a b) combines the name of the function (a)
 ;with its body (b)
+
+(define func-ex1 (make-func 'k (make-add 1 1)))
+(define func-ex2 (make-mul- 5 func-ex1))
+(define func-ex3 (make-mul (make-func 'i 5) func-ex1))
