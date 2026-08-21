@@ -315,3 +315,25 @@
               (make-func-def (first (first da))
                              (second (first da))
                              (third (first da))))]))
+
+;BSL-var-func-exr BSL-func-def -> Value
+;evaluates the expression
+(check-expect (eval-function* (make-add 4 4) da-fgh) 8)
+(check-expect (eval-function* (make-func 'f 5) da-fgh) 8)
+(define (eval-function* ex da)
+  (cond
+    [(number? ex) ex]
+    [(symbol? ex) (error UNKNOWN_VARIABLE)]
+    [(mul? ex) (* (eval-function* (mul-left ex) da)
+                  (eval-function* (mul-right ex) da))]
+    [(add? ex) (+ (eval-function* (add-left ex) da)
+                  (eval-function* (add-right ex) da))]
+    [(func? ex)
+      (local ( 
+        (define f (lookup-def da (func-name ex))) 
+        (define arg-val (eval-function* (func-arg ex) da)) 
+        (define val (subst (func-def-body f) (func-def-arg f) arg-val)) 
+       ) 
+      (eval-function* val da))]
+  )
+)
