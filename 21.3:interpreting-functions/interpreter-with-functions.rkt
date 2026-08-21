@@ -262,6 +262,25 @@
 
 ;BSL-var-func-expr Symbol Symbol BSL-var-func-expr -> [Value or #false]
 ;substitutes the functions by its bodies an evaluates the expression
-(define (eval-definition es f x b)
-b
-)
+(check-expect 
+  (eval-definition 
+    (make-func 'k 2) 'k 'x (make-add 'x 2)) 4) 
+(define (eval-definition ex f x b)
+  (cond
+    [(symbol? ex) (error UNKNOWN_VARIABLE)]
+    [(number? ex) ex]
+    [(mul? ex) (* (eval-definition (mul-left ex) f x b) 
+                  (eval-definition (mul-left ex) f x b))]
+    [(add? ex) (+ (eval-definition (add-left ex) f x b) 
+                  (eval-definition (add-left ex) f x b))]
+    [(func? ex) 
+      (cond
+        [(not (symbol=? (func-name ex) f)) (error UNKNOWN_VARIABLE)]
+        [else (local (
+          (define value (eval-definition (func-arg ex) f x b)) 
+          (define plugd (subst b x value)))
+        (eval-definition plugd f x b))]
+      )]
+  )
+) 
+
