@@ -289,3 +289,8 @@
 ;  (make-func-def Symbol Symbol BSL-var-func-expr)
 ;interpretation: (make-func-def a b c) combines the function a with
 ;parameter b and body c
+
+(define def-func1 (make-func-def 'f 'x (make-add 3 'x)))
+(define def-func2 (make-func-def 'g 'y (make-func 'f (make-mul 2 'y))))
+(define def-func3 (make-func-def 'h 'v
+  (make-add (make-func 'f 'v) (make-func 'g 'v))))
