@@ -5,6 +5,7 @@
 (define WRONG "an error has occurred")
 (define UNKNOWN_VARIABLE "unknown variable")
 (define UNKNOWN_TYPE "unknown var type")
+(define NOT_FOUND "function not found")
 
 ;a BSL-expr is one of:
 ;-- Number
@@ -294,3 +295,23 @@
 (define def-func2 (make-func-def 'g 'y (make-func 'f (make-mul 2 'y))))
 (define def-func3 (make-func-def 'h 'v
   (make-add (make-func 'f 'v) (make-func 'g 'v))))
+
+;a BSL-func-def* is a list of three items
+;(list Symbol Symbol BLS-var-func-expr)
+(define da-fgh
+  (list
+    (list 'f 'x (make-add 3 'x))
+    (list 'g 'y (make-func 'f (make-mul 2 'y)))
+    (list 'f 'x (make-add (make-func 'f 'v) (make-func 'g 'v)))))
+
+;BSL-func-def* Symbol -> BSL-func-def
+;retrieves the definition of f in da; signala an error if there is none
+(check-expect (lookup-def da-fgh 'g) def-func2)
+(define (lookup-def da f)
+  (cond
+    [(empty? da) (error NOT_FOUND)]
+    [else (if (not (symbol=? f (first (first da))))
+              (lookup-def (rest da) f) 
+              (make-func-def (first (first da))
+                             (second (first da))
+                             (third (first da))))]))
