@@ -282,5 +282,10 @@
         (eval-definition plugd f x b))]
       )]
   )
-) 
+)
 
+(define-struct func-def [name arg body])
+;a FunctionDefinition is a structure:
+;  (make-func-def Symbol Symbol BSL-var-func-expr)
+;interpretation: (make-func-def a b c) combines the function a with
+;parameter b and body c
