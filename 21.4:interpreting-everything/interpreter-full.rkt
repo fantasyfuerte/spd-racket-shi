@@ -94,6 +94,44 @@
           (first da)
           (lookup-func-def (rest da) f))]))
 
+(define-struct b-or [left right])
+;an Or is a structure:
+;  (make-b-or BSL-bool-expr BSL-bool-expr)
+;interpretation: represents the or logic operator
+
+(define-struct b-and [left right])
+;an And is a structure:
+;  (make-b-and BSL-bool-expr BSL-bool-expr)
+;interpretation: represents the and logic operator
+
+(define-struct b-not [exp])
+;a Not is a structure:
+;  (make-b-not BSL-bool-expr)
+;interpretation: represents the not logic operator
+
+;a BSL-bool-value is one of:
+;-- #true
+;-- #false
+
+
+;BSL-bool-expr -> BSL-bool-value
+;computes the value of a bsl bool expression
+(check-expect (eval-bool-expression #true) #true)
+(check-expect (eval-bool-expression (make-b-or #true #false)) #true)
+(check-expect (eval-bool-expression (make-b-not #true)) #false)
+(check-expect
+  (eval-bool-expression (make-b-or #false (make-b-not #false))) #true)
+(define (eval-bool-expression expr)
+  (cond
+    [(boolean? expr) expr]
+    [(b-or? expr) (or (eval-bool-expression (b-or-left expr))
+                    (eval-bool-expression (b-or-right expr)))]
+    [(b-and? expr) (and (eval-bool-expression (b-and-left expr))
+                    (eval-bool-expression (b-and-right expr)))]
+    [(b-not? expr) (not (eval-bool-expression (b-not-exp expr)))]
+  )
+)
+
 ;BSL-expr BSL-da-all -> Value
 ;evaluates the expression with the da data
 (check-expect (eval-all (make-add 3 3) '()) 6)
@@ -116,6 +154,8 @@
                    (eval-all (divide-right exp) da))]
     [(symbol? exp) (eval-all (cons-def-value (lookup-cons-def da exp))
                     da)]
+    [(or (boolean? exp) (b-or? exp) (b-and? exp) (b-not? exp))
+       (eval-bool-expression exp)]
     [(func? exp) (local(
       (define f (lookup-func-def da (func-name exp)))
       (define arg-val (eval-all (func-arg exp) da))
@@ -125,7 +165,7 @@
     (eval-all plugd da))]))
 
 ;S-expr -> Boolean
-(define (atom? x) (or (number? x) (string? x) (symbol? x)))
+(define (atom? x) (or (number? x) (string? x) (symbol? x) (boolean? x)))
 
 ;BSL-var-expr Symbol Number -> BSL-expr
 ;replaces the occurrences of x with v in exp
@@ -159,6 +199,7 @@
   (cond
     [(number? s) s]
     [(symbol? s) s]
+    [(boolean? s) s]
     [else (error WRONG_EXPR)]
   )
 )
@@ -168,8 +209,9 @@
   (local (
     (define L (length s)))
     (cond
-      [(= L 2) (make-func (first s) 
-                            (parse (second s)))]
+      [(= L 2) (if (symbol=? (first s) 'not) 
+               (make-b-not (parse (second s)))
+               (make-func (first s) (parse (second s))))]
       [(< L 3) (error WRONG_EXPR)]
       [(and (= L 3) (symbol? (first s)))
          (cond
@@ -181,6 +223,10 @@
               (make-mul (parse (second s)) (parse (third s)))]
            [(symbol=? (first s) '/)
               (make-divide (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) 'or)
+              (make-b-or (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) 'and)
+              (make-b-and (parse (second s)) (parse (third s)))]
            [else WRONG_EXPR])])))
 
 ;SL -> BSL-da-all
