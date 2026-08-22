@@ -79,3 +79,48 @@
           (first da)
           (lookup-func-def (rest da) f))]))
 
+;BSL-expr BSL-da-all -> Value
+;evaluates the expression with the da data
+(check-expect (eval-all (make-add 3 3) '()) 6)
+(check-expect 
+  (eval-all (make-add 'age 3) (list (make-cons-def 'age 10))) 13)
+(check-expect
+  (eval-all (make-add (make-func 'age 8) 3) 
+            (list (make-func-def 'age 'x (make-add 'x 10))))
+  21)
+(define (eval-all exp da)
+  (cond
+    [(number? exp) exp] 
+    [(add? exp) (+ (eval-all (add-left exp) da)
+                   (eval-all (add-right exp) da))]
+    [(mul? exp) (* (eval-all (mul-left exp) da)
+                   (eval-all (mul-right exp) da))]
+    [(symbol? exp) (eval-all (cons-def-value (lookup-cons-def da exp))
+                    da)]
+    [(func? exp) (local(
+      (define f (lookup-func-def da (func-name exp)))
+      (define arg-val (eval-all (func-arg exp) da))
+      (define plugd (subst (func-def-body f) 
+                           (func-def-arg f) 
+                            arg-val))) 
+    (eval-all plugd da))]))
+
+;S-expr -> Boolean
+(define (atom? x) (or (number? x) (string? x) (symbol? x)))
+
+;BSL-var-expr Symbol Number -> BSL-expr
+;replaces the occurrences of x with v in exp
+(check-expect (subst 'x 'x 10) 10)
+(check-expect (subst (make-add 3 'r) 'r 40) (make-add 3 40))
+(define (subst exp x v)
+  (local(
+    (define subst-atom
+      (cond
+        [(equal? exp x) v] 
+        [else exp])))
+  (cond
+    [(atom? exp) subst-atom]
+    [(mul? exp) (make-mul (subst (mul-left exp) x v) 
+                          (subst (mul-right exp) x v))]
+    [(add? exp) (make-add (subst (add-left exp) x v) 
+                          (subst (add-right exp) x v))])))
