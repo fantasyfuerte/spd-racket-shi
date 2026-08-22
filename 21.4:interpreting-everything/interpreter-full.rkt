@@ -60,5 +60,22 @@
     [(empty? da) (error NOT_FOUND)]
     [else (if (and (cons-def? (first da)) 
                    (symbol=? x (cons-def-name (first da))))
-              (first da)
-              (lookup-cons-def (rest da) x))]))
+          (first da)
+          (lookup-cons-def (rest da) x))]))
+
+;BSL-da-all Symbol -> FunctionDefinition
+;produces the representation of a function definition
+;otherwise throws an error
+(check-error (lookup-func-def '() 't) NOT_FOUND)
+(check-expect 
+  (lookup-func-def (list (make-cons-def 'x 50) 
+                        (make-func-def 'get 'x (make-add 'x 3))) 'get) 
+  (make-func-def 'get 'x (make-add 'x 3)))
+(define (lookup-func-def da f)
+  (cond
+    [(empty? da) (error NOT_FOUND)]
+    [else (if (and (func-def? (first da))
+                   (symbol=? f (func-def-name (first da))))
+          (first da)
+          (lookup-func-def (rest da) f))]))
+
