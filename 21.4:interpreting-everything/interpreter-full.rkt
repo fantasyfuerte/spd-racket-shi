@@ -10,10 +10,12 @@
 ;-- Symbol
 ;-- Function
 ;-- Add
+;-- Substract
 ;-- Mul
+;-- Divide
 
 (define-struct add [left right])
-;an Add is a structur
+;an Add is a structure
 ; (make-add BSL-expr BSL-expr)
 ;interpretation: (make-add a b) represents the adition of a and b
 
@@ -21,6 +23,18 @@
 ;a Mul is a structure 
 ; (make-mul BSL-expr BSL-expr)
 ;interpretation: (make-mul a b) means the multiplication of a and b
+
+(define-struct substract [left right])
+;a Substract is a structure
+; (make-substract BSL-expr BSL-expr)
+;interpretation: (make-substract a b) represents the substraction 
+;of a and b
+
+(define-struct divide [left right])
+;a Divide is a structure
+; (make-divide BSL-expr BSL-expr)
+;interpretation: (make-divide a b) represents the division 
+;of a and b
 
 ;a Value is a Number
 
@@ -94,8 +108,12 @@
     [(number? exp) exp] 
     [(add? exp) (+ (eval-all (add-left exp) da)
                    (eval-all (add-right exp) da))]
+    [(substract? exp) (- (eval-all (substract-left exp) da)
+                   (eval-all (substract-right exp) da))]
     [(mul? exp) (* (eval-all (mul-left exp) da)
                    (eval-all (mul-right exp) da))]
+    [(divide? exp) (/ (eval-all (divide-left exp) da)
+                   (eval-all (divide-right exp) da))]
     [(symbol? exp) (eval-all (cons-def-value (lookup-cons-def da exp))
                     da)]
     [(func? exp) (local(
@@ -157,8 +175,12 @@
          (cond
            [(symbol=? (first s) '+)
               (make-add (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) '-)
+              (make-substract (parse (second s)) (parse (third s)))]
            [(symbol=? (first s) '*)
               (make-mul (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) '/)
+              (make-divide (parse (second s)) (parse (third s)))]
            [else WRONG_EXPR])])))
 
 ;SL -> BSL-da-all
@@ -174,6 +196,12 @@
                            (parse (third s))))]))
 
 ;S-expr SL -> Value
+;interprets an s-expr as bsl
+(check-expect (interpreter '(+ 3 3) '()) 6)
+(check-expect 
+  (interpreter '(+ x (age 10)) 
+    '((define x 10) (define (age x) 18)))
+  28)
 (define (interpreter sexp sl)
   (eval-all (parse sexp) (map parse-def sl))
 )
