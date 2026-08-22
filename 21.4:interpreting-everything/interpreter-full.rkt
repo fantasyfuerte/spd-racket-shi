@@ -3,6 +3,7 @@
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname interpreter-full) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 (define NOT_FOUND "definition not found")
+(define WRONG_EXPR "invalid expression")
 
 ;a BSL-var-func-expr is one of:
 ;-- Number
@@ -124,3 +125,55 @@
                           (subst (mul-right exp) x v))]
     [(add? exp) (make-add (subst (add-left exp) x v) 
                           (subst (add-right exp) x v))])))
+
+;S-expr -> BSl-expr
+(check-expect (parse '(+ 1 1)) (make-add 1 1))
+(check-expect (parse '(* 20 8)) (make-mul 20 8))
+(check-expect (parse '3) 3)
+(check-error (parse '((((((hL))))))) WRONG_EXPR)
+(define (parse s)
+  (cond
+    [(atom? s) (parse-atom s)]
+    [else (parse-sl s)]))
+
+;Atom -> BLS-expr
+(define (parse-atom s)
+  (cond
+    [(number? s) s]
+    [(symbol? s) s]
+    [else (error WRONG_EXPR)]
+  )
+)
+
+;SL -> BSL-expr
+(define (parse-sl s)
+  (local (
+    (define L (length s)))
+    (cond
+      [(= L 2) (make-func (first s) 
+                            (parse (second s)))]
+      [(< L 3) (error WRONG_EXPR)]
+      [(and (= L 3) (symbol? (first s)))
+         (cond
+           [(symbol=? (first s) '+)
+              (make-add (parse (second s)) (parse (third s)))]
+           [(symbol=? (first s) '*)
+              (make-mul (parse (second s)) (parse (third s)))]
+           [else WRONG_EXPR])])))
+
+;SL -> BSL-da-all
+;parses the definitions area 
+(define (parse-def s)
+  (cond
+    [(empty? s) '()]
+    [(equal? (first s) 'define) 
+        (if (symbol? (second s)) 
+            (make-cons-def (second s) (parse (third s)))
+            (make-func-def (first (second s)) 
+                           (second (second s))
+                           (parse (third s))))]))
+
+;S-expr SL -> Value
+(define (interpreter sexp sl)
+  (eval-all (parse sexp) (map parse-def sl))
+)
