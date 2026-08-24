@@ -21,3 +21,11 @@
 
 (define ex1 '(transition ((from "seen-e") (to "seen-f"))))
 (define ex2 '(ul (li (word) (word))(li (word))))
+
+(define a0 '((initial "X")))
+
+(define e0 '(machine))
+(define e1 `(machine ,a0))
+(define e2 '(machine (action)))
+(define e3 '(machine () (action)))
+(define e4 `(machine ,a0 (action) (action)))
