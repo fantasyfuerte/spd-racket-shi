@@ -56,3 +56,17 @@
         (cons? possible-attribute))]
   )
 )
+
+;Xexpr.v2 -> Symbol
+;extracts the name of an xexpr
+(check-expect (xexpr-name e0) 'machine) 
+(check-expect (xexpr-name e3) 'machine) 
+(check-expect (xexpr-name '(table (row) (row))) 'table) 
+(check-expect (xexpr-name '()) #false) 
+(define (xexpr-name xexpr)
+  (cond
+    [(empty? xexpr) #false]
+    [(symbol? (first xexpr)) (first xexpr)]
+    [else #false]
+  )
+)
