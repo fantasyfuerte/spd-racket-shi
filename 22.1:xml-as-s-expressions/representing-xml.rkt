@@ -87,3 +87,16 @@
     [else (rest xexpr)]
   )
 )
+
+;[List-of Attribute] Symbol -> [String or #false]
+;retrieves the value of the sy attribute
+;#false otherwise
+(check-expect (find-attr '((color "red") (size "xl")) 'size) "xl")
+(check-expect (find-attr '((color "red") (size "xl")) 'ww) #false)
+(define (find-attr al sy)
+  (cond
+    [(empty? al) #false]
+    [else 
+      (cond          
+        [(equal? (first (first al)) sy) (second (first al))]
+        [else (find-attr (rest al) sy)])]))
