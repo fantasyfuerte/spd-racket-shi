@@ -37,4 +37,22 @@
 (check-expect (xexpr-attr e2) '())
 (check-expect (xexpr-attr e3) '())
 (check-expect (xexpr-attr e4) '((initial "X")))
-(define (xexpr-attr xe) '())
+(define (xexpr-attr xe) 
+  (local ((define optional-loa+content (rest xe)))
+    (cond
+      [(empty? optional-loa+content) '()]
+      [else (if (list-of-attributes?(first optional-loa+content))
+                (first optional-loa+content)
+                '())])))
+
+;[List-of Attribute] or Xexpr.v2 -> Boolean
+;determines whether x is an element of [List-of Attribute]
+;#false otherwise
+(define (list-of-attributes? x)
+  (cond 
+    [(empty? x) #true]
+    [else
+      (local ((define possible-attribute (first x)))
+        (cons? possible-attribute))]
+  )
+)
