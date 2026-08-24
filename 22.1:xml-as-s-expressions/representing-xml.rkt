@@ -59,6 +59,7 @@
 
 ;Xexpr.v2 -> Symbol
 ;extracts the name of an xexpr
+;#false otherwise
 (check-expect (xexpr-name e0) 'machine) 
 (check-expect (xexpr-name e3) 'machine) 
 (check-expect (xexpr-name '(table (row) (row))) 'table) 
@@ -68,5 +69,21 @@
     [(empty? xexpr) #false]
     [(symbol? (first xexpr)) (first xexpr)]
     [else #false]
+  )
+)
+
+;Xexpr.v2 -> Symbol
+;extracts the content of an xexpr
+;#false otherwise
+(check-expect (xexpr-content e0) '()) 
+(check-expect (xexpr-content e3) '((action))) 
+(check-expect (xexpr-content '(table (row) (row))) '((row) (row))) 
+(check-expect (xexpr-content '()) #false) 
+(define (xexpr-content xexpr)
+  (cond
+    [(empty? xexpr) #false]
+    [(empty? (rest xexpr)) '()]
+    [(list-of-attributes? (second xexpr)) (xexpr-content (rest xexpr))]
+    [else (rest xexpr)]
   )
 )
