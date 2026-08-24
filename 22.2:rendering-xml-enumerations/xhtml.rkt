@@ -32,3 +32,10 @@
     [else #false]
   )
 )
+
+;Word -> String
+;extracts the text from a word instance
+(check-expect (word-text w1) "book")
+(check-expect (word-text w2) "hook")
+(check-expect (word-text w3) "test")
+(define (word-text w) (second (first (second w))))
