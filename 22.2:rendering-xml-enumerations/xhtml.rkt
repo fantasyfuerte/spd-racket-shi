@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname xhtml) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/abstraction)
+
 ;an Xexpr.v2 is a list:
 ;-- (cons Symbol Body)
 
@@ -24,4 +26,9 @@
 (check-expect (word? w1) #true)
 (check-expect (word? "word") #false)
 (check-expect (word? '(word ((j "j")))) #false)
-(define (word? x) #false)
+(define (word? x)
+  (match x
+    [(list 'word (list (list 'text _))) #true]
+    [else #false]
+  )
+)
