@@ -29,3 +29,12 @@
 (define e2 '(machine (action)))
 (define e3 '(machine () (action)))
 (define e4 `(machine ,a0 (action) (action)))
+
+;Xexpr.v2 -> [List-of Attribute]
+;retrieves the list of attributes of xe
+(check-expect (xexpr-attr e0) '())
+(check-expect (xexpr-attr e1) '((initial "X")))
+(check-expect (xexpr-attr e2) '())
+(check-expect (xexpr-attr e3) '())
+(check-expect (xexpr-attr e4) '((initial "X")))
+(define (xexpr-attr xe) '())
