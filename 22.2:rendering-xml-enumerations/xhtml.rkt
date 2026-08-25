@@ -18,7 +18,7 @@
 
 ;an XWord is '(word ((text String)))
 
-(define BT (circle 10 "solid" "black"))
+(define BT (circle 2 "solid" "black"))
 
 (define w1 '(word ((text "book"))))
 (define w2 '(word ((text "hook"))))
@@ -27,14 +27,14 @@
 ;Xexpr.v2 -> Symbol
 ;extracts the content of an xexpr
 ;#false otherwise
-(define (xexpr-content xexpr)
-  (cond
-    [(empty? xexpr) #false]
-    [(empty? (rest xexpr)) '()]
-    [(list-of-attributes? (second xexpr)) (xexpr-content (rest xexpr))]
-    [else (rest xexpr)]
-  )
-)
+(define (xexpr-content xe)
+  (local ((define optional-loa+content (rest xe)))
+    (cond
+      [(empty? optional-loa+content) '()]
+      [else
+       (if (list-of-attributes? (first optional-loa+content))
+           (rest optional-loa+content)
+           optional-loa+content)])))
 
 ;[List-of Attribute] or Xexpr.v2 -> Boolean
 ;determines whether x is an element of [List-of Attribute]
@@ -65,7 +65,9 @@
 (check-expect (word-text w1) "book")
 (check-expect (word-text w2) "hook")
 (check-expect (word-text w3) "test")
-(define (word-text w) (second (first (second w))))
+(define (word-text w)
+  (match w
+    [(list 'word (list (list 'text txt))) txt]))
 
 ;an XEnum.v1 is one of:
 ;-- (cons 'ul [List-of XItem.v1])
