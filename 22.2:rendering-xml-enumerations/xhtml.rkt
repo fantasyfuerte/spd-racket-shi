@@ -87,5 +87,14 @@
   (local ((define content (xexpr-content i))
           (define element (first content))
           (define a-word (word-text element))
-          (define item (text a-word 12 'black)))
+          (define item (text a-word 15 'black)))
     (beside/align 'center BT item)))
+
+;XEnum.v1 -> Image
+;renders a simple enumeration as an image
+(define (render-enum1 xe)
+  (local ((define content (xexpr-content xe))
+          ;XItem.v1 Image -> Image
+          (define (deal-with-one item so-far)
+            (above/align 'left (render-item1 item) so-far)))
+    (foldr deal-with-one empty-image content)))
