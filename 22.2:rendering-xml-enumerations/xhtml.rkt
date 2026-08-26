@@ -98,3 +98,65 @@
           (define (deal-with-one item so-far)
             (above/align 'left (render-item1 item) so-far)))
     (foldr deal-with-one empty-image content)))
+
+;An XItem.v2 is one of:
+;-- (cons 'li (cons XWord '()))
+;-- (cons 'li (cons [List-of Attribute] (list XWord)))
+;-- (cons 'li (cons XEnum.v2 '()))
+;-- (cons 'li (cons [List-of Attribute] (list XEnum.v2)))
+
+;An XEnum.v2 is one of:
+;-- (cons 'ul [List-of XItem.v2])
+;-- (cons 'ul (cons [List-of Attribute] [List-of XItem.v2]))
+
+(define SIZE 15)
+
+;Image -> Image
+;marks item with bullet
+(define (bulletize item)
+  (beside/align 'center BT item))
+
+;XEnum.v2 -> Image
+;renders an XEnum.v2 as an image
+(define (render-enum xe)
+  (local ((define content (xexpr-content xe))
+          ;XItem.v1 Image -> Image
+          (define (deal-with-one item so-far)
+            (above/align 'left (render-item item) so-far)))
+    (foldr deal-with-one empty-image content)))
+
+;XItem.v2 -> Image
+;renders one XItem.v2 as an image
+(define (render-item an-item)
+  (local ((define content (first (xexpr-content an-item))))
+    (bulletize
+      (cond
+        [(word? content)
+         (text (word-text content) SIZE 'black)]
+      [else (render-enum content)]))))
+
+(define input1 
+  '(ul (li (word ((text "hello")))) 
+       (li (word ((text "hello"))))))
+(define input2 
+  '(ul (li (word ((text "hello12")))) 
+       (li (word ((text "hello"))))))
+
+;XEnum.v2 -> Number
+;counts all "hello"'s in an instance of e
+(check-expect (count-hello input1) 2)
+(check-expect (count-hello input2) 1)
+(define (count-hello e)
+  (cond
+    [(empty?(xexpr-content e)) 0] 
+    [else (local(
+      (define (count element so-far)
+        (if (word? (first (xexpr-content element)))
+            (if 
+              (string=? "hello" 
+                        (word-text (first (xexpr-content element))))
+              (add1 so-far) so-far)
+            (count-hello element)))
+    )(foldr count 0 (xexpr-content e)))]   
+  )
+)
