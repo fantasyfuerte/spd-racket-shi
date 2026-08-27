@@ -28,8 +28,9 @@
 
 ;[X Y] [List-of [List X Y]] X -> Y
 ;find the matching Y for the given X in alist
+(check-expect (find fsm-traffic "red") "green")
+(check-error (find fsm-traffic "rfed") "not found")
 (define (find alist x)
   (local ((define fm (assoc x alist)))
     (if (cons? fm) (second fm) (error "not found"))))
-
 
