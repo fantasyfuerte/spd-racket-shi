@@ -36,3 +36,10 @@
 (define (find alist x)
   (local ((define fm (assoc x alist)))
     (if (cons? fm) (second fm) (error "not found"))))
+
+;an XMachine is a nested list of this shape:
+;  `(machine ((initial ,FSM-State)) [List-of X1T])
+;an X1T is a nested list of this shape:
+; `(action ((state ,FSM-State) (next ,FSM-State)))
+
+
