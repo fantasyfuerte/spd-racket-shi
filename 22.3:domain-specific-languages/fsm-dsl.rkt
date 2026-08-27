@@ -38,8 +38,8 @@
     (if (cons? fm) (second fm) (error "not found"))))
 
 ;an XMachine is a nested list of this shape:
-;  `(machine ((initial ,FSM-State)) [List-of X1T])
+;  (list 'machine (list (list 'initial FSM-State)) [List-of X1T])
 ;an X1T is a nested list of this shape:
-; `(action ((state ,FSM-State) (next ,FSM-State)))
+; (list 'action (list (list 'state FSM-State) (list 'next FSM-State)))
 
 
