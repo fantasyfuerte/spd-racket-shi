@@ -40,7 +40,7 @@
                 (first optional-loa+content)
                 '())])))
 
-;Xexpr.v2 -> Symbol
+;Xexpr.v2 -> Xexpr.v2
 ;extracts the content of an xexpr
 ;#false otherwise
 (define (xexpr-content xe)
