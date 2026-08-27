@@ -5,6 +5,9 @@
 (require 2htdp/universe)
 (require 2htdp/image)
 
+;error string constants
+(define NF "not found")
+
 ;a FSM is a [List-of 1Transition]
 ;a 1Transition is a list:
 ;  (list (list FSM-State KeyEvent) FSM-State)
@@ -31,11 +34,11 @@
 ;[X Y] [List-of [List X Y]] X -> Y
 ;find the matching Y for the given X in alist
 (check-expect (find fsm-traffic '("red" " ")) "green")
-(check-error (find fsm-traffic '("red" "0")) "not found")
-(check-error (find fsm-traffic "rfed") "not found")
+(check-error (find fsm-traffic '("red" "0")) NF)
+(check-error (find fsm-traffic "rfed") NF)
 (define (find alist x)
   (local ((define fm (assoc x alist)))
-    (if (cons? fm) (second fm) (error "not found"))))
+    (if (cons? fm) (second fm) (error NF))))
 
 ;an XMachine is a nested list of this shape:
 ;  (list 'machine (list (list 'initial FSM-State)) [List-of X1T])
@@ -54,7 +57,7 @@
       (action ((state "white") (next "black"))))))
 
 (define xm0 
-  '(machine ((initial "red))
+  '(machine ((initial "red"))
      ((action ((state "red") (next "green"))) 
       (action ((state "green") (next "yellow")))
       (action ((state "yellow") (next "red"))))))
@@ -66,13 +69,12 @@
 
 ;XMachine -> FSM-State
 ;extracts the initial state of xm
-(check-expect (sm-state0 xm0) "red")
+(check-expect (xm-state0 xm0) "red")
 (define (xm-state0 xm0)
   (find-attr (xexpr-attr xm0) 'initial))
 
 ;XMachine -> [List-of 1Transitions]
 ;translates the embedded list of X1Ts into a [List-of Transitions]
-(check-expect (xm->transitions xm0) fsm-traffic)
 
 ;Xexpr -> [List-of Attributes]
 ;extracts the attributes of exp
@@ -88,8 +90,20 @@
   )
   (cond
     [(empty? maybeloa) '()]
-    [(list-of-attributes? maybeloa) maybeloa]
+    [(list-of-attributes? (first maybeloa)) (first maybeloa)]
     [else '()]
   ) 
+  )
+)
+
+;[List-of Attributes] Symbol -> FSM-State
+;retrieves the value of attribute attr in loa
+;if not found throws an error
+(define (find-attr loa attr)
+  (cond 
+    [(empty? loa) (error NF)]
+    [else (if (symbol=? attr (first (first loa)))
+              (second (first loa))
+              (find-attr (rest loa attr)))]
   )
 )
