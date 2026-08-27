@@ -75,6 +75,11 @@
 
 ;XMachine -> [List-of 1Transitions]
 ;translates the embedded list of X1Ts into a [List-of Transitions]
+(check-expect (xm->transitions xm0) fsm-traffic)
+(define (xm->transitions xm) 
+  (local((define content (xexpr-content xm)))
+  (map (lambda (x) (second x)) content))
+)
 
 ;Xexpr -> [List-of Attributes]
 ;extracts the attributes of exp
@@ -95,6 +100,18 @@
   ) 
   )
 )
+
+;Xexpr -> Xexpr
+;extracts the content of an xexpr
+;#false otherwise
+(define (xexpr-content xe)
+  (local ((define optional-loa+content (rest xe)))
+    (cond
+      [(empty? optional-loa+content) '()]
+      [else
+       (if (list-of-attributes? (first optional-loa+content))
+           (rest optional-loa+content)
+           optional-loa+content)])))
 
 ;[List-of Attributes] Symbol -> FSM-State
 ;retrieves the value of attribute attr in loa
