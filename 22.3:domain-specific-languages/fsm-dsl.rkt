@@ -52,3 +52,26 @@
   '(machine ((initial "black"))
      ((action ((state "black") (next "white")))
       (action ((state "white") (next "black"))))))
+
+(define xm0 
+  '(machine ((initial "red))
+     ((action ((state "red") (next "green"))) 
+      (action ((state "green") (next "yellow")))
+      (action ((state "yellow") (next "red"))))))
+
+;XMachine -> FSM-State
+;simulates an FSM via the fiven configuration
+(define (simulate-xmachine xm)
+  (simulate ... ...))
+
+;XMachine -> FSM-State
+;extracts the initial state of xm
+(check-expect (sm-state0 xm0) "red")
+(define (xm-state0 xm0)
+  (find-attr (xexpr-attr xm0) 'initial))
+
+;XMachine -> [List-of 1Transitions]
+;translates the embedded list of X1Ts into a [List-of Transitions]
+(check-expect (xm->transitions xm0) fsm-traffic)
+
+
