@@ -42,4 +42,13 @@
 ;an X1T is a nested list of this shape:
 ; (list 'action (list (list 'state FSM-State) (list 'next FSM-State)))
 
+;xml representation of a BW-Machine
+;<machine initial="red">
+;	<action state="black" next="white"/>
+;	<action state="white" next="black"/>
+;</machine>
 
+(define bw-machine
+  '(machine ((initial "black"))
+     ((action ((state "black") (next "white")))
+      (action ((state "white") (next "black"))))))
