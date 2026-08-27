@@ -29,7 +29,7 @@
                  (square 100 "solid" current)))]
     [on-key 
       (lambda (current key-event)
-            (find transitions (cons current (cons key-event '()))))]))
+            (find transitions current))]))
 
 ;[X Y] [List-of [List X Y]] X -> Y
 ;find the matching Y for the given X in alist
@@ -58,14 +58,14 @@
 
 (define xm0 
   '(machine ((initial "red"))
-     ((action ((state "red") (next "green"))) 
+     (action ((state "red") (next "green"))) 
       (action ((state "green") (next "yellow")))
-      (action ((state "yellow") (next "red"))))))
+      (action ((state "yellow") (next "red")))))
 
 ;XMachine -> FSM-State
 ;simulates an FSM via the fiven configuration
 (define (simulate-xmachine xm)
-  (simulate ... ...))
+  (simulate (xm-state0 xm) (xm->transitions xm)))
 
 ;XMachine -> FSM-State
 ;extracts the initial state of xm
@@ -73,31 +73,40 @@
 (define (xm-state0 xm0)
   (find-attr (xexpr-attr xm0) 'initial))
 
+(define fsm-traffic-without-keys
+  '(("red" "green") 
+   ("green" "yellow")
+   ("yellow" "red"))) 
+
 ;XMachine -> [List-of 1Transitions]
 ;translates the embedded list of X1Ts into a [List-of Transitions]
-(check-expect (xm->transitions xm0) fsm-traffic)
+(check-expect (xm->transitions xm0) fsm-traffic-without-keys)
 (define (xm->transitions xm) 
-  (local((define content (xexpr-content xm)))
-  (map (lambda (x) (second x)) content))
-)
+  (local(;X1T-> 1Transition
+         (define (xaction->action xa)
+           (list (find-attr (xexpr-attr xa) 'state)
+                 (find-attr (xexpr-attr xa) 'next))))
+  (map xaction->action (xexpr-content xm))))
 
 ;Xexpr -> [List-of Attributes]
 ;extracts the attributes of exp
 (define (xexpr-attr exp)
   (local(
     (define maybeloa (rest exp))
-    (define (list-of-attributes? x)
-      (cond
-        [(empty? x) #true]
-        [else (if (cons? (first x)) #true #false)]
-      )
-    )
   )
   (cond
     [(empty? maybeloa) '()]
     [(list-of-attributes? (first maybeloa)) (first maybeloa)]
     [else '()]
   ) 
+  )
+)
+
+;[List-of Attribute] or Xexpr -> Boolean
+(define (list-of-attributes? x)
+  (cond
+    [(empty? x) #true]
+    [else (if (cons? (first x)) #true #false)] 
   )
 )
 
@@ -121,6 +130,6 @@
     [(empty? loa) (error NF)]
     [else (if (symbol=? attr (first (first loa)))
               (second (first loa))
-              (find-attr (rest loa attr)))]
+              (find-attr (rest loa) attr))]
   )
 )
