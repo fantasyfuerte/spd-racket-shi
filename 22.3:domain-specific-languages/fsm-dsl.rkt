@@ -74,4 +74,22 @@
 ;translates the embedded list of X1Ts into a [List-of Transitions]
 (check-expect (xm->transitions xm0) fsm-traffic)
 
-
+;Xexpr -> [List-of Attributes]
+;extracts the attributes of exp
+(define (xexpr-attr exp)
+  (local(
+    (define maybeloa (rest exp))
+    (define (list-of-attributes? x)
+      (cond
+        [(empty? x) #true]
+        [else (if (cons? (first x)) #true #false)]
+      )
+    )
+  )
+  (cond
+    [(empty? maybeloa) '()]
+    [(list-of-attributes? maybeloa) maybeloa]
+    [else '()]
+  ) 
+  )
+)
