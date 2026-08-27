@@ -24,6 +24,22 @@
 (define w2 '(word ((text "hook"))))
 (define w3 '(word ((text "test"))))
 
+(define (xexpr-name xexpr)
+  (cond
+    [(empty? xexpr) #false]
+    [(symbol? (first xexpr)) (first xexpr)]
+    [else #false]
+  )
+)
+
+(define (xexpr-attr xe) 
+  (local ((define optional-loa+content (rest xe)))
+    (cond
+      [(empty? optional-loa+content) '()]
+      [else (if (list-of-attributes?(first optional-loa+content))
+                (first optional-loa+content)
+                '())])))
+
 ;Xexpr.v2 -> Symbol
 ;extracts the content of an xexpr
 ;#false otherwise
@@ -157,6 +173,39 @@
                         (word-text (first (xexpr-content element))))
               (add1 so-far) so-far)
             (count-hello element)))
-    )(foldr count 0 (xexpr-content e)))]   
+    )(foldr count 0 (xexpr-content e)))]))
+
+(define output1 
+  '(ul (li (word ((text "bye")))) 
+       (li (word ((text "bye"))))))
+(define output2 
+  '(ul (li (word ((text "hello12")))) 
+       (li (word ((text "bye"))))))
+
+;XEnum.v2 -> XEnum.v2
+;replaces the occurrences of "hello" with "bye" in e
+(check-expect (subst input1) output1)
+(check-expect (subst input2) output2)
+(define (subst e)
+  (local (
+    (define new-content 
+      (for/list ([i (xexpr-content e)]) (subst-item i)))
+    (define attributes (xexpr-attr e)))
+        (if (empty? attributes)
+            (cons (xexpr-name e) new-content)
+            (cons (xexpr-name e) (cons attributes new-content)))))
+
+;XItem.v2 -> XItem.v2
+;replaces any-occurrences of "hello" with bye
+(define (subst-item item)
+  (cond
+    [(not (word? (first (xexpr-content item)))) (subst item)]
+    [else 
+      (cond
+        [(string=? "hello" (word-text (first(xexpr-content item))))
+         (list (xexpr-name item)
+               (list 'word (list (list 'text "bye"))))] 
+        [else item]
+      )]
   )
 )
