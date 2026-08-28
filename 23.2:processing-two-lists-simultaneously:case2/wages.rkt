@@ -11,3 +11,37 @@
 (check-expect (wages*.v2 (list 5.65)(list 40)) '(226.0))
 (define (wages*.v2 hours wages/h)
   (for/list ([h hours] [w wages/h])(* w h)))
+
+(define-struct employee [name ssn pay-rate])
+;an Employee is a structure:
+;  (make-employee String String Number)
+;interpretation: (make-employee a b c) combines the employee's name (a)
+;the employee's ssn (b) and the employee's pay-rate (c)
+
+(define-struct work-record [name hours])
+;a WorkRecord is a structure:
+;  (make-work-record String Number)
+;interpretation: (make-work-record a b) means that employee a has
+;worked b hours through the week
+
+(define-struct payroll [name pay])
+;a Payroll is a structure:
+;  (make-payroll String Number)
+;interpretation: (make-payroll a b) means that employee a recieve
+;$ (b)
+
+;[List-of Employee] [List-of WorkRecord] -> [List-of Payroll]
+;computes the weekly wage of every employee
+(check-expect (wages '() '()) '())
+(check-expect
+  (wages 
+    (list (make-employee "Leo" 4040 50))
+    (list (make-work-record "Leo" 50)))
+  (list (make-payroll "Leo" 2500)))
+(define (wages le lwr)
+  (local(
+    (define (weekly-wage e wr)
+      (make-payroll 
+        (employee-name e) 
+        (* (employee-pay-rate e) (work-record-hours wr)))))
+  (for/list ([e le] [wr lwr]) (weekly-wage e wr))))
