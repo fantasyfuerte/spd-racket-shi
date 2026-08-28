@@ -4,4 +4,11 @@
 
 ;[List-of Number] [List-of Number] -> [List-of Number]
 ;replaces the final '() in front with end
-(define (replace-eol-with front end) front)
+(check-expect (replace-eol-with '() '(a b)) '(a b))
+(check-expect (replace-eol-with (cons 1 '()) '(a b)) (cons 1 '(a b)))
+(define (replace-eol-with front end)
+  (cond
+    [(empty? front) end]
+    [else (cons (first front) (replace-eol-with (rest front) end))]
+  )
+)
