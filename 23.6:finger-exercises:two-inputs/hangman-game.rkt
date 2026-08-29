@@ -1,14 +1,15 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname hangman-game) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
-
 (require 2htdp/image)
 (require 2htdp/universe)
+(require 2htdp/batch-io)
 
 ;an HM-Word is a [List-of Letter or "_"]
 ;interpretation "_" representsa letter to be guessed
 
 (define LETTERS (explode "abcdefghijklmnñopqrstuvwxyz"))
+(define (do-nothing s ) s)
 
 ;HM-Word N -> String
 ;runs a simplistic hangman game, produces the current state
@@ -52,4 +53,7 @@
 ;yields true if s is "_"
 (define (blank? x) (string=? "_" x))
 
-(define (do-nothing s ) s)
+(define LOCATION "/usr/share/dict/words")
+(define AS-LIST (read-lines LOCATION))
+(define SIZE (length AS-LIST))
+(play (list-ref AS-LIST (random SIZE)) 60)
