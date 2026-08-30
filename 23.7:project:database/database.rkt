@@ -26,7 +26,7 @@
     (list 
       (make-spec "Name" string?)
       (make-spec "Age" integer?)
-      (make-spec "Present" boolean?) 
+      (make-spec "Present" boolean?)) 
     (list
       (list "Alice" 35 #true)
       (list "Bob" 25 #false)
@@ -41,3 +41,32 @@
     (list
       (list #true "presence")
       (list #false "absence"))))
+
+;DB -> Boolean
+;do all rows in db satisfy (I1) and (I2)
+(check-expect (integrity-check db-example-1) #true)
+(check-expect (integrity-check db-example-2) #true)
+(define (integrity-check db)
+  (local (
+  ;Row-> Boolean
+  ;does row satisfy I1 and I2
+  (define (row-integrity-check row) 
+    (and (length-of-row-check row)
+         (check-every-row row)))
+  ;Row -> Boolean
+  (define (length-of-row-check r) (= (length r) (length (db-schema db))))
+  ;Row -> Boolean
+  (define (check-every-row r) 
+    (andmap2 
+      (lambda (a b) [(spec-predicate a] b))
+      (db-schema db) 
+      r))
+  )
+  (andmap row-integrity-check (db-content db))))
+
+(define (andmap2 f l1 l2)
+  (cond
+    [(empty? l1) #true]
+    [else (and (f (first l1) (first l2)) (andmap2 f (rest l1) (rest l2)))]
+  )
+)
