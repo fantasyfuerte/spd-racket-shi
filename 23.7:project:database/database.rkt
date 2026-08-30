@@ -33,6 +33,17 @@
       (list "Carol" 30 #true)
       (list "Dave" 32 #false))))
 
+(define wrong-db-example-1
+  (make-db 
+    (list 
+      (make-spec "Name" string?)
+      (make-spec "Age" integer?))
+    (list
+      (list "Alice" 35 #true)
+      (list "Bob" 25 #false)
+      (list "Carol" 30 #true)
+      (list "Dave" 32 #false))))
+
 (define db-example-2
   (make-db 
     (list 
@@ -42,10 +53,21 @@
       (list #true "presence")
       (list #false "absence"))))
 
+(define wrong-db-example-2
+  (make-db 
+    (list 
+      (make-spec "Present" number?)
+      (make-spec "Description" string?)) 
+    (list
+      (list #true "presence")
+      (list #false "absence"))))
+
 ;DB -> Boolean
 ;do all rows in db satisfy (I1) and (I2)
 (check-expect (integrity-check db-example-1) #true)
 (check-expect (integrity-check db-example-2) #true)
+(check-expect (integrity-check wrong-db-example-1) #false)
+(check-expect (integrity-check wrong-db-example-2) #false)
 (define (integrity-check db)
   (local (
   ;Row-> Boolean
@@ -58,7 +80,7 @@
   ;Row -> Boolean
   (define (check-every-row r) 
     (andmap2 
-      (lambda (a b) [(spec-predicate a] b))
+      (lambda (a b) [(spec-predicate a) b])
       (db-schema db) 
       r))
   )
