@@ -5,7 +5,9 @@
 (define-struct db [schema content])
 ;a DB is a structure: (make-db Schema Content)
 ;a Schema is a [List-of Spec]
-;a Spec is a [List-of Label Predicate
+(define-struct spec [label predicate])
+;a Spec is a structure:
+;  (make-spec (Label Predicate))
 ;a Label is a String
 ;a Predicate is a [Any -> Boolean]
 
@@ -22,9 +24,9 @@
 (define db-example-1
   (make-db 
     (list 
-      (list "Name" string?) 
-      (list "Age" number?) 
-      (list "Present" boolean?))
+      (make-spec "Name" string?)
+      (make-spec "Age" integer?)
+      (make-spec "Present" boolean?) 
     (list
       (list "Alice" 35 #true)
       (list "Bob" 25 #false)
@@ -34,8 +36,8 @@
 (define db-example-2
   (make-db 
     (list 
-      (list "Present" boolean?)
-      (list "Description" string?)) 
+      (make-spec "Present" boolean?)
+      (make-spec "Description" string?)) 
     (list
       (list #true "presence")
       (list #false "absence"))))
