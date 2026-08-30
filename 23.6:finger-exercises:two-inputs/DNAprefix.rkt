@@ -21,3 +21,21 @@
               #false)]
   )
 )
+
+;[List-of DNA-Symbol] [List-of DNA-Symbol] -> [DNA-Symbol or #false]
+;finds the delta in the dna
+(check-expect (dna-delta '(a c g t) '(a)) 'c)
+(check-expect (dna-delta '(a c g t) '(a t)) #false)
+(check-error (dna-delta '(a c) '(a c)) "identical lists")
+(define (dna-delta p ss)
+  (cond
+    [(empty? ss) 
+      (if (empty? p) 
+          (error "identical lists")
+          (first p))]
+    [(empty? p) #false]
+    [else (if (symbol=? (first p) (first ss)) 
+              (dna-delta (rest p) (rest ss))
+              #false)]
+  )
+)
