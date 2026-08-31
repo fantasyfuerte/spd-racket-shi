@@ -79,16 +79,9 @@
   (define (length-of-row-check r) (= (length r) (length (db-schema db))))
   ;Row -> Boolean
   (define (check-every-row r) 
-    (andmap2 
+    (andmap 
       (lambda (a b) [(spec-predicate a) b])
       (db-schema db) 
       r))
   )
   (andmap row-integrity-check (db-content db))))
-
-(define (andmap2 f l1 l2)
-  (cond
-    [(empty? l1) #true]
-    [else (and (f (first l1) (first l2)) (andmap2 f (rest l1) (rest l2)))]
-  )
-)
