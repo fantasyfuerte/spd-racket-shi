@@ -70,18 +70,21 @@
 (check-expect (integrity-check wrong-db-example-2) #false)
 (define (integrity-check db)
   (local (
+  (define schema (db-schema db))
+  (define content (db-content db))
+  (define width (length schema))
   ;Row-> Boolean
   ;does row satisfy I1 and I2
   (define (row-integrity-check row) 
     (and (length-of-row-check row)
          (check-every-row row)))
   ;Row -> Boolean
-  (define (length-of-row-check r) (= (length r) (length (db-schema db))))
+  (define (length-of-row-check r) (= (length r) width))
   ;Row -> Boolean
   (define (check-every-row r) 
     (andmap 
       (lambda (a b) [(spec-predicate a) b])
-      (db-schema db) 
+      schema 
       r))
   )
-  (andmap row-integrity-check (db-content db))))
+  (andmap row-integrity-check content)))
