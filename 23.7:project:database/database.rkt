@@ -88,3 +88,46 @@
       r))
   )
   (andmap row-integrity-check content)))
+
+(define projected-content
+  (list
+    (list "Alice" #true)
+    (list "Bob" #false)
+    (list "Carol" #true)
+    (list "Dave" #false)))
+
+(define projected-schema
+  (list
+    (make-spec "Name" string?)
+    (make-spec "Present" boolean?)))
+
+(define projected-db (make-db projected-schema projected-content))
+
+;DB [List-of Label] -> DB
+;retains a column from db if its label is in labels
+(check-expect 
+  (db-content(project db-example-1 '("Name" "Present"))) 
+  projected-content)
+(define (project db labels)
+  (local  ((define schema (db-schema db))
+           (define content (db-content db))
+           ;Spec -> Boolean
+           ;does this spec belong to the new schema
+           (define (keep? c) (member? (spec-label c) labels))
+           ;Row [List-of Label] -> Row
+           ;retains those cells whose corresponding element in names is
+           ;also in labels
+           (define (row-filter row names)
+             (cond
+               [(empty? row) '()]
+               [else (if (member? (first names) labels)
+                         (cons (first row) 
+                               (row-filter (rest row) (rest names))) 
+                         (row-filter (rest row) (rest names)))]))
+           ;Row -> Row
+           ;retains thoses columns whose name is in labels
+           (define (row-project row) 
+             (row-filter row (map spec-label schema))))
+    (make-db (filter keep? schema)
+             (map row-project content))))
+
