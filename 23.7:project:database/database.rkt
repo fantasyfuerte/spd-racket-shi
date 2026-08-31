@@ -111,6 +111,7 @@
 (define (project db labels)
   (local  ((define schema (db-schema db))
            (define content (db-content db))
+           (define original-labels (map spec-label schema))
            ;Spec -> Boolean
            ;does this spec belong to the new schema
            (define (keep? c) (member? (spec-label c) labels))
@@ -127,7 +128,7 @@
            ;Row -> Row
            ;retains thoses columns whose name is in labels
            (define (row-project row) 
-             (row-filter row (map spec-label schema))))
+             (row-filter row original-labels)))
     (make-db (filter keep? schema)
              (map row-project content))))
 
