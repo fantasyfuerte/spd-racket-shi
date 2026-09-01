@@ -132,3 +132,32 @@
     (make-db (filter keep? schema)
              (map row-project content))))
 
+
+;DB [List-of Strings] Predicate
+;produces a projection with the rows who accomplish the condition 
+(check-expect 
+  (select 
+    db-example-1 
+    '("Name" "Age") 
+    (lambda (r) (> (second r) 18)))
+  (project db-example-1 '("Name" "Age")))
+(check-expect 
+  (db-content(select 
+    db-example-1 
+    '("Age") 
+    (lambda (r) (< (first r) 30))))
+  (db-content(make-db 
+    (list 
+      (make-spec "Age" integer?))
+    (list
+      (list 25 )))))
+(define (select db labels f)
+  (local (
+    (define projected (project db labels))
+    (define content (db-content projected))
+    (define schema (db-schema projected))
+    (define filtered-content
+      (filter f content))
+  ) 
+  (make-db schema filtered-content))
+)
