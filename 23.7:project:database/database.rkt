@@ -192,3 +192,26 @@
                        (complete-row (rest row) label (rest labels)))])))
        (map (lambda (x) (complete-row row x original-labels)) lol))))
   (make-db (map reorder-schema lol) (map reorder-content content))))
+
+;DB DB -> DB
+;produces the union of two DBs
+(check-error
+  (db-union db-example-2 db-example-1) "SCHEMAS ARE NOT EQUAL")
+(check-expect (db-union db-example-2 db-example-2) db-example-2)
+(define (db-union db1 db2)
+  (local (
+    (define sch1 (db-schema db1))
+    (define sch2 (db-schema db2))
+    (define content1 (db-content db1))
+    (define content2 (db-content db2)))
+    (if (not (equal? sch1 sch2))
+        (error "SCHEMAS ARE NOT EQUAL")
+        (make-db 
+          sch1 
+          (foldr 
+            (lambda (row l) 
+              (if 
+                (member row l) 
+                l 
+                (cons row l))) 
+            content1 content2)))))
