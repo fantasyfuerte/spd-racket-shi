@@ -161,3 +161,34 @@
   ) 
   (make-db schema filtered-content))
 )
+
+;DB [List-of Labels] -> DB 
+;reorder the db according to lol
+(define (reorder db lol)
+  (local (
+    (define schema (db-schema db))
+    (define content (db-content db))
+    (define original-labels (map spec-label schema))
+    ;Label -> Spec 
+    (define (reorder-schema lab)  
+      (local (
+        (define (complete-label lab sch)
+          (cond
+            [(empty? sch) (error "NOT FOUND")]
+            [else (if (string=? lab (spec-label (first sch))) 
+                      (first sch)
+                      (complete-label lab (rest sch)))])))
+      (complete-label lab schema)
+    ))
+    ;Row -> Row
+    (define (reorder-content row)
+      (local(
+        ;Row Label [List-of Labels] -> Cell
+        (define (complete-row row label labels)
+          (cond
+            [(empty? row) (error "NOT-FOUND")]
+            [else  (if (string=? (first labels) label)
+                       (first row)
+                       (complete-row (rest row) label (rest labels)))])))
+       (map (lambda (x) (complete-row row x original-labels)) lol))))
+  (make-db (map reorder-schema lol) (map reorder-content content))))
