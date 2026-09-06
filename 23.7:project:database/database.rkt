@@ -215,3 +215,39 @@
                 l 
                 (cons row l))) 
             content1 content2)))))
+
+;DB DB -> DB
+;produces a database from db1 by replacing the last cell 
+;with the translation of the cell in db2
+;constraint: the schema of db2 starts with the same spec 
+;that the schema of db1 ends in
+(define (join db1 db2)
+  (local (
+    (define sch1 (db-schema db1))
+    (define sch2 (db-schema db2))
+    (define content1 (db-content db1))
+    (define content2 (db-content db2))
+    ;Schema Schema -> Schema
+    (define (join-schema sch1 sch2) 
+      (cond
+        [(empty? sch1) '()]
+        [else (cons (if (empty? (rest sch1))
+                        (second sch2)
+                        (first sch1))
+                    (join-schema (rest sch1) sch2))]))
+    ;Content Content -> Content
+    (define (join-content content1 content2) 
+      (local (
+              (define (traverse row)
+                (cond
+                  [(empty? row) '()]
+                  [else (cons (if (empty? (rest row))
+                                  (second(assoc (first row) content2))
+                                  (first row))
+                              (traverse (rest row)))])))
+        (map traverse content1)
+      ))
+    )
+    (make-db 
+      (join-schema sch1 sch2) 
+      (join-content content1 content2))))
