@@ -10,7 +10,11 @@
   (cond
     [(empty? l) '()]
     [else (append (quick-sort< 
-                    (filter (lambda (x) (< x (first l))) (rest l)))
-                  (cons (first l)
-                  (quick-sort< 
-                    (filter (lambda (x) (>= x (first l))) (rest l)))))]))
+                    (filter 
+                      (lambda (x) (< x (first l))) 
+                      (rest l)))
+                  (cons (first l) 
+                        (quick-sort< 
+                          (filter 
+                            (lambda (x) (>= x (first l))) 
+                            (rest l)))))]))
