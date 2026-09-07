@@ -40,4 +40,15 @@
 (define (list->chunks l n)
   (cond
     [(empty? l) '()]
-    [else (cons (take l n) (list->chunks (drop l n) (sub1 n)))]))
+    [else (cons (take l n) (list->chunks (drop l n) n))]))
+
+;[List-of X] N -> [List-of X]
+;bundles chunks of s into strings of length n
+(check-expect (bundle2 (explode "abcdefg") 3)
+              (list "abc" "def" "g"))
+(check-expect (bundle2 (explode "abcdefgh") 2)
+              (list "ab" "cd" "ef" "gh"))
+(check-expect (bundle2 (explode "ab") 3)
+              (list "ab"))
+(define (bundle2 s n)
+  (map implode (list->chunks s n)))
