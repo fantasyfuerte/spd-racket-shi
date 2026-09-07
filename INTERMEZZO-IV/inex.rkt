@@ -84,3 +84,30 @@
             (make-inex mantissa-sum i-sign i-exp))
         (error ERR-EXPONENTS))))
 
+;Inex Inex -> Inex 
+;produces the multiplication of two inexes
+(check-expect (inex* (create-inex 2 1 0) (create-inex 2 1 0))
+              (create-inex 4 1 0))
+(check-expect (inex* (create-inex 2 1 0) (create-inex 55 1 0))
+              (create-inex 11 1 2))
+(define (inex* i1 i2)
+  (local(
+         (define same-exponents
+           (and (= (inex-sign i1) (inex-sign i2))
+                (= (inex-exponent i1) (inex-exponent i2))))
+         (define i-sign (inex-sign i1))
+         (define i-exp1 (inex-exponent i1))
+         (define i-exp2 (inex-exponent i2))
+         (define mantissa-mul (* (inex-mantissa i1) (inex-mantissa i2)))
+         (define i-sum (+ i-exp1 i-exp2))
+         ;N -> Inex
+         (define (closest mantissa n)
+           (if (< mantissa 99)
+               (make-inex mantissa i-sign n)
+               (closest (round (/ mantissa 10)) (add1 n))))
+         )
+  (if same-exponents
+      (if (> mantissa-mul 99)
+          (closest mantissa-mul i-sum)
+          (make-inex mantissa-mul i-sign i-sum))
+      (error ERR-EXPONENTS))))
