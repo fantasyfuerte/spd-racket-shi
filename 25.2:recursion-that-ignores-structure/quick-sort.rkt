@@ -9,12 +9,15 @@
 (define (quick-sort< l)
   (cond
     [(empty? l) '()]
-    [else (append (quick-sort< 
+    [else (local (
+            (define smallers (quick-sort< 
                     (filter 
                       (lambda (x) (< x (first l))) 
-                      (rest l)))
-                  (cons (first l) 
-                        (quick-sort< 
+                      (rest l))))
+            (define largers (quick-sort< 
                           (filter 
                             (lambda (x) (>= x (first l))) 
-                            (rest l)))))]))
+                            (rest l)))))
+            (append smallers
+                  (cons (first l) 
+                        largers)))]))
