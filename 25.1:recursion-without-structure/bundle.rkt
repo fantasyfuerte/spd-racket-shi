@@ -6,7 +6,7 @@
 ;bundles chunks of s into strings of length n
 (check-expect (bundle (explode "abcdefg") 3)
               (list "abc" "def" "g"))
-(check-expect (bundle (explode "abcdefgh") 3)
+(check-expect (bundle (explode "abcdefgh") 2)
               (list "ab" "cd" "ef" "gh"))
 (check-expect (bundle (explode "ab") 3)
               (list "ab"))
@@ -14,7 +14,7 @@
 (define (bundle s n) 
   (cond 
     [(empty? s) empty]
-    [else (cons (take s n) (bundle (drop s n) n))]))
+    [else (cons (implode(take s n)) (bundle (drop s n) n))]))
 
 ;[List-of X] N -> [List-of X]
 ;keeps the first n items from l if possible or everything
@@ -22,7 +22,7 @@
   (cond
     [(zero? n) '()]
     [(empty? l) '()]
-    [else (cons (first l) (take (rest l) sub1 n))]))
+    [else (cons (first l) (take (rest l) (sub1 n)))]))
 
 ;[List-of X] N -> [List-of X]
 ;removes the first n items from l if possible or everything
@@ -31,3 +31,13 @@
     [(zero? n ) l]
     [(empty? l) l]
     [else (drop (rest l) (sub1 n))]))
+
+;[List-of X] N -> [List-of [List-of X]]
+;produces a list of size n chunking the original
+(check-expect (list->chunks '(1) 2) '((1)))
+(check-expect (list->chunks '(1 2) 2) '((1 2)))
+(check-expect (list->chunks '(1 2 3) 2) '((1 2) (3)))
+(define (list->chunks l n)
+  (cond
+    [(empty? l) '()]
+    [else (cons (take l n) (list->chunks (drop l n) (sub1 n)))]))
