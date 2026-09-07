@@ -52,3 +52,10 @@
               (list "ab"))
 (define (bundle2 s n)
   (map implode (list->chunks s n)))
+
+;String N -> [List-of String]
+;chunks s into strings of length n
+(check-expect (partition "abcdefg" 3)
+              (list "abc" "def" "g"))
+(define (partition s n)
+  (bundle (explode s) n))
