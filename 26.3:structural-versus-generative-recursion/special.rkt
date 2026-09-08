@@ -12,5 +12,20 @@
       (add1
         (getlength (rest P)))]))
 
+(check-expect (negatenum '(1 2 3 4)) '(-1 -2 -3 -4))
+(define (negatenum P)
+  (cond
+    [(empty? P) '()]
+    [else 
+      (cons
+        (* -1 (first P))
+        (negatenum (rest P)))]))
 
-
+(check-expect (uppercase '(a b c d)) '(A B C D))
+(define (uppercase P)
+  (cond
+    [(empty? P) '()]
+    [else 
+      (cons
+        (string-upcase (first P))
+        (uppercase (rest P)))]))
