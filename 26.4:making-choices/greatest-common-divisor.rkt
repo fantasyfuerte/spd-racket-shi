@@ -12,7 +12,7 @@
            (cond
              [(= i 1) 1]
              [else 
-               (if (= (remainder n i) (remainder n i) 0)
+               (if (= (remainder n i) (remainder m i) 0)
                    i
                    (greatest-divisor-<= (- i 1)))])))
     (greatest-divisor-<= (min n m))))
