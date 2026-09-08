@@ -17,3 +17,8 @@
                    (greatest-divisor-<= (- i 1)))])))
     (greatest-divisor-<= (min n m))))
 
+;Question: How does this function work?
+;Answer: Uses the fact that the greatest divisor of the two numbers is 
+;less that or equal to the smaller of the two numbers. It starts with
+;the smaller number and keeps decrementing until a match is found. 
+
