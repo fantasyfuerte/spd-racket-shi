@@ -4,8 +4,8 @@
 
 ;N[>=1] N[>=1] -> N
 ;computes the greatest common divisor of n and m
-(check-expect (gcd 12 18) 6)
-(check-expect (gcd 6 25) 1)
+(check-expect (gcd-structural 12 18) 6)
+(check-expect (gcd-structural 6 25) 1)
 (define (gcd-structural n m)
   (local(
          (define (greatest-divisor-<= i)
