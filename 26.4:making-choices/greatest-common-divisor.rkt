@@ -22,3 +22,12 @@
 ;less that or equal to the smaller of the two numbers. It starts with
 ;the smaller number and keeps decrementing until a match is found. 
 
+;N[>=1] N[>=1] -> N
+;computes the greatest common divisor of n and m
+(define (gcd-generative n m)
+  (local(
+         (define (clever-gcd L S)
+           (cond
+             [(= S 0) L]
+             [else (clever-gcd S (remainder L S))])))
+    (clever-gcd (max m n) (min m n))))
