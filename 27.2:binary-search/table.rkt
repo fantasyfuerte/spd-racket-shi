@@ -53,7 +53,7 @@
              [(= left right) (if (zero? (table-ref t left))
                                  left
                                  (error "not found"))]
-             [else (local ((define mid (round(/ (+ left right) 2))))
+             [else (local ((define mid (floor(/ (+ left right) 2))))
                      (cond 
                        [(< 0 (table-ref t mid)) (binary-search left mid)]
                        [(> 0 (table-ref t mid)) (binary-search mid right)]
