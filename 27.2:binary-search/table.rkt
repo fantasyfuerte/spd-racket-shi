@@ -39,3 +39,23 @@
                    i
                    (maptable (add1 i))))))
     (maptable 0)))
+
+;Table -> Number
+;finds the smalles index for a root of the table
+;constraint: t is a monotonically increasing table
+(check-expect (find-binary table1) 0)
+(check-error (find-binary table2) "not found")
+(check-expect (find-binary table3) 2)
+(define (find-binary t)
+  (local(
+         (define (binary-search left right)
+           (cond
+             [(= left right) (if (zero? (table-ref t left))
+                                 left
+                                 (error "not found"))]
+             [else (local ((define mid (round(/ (+ left right) 2))))
+                     (cond 
+                       [(< 0 (table-ref t mid)) (binary-search left mid)]
+                       [(> 0 (table-ref t mid)) (binary-search mid right)]
+                       [else mid]))])))
+         (binary-search 0 (table-length t))))
