@@ -19,11 +19,13 @@
     [(<= (- right left) EPSILON) left]
     [else
       (local ((define mid (/ (+ left right) 2))
-              (define f@m (f mid)))
+              (define f@m (f mid))
+              (define fl (f left))
+              (define fr (f right)))
               (cond
-                [(or (<= (f left) 0 f@m) (<= f@m 0 (f left)))
+                [(or (<= fl 0 f@m) (<= f@m 0 fl))
                  (find-root f left mid)]
-                [(or (<= f@m 0 (f right)) (<= (f right) 0 f@m))
+                [(or (<= f@m 0 fr) (<= fr 0 f@m))
                  (find-root f mid right)]))]))
 
 ;Number -> Number
