@@ -4,10 +4,15 @@
 
 (define EPSILON 0.001)
 (define f1 (lambda (i) (+ (* i i) i -2)))
+(define f2 (lambda (i) i))
 
 ;[Number -> Number] Number -> Number
 ;produces the slope of f in r1
 (check-expect (slope f1 -2.1) -3.2)
 (check-expect (slope f1 -3) -5)
+(check-expect (slope f2 2) 1)
+(check-expect (slope f2 89) 1)
 (define (slope f r1)
   (/ (- (f (+ r1 EPSILON)) (f (- r1 EPSILON))) (* 2 EPSILON)))
+
+
