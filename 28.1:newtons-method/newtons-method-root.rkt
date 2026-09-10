@@ -20,3 +20,7 @@
 (define (root-of-tangent f r1)
   (- r1 (/ (f r1) (slope f r1))))
 
+;[Number -> Number] Number -> Number
+;finds a number r such that (f r) is small
+;generative: repeatedly generates improved guesses
+(define (newton f r1) 1.0)
