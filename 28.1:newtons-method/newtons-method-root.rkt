@@ -23,4 +23,7 @@
 ;[Number -> Number] Number -> Number
 ;finds a number r such that (f r) is small
 ;generative: repeatedly generates improved guesses
-(define (newton f r1) 1.0)
+(define (newton f r1)
+  (cond
+    [(<= (abs (f r1)) EPSILON) r1]
+    [else (newton f (root-of-tangent f r1))]))
