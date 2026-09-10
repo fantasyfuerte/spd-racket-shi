@@ -15,4 +15,8 @@
 (define (slope f r1)
   (/ (- (f (+ r1 EPSILON)) (f (- r1 EPSILON))) (* 2 EPSILON)))
 
+;[Number -> Number] Number -> Number
+;produces the root of the tangent of f in r1
+(define (root-of-tangent f r1)
+  (- r1 (/ (f r1) (slope f r1))))
 
