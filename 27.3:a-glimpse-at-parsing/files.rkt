@@ -44,3 +44,34 @@
     [(empty? afile) '()]
     [(string=? (first afile) NEWLINE) (rest afile)]
     [else (remove-first-line (rest afile))]))
+
+;a Word is a String without whitespaces
+
+;Line -> [List-of Words]
+;appends the letters and drops the spaces
+(check-expect
+  (tokenize 
+    (list "h" "i" " " "h" "o" "w" " " "a" "r" "e" " " "y" "o" "u"))
+  (list "hi" "how" "are" "you"))
+(check-expect
+  (tokenize 
+    (list "h" "i" " " " " "h" "o" "w" " " "a" "r" "e" " " "y" "o" "u"))
+  (list "hi" "how" "are" "you"))
+(define (tokenize line)
+  (local (
+          (define (get-first-word l)
+            (cond
+              [(or (empty? l) (string-whitespace? (first l))) '()]
+              [else (cons (first l) (get-first-word (rest l)))]))
+          (define (drop-first-word l)
+            (cond
+              [(empty? l) '()]
+              [(string-whitespace? (first l)) (rest l)]
+              [else (drop-first-word (rest l))]))
+          (define first-word (implode (get-first-word line))))
+          (cond
+            [(empty? line) '()]
+            [else (if (string-whitespace? first-word) 
+                      (tokenize (drop-first-word line))
+                      (cons first-word 
+                            (tokenize (drop-first-word line))))])))
