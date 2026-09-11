@@ -35,7 +35,11 @@
 
 ;SOE Solution ->Boolean
 ;check if a solution is correct
-(define (check-solution soe sol) #false)
+(check-expect (check-solution M S) #true)
+(check-expect (check-solution M '(1 1 1)) #false)
+(define (check-solution soe sol)
+  (for/and ([e soe])
+    (= (plug-in (lhs e) sol) (rhs e))))
 
 ;[List-of Number] Solution -> Number
 ;calculates the value of a left-hand-side of an ecuation
