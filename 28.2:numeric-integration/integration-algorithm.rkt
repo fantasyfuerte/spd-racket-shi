@@ -34,7 +34,7 @@
 (check-within (integrate-riemann (lambda (x) (* 2 x)) 0 10) 100 EPSILON)
 (check-within (integrate-riemann (lambda (x) (* 3 (sqr x))) 0 10) 1000 EPSILON)
 (define (integrate-riemann f a b)
-  (local((define width (/ (+ a b) R))
+  (local((define width (/ (- b a) R))
          (define S (/ width 2))
          (define (area-rec i) (* width (f (+ a (* i width) S)))))
     (for/sum ([i (- R 1)])(area-rec i))))
