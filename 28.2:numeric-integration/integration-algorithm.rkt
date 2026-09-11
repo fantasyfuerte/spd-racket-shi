@@ -51,3 +51,21 @@
       (local (
               (define mid (/ (+ a b) 2)))
       (+ (integrate-dc f a mid) (integrate-dc f mid b)))]))
+
+(check-within (integrate-adaptative (lambda (x) 20) 12 22) 200 EPSILON)
+(check-within (integrate-adaptative (lambda (x) (* 2 x)) 0 10) 100 EPSILON)
+(check-within (integrate-adaptative (lambda (x) (* 3 (sqr x))) 0 10) 1000 EPSILON)
+;[Number -> Number] Number Number -> Number
+;integrates using kepler's method when the interval is sufficiently small
+(define (integrate-adaptative f a b)
+  (local((define mid (/ (+ a b) 2)))
+  (cond
+    [(or 
+       (<= (- b a) EPSILON) 
+       (< (abs(-
+            (trapezoid-area f mid b)
+            (trapezoid-area f a mid))) 
+          (* EPSILON (- b a)))) 
+     (integrate-kepler f a b)]
+    [else
+      (+ (integrate-adaptative f a mid) (integrate-adaptative f mid b))])))
