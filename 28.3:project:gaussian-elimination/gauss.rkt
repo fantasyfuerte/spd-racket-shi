@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname gauss) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/abstraction)
+
 ;a SOE (short for System of Equations) is a non-empty Matrix
 ;constraint for (list r1 .. rn), (length ri) is (+ n 1)
 ;interpretation: represents a system of linear equations
@@ -30,3 +32,15 @@
 (check-expect (rhs (first M)) 10)
 (define (rhs e)
   (first (reverse e)))
+
+;SOE Solution ->Boolean
+;check if a solution is correct
+(define (check-solution soe sol) #false)
+
+;[List-of Number] Solution -> Number
+;calculates the value of a left-hand-side of an ecuation
+(check-expect (plug-in '(1 1 1) '(2 2 4)) 8)
+(check-expect (plug-in '(1 4 4) '(2 2 4)) 26)
+(define (plug-in le sol) 
+  (for/sum ([i le] [s sol])
+    (* i s)))
