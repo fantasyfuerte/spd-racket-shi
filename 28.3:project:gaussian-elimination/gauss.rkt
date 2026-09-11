@@ -48,3 +48,9 @@
 (define (plug-in le sol) 
   (for/sum ([i (reverse le)] [s (reverse sol)])
     (* i s)))
+
+(and (check-solution M S) 
+     (check-solution (list (list 2 2 3 10)
+                           (list   3 9 21)
+                           (list     1 2)) 
+                     S))
