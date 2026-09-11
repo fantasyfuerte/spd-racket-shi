@@ -46,5 +46,5 @@
 (check-expect (plug-in '(1 1 1) '(2 2 4)) 8)
 (check-expect (plug-in '(1 4 4) '(2 2 4)) 26)
 (define (plug-in le sol) 
-  (for/sum ([i le] [s sol])
+  (for/sum ([i (reverse le)] [s (reverse sol)])
     (* i s)))
