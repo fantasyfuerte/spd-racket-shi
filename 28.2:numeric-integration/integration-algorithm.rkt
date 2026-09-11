@@ -38,3 +38,16 @@
          (define S (/ width 2))
          (define (area-rec i) (* width (f (+ a (* i width) S)))))
     (for/sum ([i (- R 1)])(area-rec i))))
+
+(check-within (integrate-dc (lambda (x) 20) 12 22) 200 EPSILON)
+(check-within (integrate-dc (lambda (x) (* 2 x)) 0 10) 100 EPSILON)
+(check-within (integrate-dc (lambda (x) (* 3 (sqr x))) 0 10) 1000 EPSILON)
+;[Number -> Number] Number Number -> Number
+;integrates using kepler's method when the interval is sufficiently small
+(define (integrate-dc f a b)
+  (cond
+    [(<= (- b a) EPSILON) (integrate-kepler f a b)]
+    [else
+      (local (
+              (define mid (/ (+ a b) 2)))
+      (+ (integrate-dc f a mid) (integrate-dc f mid b)))]))
