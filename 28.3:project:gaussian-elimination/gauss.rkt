@@ -19,3 +19,14 @@
         (list 4 1 -2 1)))
 
 (define S '(1 1 2)) ; Solution
+
+;Equation -> [List-of Number]
+;extracts the left-hand side from a row in a matrix
+(check-expect (lhs (first M)) '(2 2 3))
+(define (lhs e) (reverse (rest (reverse e))))
+
+;Equation -> Number
+;extracts the right-hand side from a row in a matrix
+(check-expect (rhs (first M)) 10)
+(define (rhs e)
+  (first (reverse e)))
