@@ -59,10 +59,8 @@
 ;substracts a multiple of the second ecuation 
 ;so the result has a 0 in the first position
 (define (substract e1 e2)
-  (local(
-         (define multiple (if (zero? (first e1)) 1 (/ (first e2) (first e1))))
-         (define newe2 (map (lambda (x) (* x multiple)) e2))
-         (define result (map (lambda (a b) (- b a)) e1 newe2)))
+  (local((define multiple (/ (first e2) (first e1)))
+         (define result (map (lambda (a b) (- a (* multiple b))) e2 e1)))
     (rest result)))
 
 ;a TM is an [NEList-of Equation]
@@ -71,7 +69,7 @@
 ;interpretation: represents a triangular matrix
 
 ;SOE -> TM
-;triangulares the given system of equations
+;triangulates the given system of equations
 (check-expect (triangulate (list (list 2 2 3 10)))
               (list (list 2 2 3 10)))
 (check-expect (triangulate (list (list 2 2 3 10)
@@ -87,7 +85,7 @@
              (cond
                [(andmap 
                   (lambda (x) 
-                    (zero? (first (first x)) (rest M)))) 
+                    (zero? (first x)))(rest M)) 
                 (error "all leading coefficients are zero")]
                [else (triangulate
                        (append 
@@ -112,3 +110,16 @@
                                 (plug-in (lhs (rest (first soe))) other))
                               (first (first soe)))))
              (cons Solution other))]))
+
+;SOE -> Solution
+;solves the given system of equations
+(check-expect (gauss (list (list 2 2 3 10)
+                           (list 2 5 12 31)
+                           (list 4 1 -2 1)))
+              '(1 1 2))
+(check-expect (gauss (list (list 2 3 3 8)
+                           (list 2 3 -2 3)
+                           (list 4 -2 2 4)))
+              '(1 1 1))
+(define (gauss soe)
+  (solve (triangulate soe)))
