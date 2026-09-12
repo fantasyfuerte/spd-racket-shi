@@ -60,7 +60,7 @@
 ;so the result has a 0 in the first position
 (define (substract e1 e2)
   (local(
-         (define multiple (if (zero? (first e2)) 1 (/ (first e1) (first e2))))
+         (define multiple (if (zero? (first e1)) 1 (/ (first e2) (first e1))))
          (define newe2 (map (lambda (x) (* x multiple)) e2))
          (define result (map (lambda (a b) (- b a)) e1 newe2)))
     (rest result)))
