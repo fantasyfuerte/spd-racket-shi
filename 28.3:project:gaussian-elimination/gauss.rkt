@@ -60,7 +60,29 @@
 ;so the result has a 0 in the first position
 (define (substract e1 e2)
   (local(
-         (define multiple (/ (first e1) (first e2)))
+         (define multiple (if (zero? (first e2)) 1 (/ (first e1) (first e2))))
          (define newe2 (map (lambda (x) (* x multiple)) e2))
-         (define result (map (lambda (a b) (- a b)) e1 newe2)))
+         (define result (map (lambda (a b) (- b a)) e1 newe2)))
     (rest result)))
+
+;a TM is an [NEList-of Equation]
+;such that the Equations are of decreasing length:
+;n + 1, n, n - 1, ...,2.
+;interpretation: represents a triangular matrix
+
+;SOE -> TM
+;triangulares the given system of equations
+(check-expect (triangulate (list (list 2 2 3 10)))
+              (list (list 2 2 3 10)))
+(check-expect (triangulate (list (list 2 2 3 10)
+                                 (list 2 5 12 31)))
+              (list (list 2 2 3 10)
+                    (list   3 9 21)))
+(define (triangulate M)
+  (cond
+    [(empty? (rest M)) M]
+    [else (cons (first M)
+        (triangulate
+          (map
+            (lambda (x) (substract (first M) x))
+            (rest M))))]))
