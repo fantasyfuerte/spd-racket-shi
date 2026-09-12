@@ -82,10 +82,17 @@
   (cond
     [(empty? (rest M)) M]
     [else (cond
-            [(zero? (first(first M))) (triangulate 
-                                 (append 
-                                   (rest M) 
-                                   (list (first M))))]
+            [(zero? 
+               (first (first M)))
+             (cond
+               [(andmap 
+                  (lambda (x) 
+                    (zero? (first (first x)) (rest M)))) 
+                (error "all leading coefficients are zero")]
+               [else (triangulate
+                       (append 
+                         (rest M) 
+                         (list (first M))))])]
             [else (cons (first M)
                     (triangulate
                       (map
