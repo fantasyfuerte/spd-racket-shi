@@ -81,8 +81,13 @@
 (define (triangulate M)
   (cond
     [(empty? (rest M)) M]
-    [else (cons (first M)
-        (triangulate
-          (map
-            (lambda (x) (substract (first M) x))
-            (rest M))))]))
+    [else (cond
+            [(zero? (first(first M))) (triangulate 
+                                 (append 
+                                   (rest M) 
+                                   (list (first M))))]
+            [else (cons (first M)
+                    (triangulate
+                      (map
+                        (lambda (x) (substract (first M) x))
+                        (rest M))))])]))
