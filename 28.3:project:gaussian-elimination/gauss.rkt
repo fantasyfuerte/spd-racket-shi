@@ -98,3 +98,17 @@
                       (map
                         (lambda (x) (substract (first M) x))
                         (rest M))))])]))
+
+;TM -> Solution
+;returns the solution of a triangular SOE
+(define (solve soe)
+    (cond
+      [(empty? soe) '()]
+      [(empty? (lhs (first soe))) '()]
+      [else (local (
+          (define other (solve (rest soe)))
+          (define Solution (/ (- 
+                                (rhs (first soe)) 
+                                (plug-in (lhs (rest (first soe))) other))
+                              (first (first soe)))))
+             (cons Solution other))]))
