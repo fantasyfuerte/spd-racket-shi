@@ -54,3 +54,13 @@
                            (list   3 9 21)
                            (list     1 2)) 
                      S))
+
+;Ecuation Ecuation -> Ecuation
+;substracts a multiple of the second ecuation 
+;so the result has a 0 in the first position
+(define (substract e1 e2)
+  (local(
+         (define multiple (/ (first e1) (first e2)))
+         (define newe2 (map (lambda (x) (* x multiple)) e2))
+         (define result (map (lambda (a b) (- a b)) e1 newe2)))
+    (rest result)))
