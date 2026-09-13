@@ -23,9 +23,14 @@
 ;produces the list of inmediate neighbors of n in g
 (check-expect (neighbors sample-graph 'A) '(B E))
 (check-expect (neighbors sample-graph 'B) '(E F))
+(check-error (neighbors sample-graph 'Z) ERR404)
 (define (neighbors g n)
   (cond
-    [(empty? g) (error ERR404 n)]
+    [(empty? g) (error ERR404)]
     [else (if (symbol=? n (first(first g))) 
               (rest (first g)) 
               (neighbors (rest g) n))]))
+
+;Node Node Graph -> [List-of Node]
+;finds a path from origination to destination in G
+(define (find-path origination destination G) '())
