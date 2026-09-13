@@ -27,7 +27,7 @@
 (define (neighbors g n)
   (cond
     [(empty? g) (error ERR404)]
-    [else (if (symbol=? n (first(first g))) 
+    [else (if (symbol=? n (first (first g))) 
               (rest (first g)) 
               (neighbors (rest g) n))]))
 
@@ -43,4 +43,27 @@
 (check-member-of (find-path 'E 'D sample-graph)
                  '(E F D) '(E C D))
 (check-expect (find-path 'C 'G sample-graph) #false)
-(define (find-path origination destination G) #false)
+(define (find-path origination destination G)
+  (cond 
+    [(symbol=? origination destination) (list destination)]
+    [else (local(
+                 (define next (neighbors G origination))
+                 (define candidate 
+                   (find-path/list next destination G)))
+                 (cond
+                   [(boolean? candidate) #false]
+                   [else (cons origination candidate)]
+                   ))]))
+
+;[List-of Node] Node Graph -> [Maybe Path]
+;finds a path from some node on lo-originations to destination
+;otherwise it produces #false
+(define (find-path/list lo-Os D G)
+  (cond
+    [(empty? lo-Os) #false]
+    [else (local ((define candidate
+                    (find-path (first lo-Os) D G)))
+            (cond
+              [(boolean? candidate)
+               (find-path/list (rest lo-Os) D G)]
+              [else candidate]))]))
