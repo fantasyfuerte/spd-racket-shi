@@ -3,10 +3,12 @@
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname connect-people) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 (define sample-graph
-  '((A B E)
-    (B E F)
-    (C D)
-    (D)
-    (E C F)
-    (F D G)
-    (G)))
+  (list (list 'A 'B 'E)
+        (list 'B 'E 'F)
+        (list 'C 'D)
+        (list 'D)
+        (list 'E 'C 'F)
+        (list 'F 'D 'G)
+        (list 'G)))
+
+
