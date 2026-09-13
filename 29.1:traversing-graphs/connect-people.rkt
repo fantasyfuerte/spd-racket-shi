@@ -11,4 +11,9 @@
         (list 'F 'D 'G)
         (list 'G)))
 
+; a Node is a Symbol
+
+;a Graph is a [List-of NodeAssoc]
+
+;a NodeAssoc is a [List-of Node]
 
