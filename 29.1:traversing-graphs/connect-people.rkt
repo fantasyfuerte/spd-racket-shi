@@ -31,6 +31,16 @@
               (rest (first g)) 
               (neighbors (rest g) n))]))
 
-;Node Node Graph -> [List-of Node]
+;a Path is a [List-of Node]
+;interpretation: the list of nodes specifies a sequence of
+;inmediate neighbors that leads from the first Node on the 
+;list to the last one
+
+;Node Node Graph -> [Maybe Path]
 ;finds a path from origination to destination in G
-(define (find-path origination destination G) '())
+(check-expect (find-path 'C 'D sample-graph)
+              '(C D))
+(check-member-of (find-path 'E 'D sample-graph)
+                 '(E F D) '(E C D))
+(check-expect (find-path 'C 'G sample-graph) #false)
+(define (find-path origination destination G) #false)
