@@ -11,6 +11,15 @@
         (list 'F 'D 'G)
         (list 'G)))
 
+(define cyclic-graph 
+  (list (list 'A 'B 'E)
+        (list 'B 'E 'F)
+        (list 'C 'B 'D)
+        (list 'D)
+        (list 'E 'C 'F)
+        (list 'F 'D 'G)
+        (list 'G)))
+
 ; a Node is a Symbol
 
 ;a Graph is a [List-of NodeAssoc]
