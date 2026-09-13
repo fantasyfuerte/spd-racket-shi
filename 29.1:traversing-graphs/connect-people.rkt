@@ -17,3 +17,15 @@
 
 ;a NodeAssoc is a [List-of Node]
 
+(define ERR404 "Node not found")
+
+;Graph Node -> [List-of Node]
+;produces the list of inmediate neighbors of n in g
+(check-expect (neighbors sample-graph 'A) '(B E))
+(check-expect (neighbors sample-graph 'B) '(E F))
+(define (neighbors g n)
+  (cond
+    [(empty? g) (error ERR404 n)]
+    [else (if (symbol=? n (first(first g))) 
+              (rest (first g)) 
+              (neighbors (rest g) n))]))
