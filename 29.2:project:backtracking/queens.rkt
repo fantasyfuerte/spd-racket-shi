@@ -87,3 +87,24 @@
           b))
       (board-image n)
       lqs))
+
+;[List-of QP] -> Boolean
+;determinas if the given list is a solution to the n-queens problem
+(define (n-queens-solution? n l)
+  (and (= (length l) n)
+       (local (
+               (define (check-threats l)
+                 (cond
+                   [(empty? l) #true]
+                   [else (if (ormap (lambda (a) (threatening? a (first l))) (rest l))
+                     #false
+                     (check-threats (rest l)))])))
+         (check-threats l))))
+
+;N -> [Maybe [List-of QP]]
+;finds a solution to the n queens problem
+;data example: [List-of QP]
+(define 4QUEEN-SOLUTION-2
+  (list (make-posn 0 2) (make-posn 1 0)
+        (make-posn 2 3) (make-posn 3 1)))
+(define (n-queens n) #false)
