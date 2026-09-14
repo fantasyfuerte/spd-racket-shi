@@ -2,6 +2,9 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname queens) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/image)
+(require 2htdp/abstraction)
+
 (define QUEENS 8)
 ;a QP is a structure
 ;  (make-posn CI CI)
@@ -21,3 +24,24 @@
     (= (posn-x q1) (posn-x q2))
     (= (+ (posn-x q1) (posn-y q1)) (+ (posn-x q2) (posn-y q2)))
     (= (- (posn-x q1) (posn-y q1)) (- (posn-x q2) (posn-y q2)))))
+
+(define (paint-square qp) 
+  (square 40 'solid 
+          (if 
+            (even? 
+              (+ (posn-x qp) 
+                 (posn-y qp))) 
+            'white 'grey)))
+
+(define (board-image n)
+  (local (
+    (define (create-row y)
+      (foldr 
+        (lambda (a b) 
+          (beside (paint-square a) b)) 
+        empty-image
+        (for/list ([i n]) (make-posn i y)))))
+    (foldr 
+      (lambda (a b) (above (create-row a) b)) 
+      empty-image
+      (build-list n (lambda (x) x)))))
