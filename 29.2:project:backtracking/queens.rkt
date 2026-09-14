@@ -25,8 +25,36 @@
     (= (+ (posn-x q1) (posn-y q1)) (+ (posn-x q2) (posn-y q2)))
     (= (- (posn-x q1) (posn-y q1)) (- (posn-x q2) (posn-y q2)))))
 
+(define SQUARE-SIZE 40)
+(define QUEEN (place-image (circle 2 "solid" "black") 4 5
+ (place-image (circle 2 "solid" "black") 10 4
+  (place-image (circle 2 "solid" "black") 15 2
+   (place-image (circle 2 "solid" "black") 20 4
+    (place-image (circle 2 "solid" "black") 26 5
+     (polygon (list (make-posn 0 30)
+                    (make-posn 30 30)
+                    (make-posn 26 26)
+                    (make-posn 20 18)
+                    (make-posn 18 12)
+                    (make-posn 24 10)
+                    (make-posn 26 5)
+                    (make-posn 23 8)
+                    (make-posn 20 4)
+                    (make-posn 17 7)
+                    (make-posn 15 2)
+                    (make-posn 13 7)
+                    (make-posn 10 4)
+                    (make-posn 7 8)
+                    (make-posn 4 5)
+                    (make-posn 6 10)
+                    (make-posn 12 12)
+                    (make-posn 10 18)
+                    (make-posn 4 26)
+                    (make-posn 0 30))
+              "solid" "black")))))))
+
 (define (paint-square qp) 
-  (square 40 'solid 
+  (square SQUARE-SIZE 'solid 
           (if 
             (even? 
               (+ (posn-x qp) 
@@ -45,3 +73,17 @@
       (lambda (a b) (above (create-row a) b)) 
       empty-image
       (build-list n (lambda (x) x)))))
+
+;N [List-of QP] Image -> Image
+;produces an image of an n x n chess board with the given image
+;placed according to the given QPs
+(define (render-queens n lqs img)
+    (foldr 
+      (lambda (a b) 
+        (place-image 
+          img 
+          (- (* SQUARE-SIZE (posn-x a)) (/ SQUARE-SIZE 2))
+          (- (* SQUARE-SIZE (posn-y a)) (/ SQUARE-SIZE 2))
+          b))
+      (board-image n)
+      lqs))
