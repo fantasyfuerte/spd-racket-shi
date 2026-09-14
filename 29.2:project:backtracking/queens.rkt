@@ -8,3 +8,16 @@
 ;a CI as an N in [0, QUEENS).
 ;interpretation (make-posn r c) denotes the square at the r-th row
 ;and c-th column
+
+;QP QP -> Boolean
+;determines whether the queens are threatening each other
+(check-expect (threatening? (make-posn 0 0) (make-posn 1 1)) #true)
+(check-expect (threatening? (make-posn 0 0) (make-posn 0 7)) #true)
+(check-expect (threatening? (make-posn 4 1) (make-posn 2 3)) #true)
+(check-expect (threatening? (make-posn 4 1) (make-posn 3 3)) #false)
+(define (threatening? q1 q2)
+  (or
+    (= (posn-y q1) (posn-y q2))
+    (= (posn-x q1) (posn-x q2))
+    (= (+ (posn-x q1) (posn-y q1)) (+ (posn-x q2) (posn-y q2)))
+    (= (- (posn-x q1) (posn-y q1)) (- (posn-x q2) (posn-y q2)))))
