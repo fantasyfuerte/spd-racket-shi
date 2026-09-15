@@ -104,11 +104,16 @@
 ;N -> [Maybe [List-of QP]]
 ;finds a solution to the n queens problem
 ;data example: [List-of QP]
-(define 4QUEEN-SOLUTION-2
-  (list (make-posn 0 2) (make-posn 1 0)
-        (make-posn 2 3) (make-posn 3 1)))
+(check-satisfied (n-queens 5) (lambda (x) (n-queens-solution? 5 x)))
+(check-satisfied (n-queens 6) (lambda (x) (n-queens-solution? 6 x)))
+(check-satisfied (n-queens 8) (lambda (x) (n-queens-solution? 8 x)))
+(check-satisfied (n-queens 10) (lambda (x) (n-queens-solution? 10 x)))
 (define (n-queens n)
   (place-queens (board0 n) n))
+
+(define-struct board [n queens])
+;a Board is a structure
+; (make-board N [List-of QP])
 
 ;Board N -> [Maybe [List-of QP]]
 ;places n queens on board; otherwise #false
@@ -136,12 +141,31 @@
 
 ;N -> Board
 ;creates the initial n by n board
-(define (board0 n) ...)
+(define (board0 n) (make-board n empty))
 
 ;Board QP -> Board
 ;places a queen at qp on a-board
-(define (add-queen a-board qp) a-board)
+(define (add-queen a-board qp)
+  (if (member? qp (board-queens a-board))
+      (error 'add-queen "QP already on board")
+      (make-board (board-n a-board)
+                  (cons qp (board-queens a-board)))))
 
 ;Board -> [List-of QP]
 ;finds spots where it is still safe to place a queen
-(define (find-open-spots a-board) '())
+(define (find-open-spots a-board)
+  (local (
+          (define (row i) (foldr 
+      (lambda (a b) (add-if-isnt-threatened a i b (board-queens a-board)))
+      '() 
+      (build-list (board-n a-board) (lambda (x) x))))
+          )
+  (foldr 
+    (lambda (a b) (append (row a) b))
+    '()
+    (build-list (board-n a-board) (lambda (x) x)))))
+
+(define (add-if-isnt-threatened x y others queens)
+  (cond
+    [(ormap (lambda (q) (threatening? q (make-posn x y))) queens) others]
+    [else (cons (make-posn x y) others)]))
