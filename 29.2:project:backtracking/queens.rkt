@@ -107,4 +107,26 @@
 (define 4QUEEN-SOLUTION-2
   (list (make-posn 0 2) (make-posn 1 0)
         (make-posn 2 3) (make-posn 3 1)))
-(define (n-queens n) #false)
+(define (n-queens n)
+  (place-queens (board0 n) n))
+
+;Board N -> [Maybe [List-of QP]]
+;places n queens on board; otherwise #false
+(define (place-queens a-board n)
+  (cond
+    [(= n 0) '()]
+    [else 
+      (local ())]
+
+
+;N -> Board
+;creates the initial n by n board
+(define (board0 n) ...)
+
+;Board QP -> Board
+;places a queen at qp on a-board
+(define (add-queen a-board qp) a-board)
+
+;Board -> [List-of QP]
+;finds spots where it is still safe to place a queen
+(define (find-open-spots a-board) '())
