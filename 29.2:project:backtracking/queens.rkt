@@ -116,7 +116,22 @@
   (cond
     [(= n 0) '()]
     [else 
-      (local ())]
+      (local (
+              (define safe-spots (find-open-spots a-board))
+              (define (try spots)
+                (cond
+                  [(empty? spots) #false]
+                  [else (local (
+                          (define qp (first spots))
+                          (define result 
+                            (place-queens 
+                              (add-queen a-board qp) (sub1 n)))
+                          )
+                          (cond
+                            [(boolean? result) (try (rest spots))]
+                            [else (cons qp result)]))])))
+        (try safe-spots)
+        )]))
 
 
 ;N -> Board
