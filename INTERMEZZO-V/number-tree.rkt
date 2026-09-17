@@ -18,3 +18,7 @@
   (cond
     [(number? t) t]
     [else (+ (sum-tree (pair-left t)) (sum-tree(pair-right t)))]))
+
+;n: number of nodes in the tree
+;worst case sceneario O(n)
+;best case scenario O(n)
