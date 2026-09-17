@@ -20,3 +20,11 @@
 ;and c = 2 are a valid pair
 ;and f(n) belongs to the class O(n^2)
 
+;Exercise 487
+;f(n) = 2^n
+;g(n) = 1000n
+;in this case we could choose c= 1000 and n0 = 1
+;or we could also choose c = 1 and n0 = 14 this give us a hint that
+;f belongs to O(2^n) with c = 1 only for n ≥ 14
+;so that means that in the interval [3, 12] the best function is f
+
