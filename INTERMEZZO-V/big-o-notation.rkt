@@ -28,3 +28,13 @@
 ;f belongs to O(2^n) with c = 1 only for n ≥ 14
 ;so that means that in the interval [3, 12] the best function is f
 
+;Exercise 488
+;f(n) = n log n
+;g(n) = n^2 
+;Does f belong to O(g) or g to O(f)?
+;If we use the definition above we get
+;n log n ≤ n^2 * c and if we divide by n we get:
+;log n ≤ n * c 
+;if n0 = 0
+;this holds for all n ≥ n0 so that means that f belongs to O(g)
+;and the contant c = 1 of course
