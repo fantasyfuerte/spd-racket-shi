@@ -22,3 +22,11 @@
               '(50 90 160 190 220))
 (define (add-to-each n l)
   (map (lambda (x) (+ x n)) l))
+
+(define (relative->absolute/a l accu-dist)
+  (cond
+    [(empty? '())]
+    [else 
+      (local ((define tally (+ (first l) (accu-dist))))
+        (cons tally
+              (relative->absolute/a (rest l) tally)))]))
