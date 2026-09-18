@@ -21,6 +21,4 @@
 (check-expect (cons 50 (add-to-each 50 '(40 110 140 170)))
               '(50 90 160 190 220))
 (define (add-to-each n l)
-  (cond
-    [(empty? l) '()]
-    [else (cons (+ (first l) n) (add-to-each n (rest l)))]))
+  (map (lambda (x) (+ x n)) l))
