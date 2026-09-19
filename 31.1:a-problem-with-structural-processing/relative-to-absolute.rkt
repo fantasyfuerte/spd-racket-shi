@@ -25,8 +25,18 @@
 
 (define (relative->absolute/a l accu-dist)
   (cond
-    [(empty? '())]
+    [(empty? l) '()]
     [else 
       (local ((define tally (+ (first l) (accu-dist))))
         (cons tally
               (relative->absolute/a (rest l) tally)))]))
+
+(define (relative->absolute.v2 l0)
+  (local (
+          (define (relative->absolute/a l accu-dist)
+            (cond 
+              [(empty? l) '()]
+              [else (local ((define accu (+ (first l) accu-dist)))
+                      (cons accu
+                            (relative->absolute/a (rest l) accu)))])))
+    (relative->absolute/a l0 0)))
