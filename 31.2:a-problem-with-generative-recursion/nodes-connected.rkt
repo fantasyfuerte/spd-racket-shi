@@ -35,3 +35,14 @@
                 [else (if (symbol=? (first (first sg)) a-node)
                           (second (first sg))
                           (neighbor a-node (rest sg)))]))
+
+;Node Node SimpleGraph [List-of Node] -> Boolean
+;is there a path from origin to destination
+;assume there are no paths for the nodes in seen
+(define (path-exist?/a origin destination sg seen)
+  (cond
+    [(symbol=? origin destination) #true]
+    [else (path-exists?/a (neighbor origin sg)
+                          destination
+                          sg
+                          (cons origin seen))]))
