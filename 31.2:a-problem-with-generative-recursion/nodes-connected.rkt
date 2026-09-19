@@ -39,10 +39,22 @@
 ;Node Node SimpleGraph [List-of Node] -> Boolean
 ;is there a path from origin to destination
 ;assume there are no paths for the nodes in seen
-(define (path-exist?/a origin destination sg seen)
+(define (path-exists?/a origin destination sg seen)
   (cond
     [(symbol=? origin destination) #true]
     [else (path-exists?/a (neighbor origin sg)
                           destination
                           sg
                           (cons origin seen))]))
+
+;Node Node SimpleGraph -> Boolean
+;is there a path from origin to destination in sg
+(check-expect (path-exists.v2? origin destination sg)
+              (local (;Node Node SimpleGraph [List-of Node] -> Boolean
+                      (define (path-exists?/a origin seen)
+                        (cond
+                          [(symbol=? origin destination) #t]
+                          [(member? origin seen) #f]
+                          [else (path-exists?/a (neighbor origin sg)
+                                                (cons origin seen))])))
+                (path-exists?/a origin '())))
