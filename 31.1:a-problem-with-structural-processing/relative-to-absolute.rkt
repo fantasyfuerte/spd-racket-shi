@@ -31,6 +31,8 @@
         (cons tally
               (relative->absolute/a (rest l) tally)))]))
 
+(check-expect (relative->absolute.v2 '(50 40 70 30 30))
+              '(50 90 160 190 220))
 (define (relative->absolute.v2 l0)
   (local (
           (define (relative->absolute/a l accu-dist)
@@ -40,3 +42,10 @@
                       (cons accu
                             (relative->absolute/a (rest l) accu)))])))
     (relative->absolute/a l0 0)))
+
+(check-expect (relative->absolute/foldr '(50 40 70 30 30))
+              '(50 90 160 190 220))
+(define (relative->absolute/foldr l)
+  (reverse (foldr (lambda (f l) (cons (+ f (first l)) l))
+                  (list (first l))
+                  (reverse (rest l)))))
