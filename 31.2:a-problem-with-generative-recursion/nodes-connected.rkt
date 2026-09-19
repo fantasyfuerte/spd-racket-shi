@@ -18,8 +18,6 @@
 
 ;Node Node SimpleGraph -> Boolean 
 ;is there a path from origin to destination in the simple graph sg
-(check-expect (path-exist? 'A 'E a-sg) #true)
-(check-expect (path-exist? 'A 'F a-sg) #false)
 (define (path-exist? origin destination sg)
   (cond
     [(symbol=? origin destination) #t]
@@ -29,7 +27,7 @@
 
 ;Node SimpleGraph -> Node
 ;determine the node that is connected to a-node in sg
-(check-expect (neighbor a-node sg)
+(define (neighbor a-node sg)
               (cond
                 [(empty? sg) (error "neighbor: not a node")]
                 [else (if (symbol=? (first (first sg)) a-node)
@@ -49,7 +47,9 @@
 
 ;Node Node SimpleGraph -> Boolean
 ;is there a path from origin to destination in sg
-(check-expect (path-exists.v2? origin destination sg)
+(check-expect (path-exists.v2? 'A 'E a-sg) #true)
+(check-expect (path-exists.v2? 'A 'F a-sg) #false)
+(define (path-exists.v2? origin destination sg)
               (local (;Node Node SimpleGraph [List-of Node] -> Boolean
                       (define (path-exists?/a origin seen)
                         (cond
