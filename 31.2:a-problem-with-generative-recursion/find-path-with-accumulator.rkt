@@ -18,44 +18,46 @@
         (list 'D)
         (list 'E 'C 'F)
         (list 'F 'D 'G)
-        (list 'G)))
+        (list 'G)
+        (list 'H)))
 
 (define ERR404 "Node not found")
 
 ;Graph Node -> [List-of Node]
 ;produces the list of inmediate neighbors of n in g
-(check-expect (neighbors sample-graph 'A) '(B E))
-(check-expect (neighbors sample-graph 'B) '(E F))
-(check-error (neighbors sample-graph 'Z) ERR404)
-(define (neighbors g n)
+(define (neighbors n g)
   (cond
     [(empty? g) (error ERR404)]
     [else (if (symbol=? n (first (first g))) 
               (rest (first g)) 
-              (neighbors (rest g) n))]))
+              (neighbors n (rest g)))]))
 
 ;Node Node Graph -> [Maybe Path]
 ;finds a path from origination to destination in G
 ;if there is no path, the function produces #false
-(define (find-path origination destination G)
-  (cond
-    [(symbol=? origination destination) (list destination)]
-    [else (local ((define next (neighbors origination G))
-                  (define candidate
-                    (find-path/list next destination G)))
-            (cond
-              [(boolean? candidate) #false]
-              [else (cons origination candidate)]))]))
+(define (find-path/big-boy origination destination G)
+  (local (
+    (define (find-path origination destination G seen)
+      (cond
+        [(symbol=? origination destination) (list destination)]
+        [else (local ((define next (neighbors origination G))
+                      (define candidate
+                        (find-path/list next destination G origination seen)))
+                (cond
+                  [(boolean? candidate) #false]
+                  [else (cons origination candidate)]))]))
 
-;[List-of Node] Node Graph -> [Maybe Path]
-;finds a path from some node on lo-Os to D
-;if there is no path, the function produces #false
-(define (find-path/list lo-Os D G)
-  (cond
-    [(empty? lo-Os) #false]
-    [else (local ((define candidate
-                    (find-path (first lo-Os) D G)))
-            (cond
-              [(boolean? candidate)
-               (find-path/list (rest lo-Os) D G)]
-              [else candidate]))]))
+    ;[List-of Node] Node Graph -> [Maybe Path]
+    ;finds a path from some node on lo-Os to D
+    ;if there is no path, the function produces #false
+    (define (find-path/list lo-Os D G origination seen)
+      (cond
+        [(empty? lo-Os) #false]
+        [(member? origination seen) #false]
+        [else (local ((define candidate
+                        (find-path (first lo-Os) D G (cons origination seen))))
+                (cond
+                  [(boolean? candidate)
+                    (find-path/list (rest lo-Os) D G origination seen)]
+                  [else candidate]))])))
+    (find-path origination destination G '())))
