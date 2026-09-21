@@ -20,3 +20,7 @@
     [(empty? alox) (list an-x)]
     [else
       (cons (first alox) (add-as-last an-x (rest alox)))]))
+
+;Exercise 493
+;inverts consumes O(n^2) time because
+;because it calls n times invert and n calls to add-as-last
