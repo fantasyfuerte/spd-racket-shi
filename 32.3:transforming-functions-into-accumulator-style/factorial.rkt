@@ -9,3 +9,17 @@
   (cond
     [(zero? n) 1]
     [else (* n (!.v1 (sub1 n)))]))
+
+;N -> N
+;computes (* n (- n 1) (- n 2) ... 1)
+(check-expect (!.v2 3) 6)
+(define (!.v2 n0)
+  (local (; N ??? -> N
+          ;computes (* n (- n 1) (- n 2) ... 1)
+          ;accumulator: a is the product of the natural
+          ;numbers in the interval [n0 n)
+          (define (!/a n a)
+            (cond
+              [(zero? n) a]
+              [else (!/a (sub1 n) (* n a))])))
+    (!/a n0 1)))
