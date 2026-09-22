@@ -8,3 +8,15 @@
   (cond
     [(empty? l) 1]
     [else (* (first l) (product.v1 (rest l)))]))
+
+;[List-of Number] -> Number
+;computes the product of the numbers on l
+(define (product.v2 l0)
+  (local (;[List-of Number] Number -> Number
+          ;produces the product of the numbers on l
+          ;accumulator a is the product so far
+          (define (product/a l a)
+            (cond
+              [(empty? l) a]
+              [else (product/a (rest l) (* (first l) a))])))
+    (product/a l0 1)))
