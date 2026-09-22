@@ -7,4 +7,18 @@
 (define (how-many l)
   (cond
     [(empty? l) 0]
-    [(add1 (how-many (rest l)))]))
+    [else (add1 (how-many (rest l)))]))
+
+;[List-of X] -> Number
+;produces the length of the list
+(define (how-many.accu l0)
+  (local (;[List-of X] Number -> Number
+          ;produces the length of the list
+          (define (how-many/a l a)
+            (cond 
+              [(empty? l) a]
+              [else (how-many/a (rest l) (add1 a))])))
+    (how-many/a l0 0)))
+
+;if n is the length of l then the performance of space the first is O(n) 
+;while the performance of the accumulator's version is O(1)
