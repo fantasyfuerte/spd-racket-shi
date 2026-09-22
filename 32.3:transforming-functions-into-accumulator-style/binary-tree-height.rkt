@@ -27,7 +27,7 @@
 ;produces the height of the tree
 (check-expect (height.accu example) 3)
 (define (height.accu bt0)
-  (local (;Tree ??? -> Number
+  (local (;Tree N -> Number
           ;measures the height of the tree
           ;accumulator: a is the number of steps 
           ;it takes to rack bt from bt0
@@ -38,4 +38,22 @@
                                    (add1 a))
                          (height/a (node-right bt)
                                    (add1 a)))])))
+    (height/a bt0 0)))
+
+(define (height.2accu bt0)
+  (local (;Tree N N -> Number
+          ;measures the height of the tree
+          ;accumulator s is the number of steps 
+          ;it takes to rack bt from bt0
+          ;accumulator m is the maximal height of the part of
+          ;bt0 that is to the left of bt
+          (define (height/a bt s m)
+            (cond
+              [(empty? bt) a]
+              [else (max (height/a (node-left bt)
+                                   (add1 a)
+                                   (add1 m))
+                         (height/a (node-right bt)
+                                   (add1 a)
+                                   m ))])))
     (height/a bt0 0)))
