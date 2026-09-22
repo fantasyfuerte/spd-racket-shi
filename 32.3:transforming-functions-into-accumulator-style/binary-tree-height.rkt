@@ -8,9 +8,18 @@
 ;-- (make-node Tree Tree)
 (define example
   (make-node 
-    (make node 
+    (make-node 
           '() 
           (make-node 
             '() 
             '())) 
     '()))
+
+;Tree -> Number
+;produces the height of the tree
+(check-expect (height example) 3)
+(define (height bt)
+  (cond
+    [(empty? bt) 0]
+    [else (+ (max (height (node-left bt))
+                  (height (node-right bt))) 1)]))
