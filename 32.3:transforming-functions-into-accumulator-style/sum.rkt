@@ -18,10 +18,10 @@
 (define (sum.v2 l0)
   (local (;[List-of Number] ??? -> Number
           ;computes the sum of the numbers on l
-          ;accumulator ...
+          ;accumulator a is the sum of the numbers
+          ;that l lacks from l0
           (define (sum/a l a)
             (cond
-              [(empty? l) ...]
-              [else (... (sum/a (rest l)
-                                ... a ...)...)])))
-    (sum/a l0 ...)
+              [(empty? l) a]
+              [else (sum/a (rest l) (+ (first l) a))])))
+    (sum/a l0 0)))
