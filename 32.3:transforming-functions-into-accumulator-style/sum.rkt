@@ -4,6 +4,8 @@
 
 ;[List-of Number] -> Number
 ;produces the sum of the numbers on l
+(check-expect (sum.v1 '(1 2 3 4 5)) 15)
+(check-expect (sum.v1 '()) 0)
 (define (sum.v1 l)
   (cond
     [(empty? l) 0]
@@ -11,7 +13,9 @@
 
 ;[List-of Number] -> Number
 ;produces the sum of the numbers on l
-(define (sum.v2 l)
+(check-expect (sum.v2 '(1 2 3 4 5)) 15)
+(check-expect (sum.v2 '()) 0)
+(define (sum.v2 l0)
   (local (;[List-of Number] ??? -> Number
           ;computes the sum of the numbers on l
           ;accumulator ...
@@ -20,4 +24,4 @@
               [(empty? l) ...]
               [else (... (sum/a (rest l)
                                 ... a ...)...)])))
-    (sum/a l ...)
+    (sum/a l0 ...)
