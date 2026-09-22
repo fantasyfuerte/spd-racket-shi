@@ -29,7 +29,8 @@
 (define (height.accu bt0)
   (local (;Tree ??? -> Number
           ;measures the height of the tree
-          ;accumulator...
+          ;accumulator: a is the number of steps 
+          ;it takes to rack bt from bt0
           (define (height/a bt a)
             (cond
               [(empty? bt) a]
