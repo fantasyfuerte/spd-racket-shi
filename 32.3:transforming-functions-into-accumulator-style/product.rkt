@@ -20,3 +20,7 @@
               [(empty? l) a]
               [else (product/a (rest l) (* (first l) a))])))
     (product/a l0 1)))
+
+;Doesn't improve in time complexity (both are O(n))
+;but the second one is O(1) in stack space because
+;in racket tail calls are optimized
