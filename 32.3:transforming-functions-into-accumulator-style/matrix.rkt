@@ -14,3 +14,22 @@
     [(not (= (first (first M)) 0)) M]
     [else 
       (rotate (append (rest M) (list (first M))))]))
+
+(check-expect (rotate.accu '((0 4 5) (1 2 3)))
+              '((1 2 3) (0 4 5)))
+(check-error (rotate.accu '((0 4 5) (0 2 3) (0 0 0)))
+             "matrix is not invertible")
+(define (rotate.accu M0)
+  (local (;Matrix Matrix -> Matrix
+          ;finds a row that doesn't start with 0 and
+          ;uses it as the first one
+          (define (rotate/a M seen)
+            (cond 
+              [(not (= (first (first M)) 0)) M]
+              [(member? (first M) seen) 
+               (error "matrix is not invertible")]
+              [else 
+                (rotate/a (append (rest M) (list (first M))) 
+                          (cons (first M) seen))])))
+    (rotate/a M0 '())))
+
