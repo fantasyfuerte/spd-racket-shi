@@ -23,6 +23,7 @@
   (local (;Matrix Matrix -> Matrix
           ;finds a row that doesn't start with 0 and
           ;uses it as the first one
+          ;accumulator seen is the rows that have been seen
           (define (rotate/a M seen)
             (cond 
               [(not (= (first (first M)) 0)) M]
