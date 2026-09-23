@@ -26,11 +26,10 @@
           ;accumulator seen is the rows that have been seen
           (define (rotate/a M seen)
             (cond 
-              [(not (= (first (first M)) 0)) M]
-              [(member? (first M) seen) 
-               (error "matrix is not invertible")]
+              [(empty? M) (error "matrix is not invertible")]
+              [(not (= (first (first M)) 0)) (append M (reverse seen))]
               [else 
-                (rotate/a (append (rest M) (list (first M))) 
+                (rotate/a (rest M) 
                           (cons (first M) seen))])))
     (rotate/a M0 '())))
 
