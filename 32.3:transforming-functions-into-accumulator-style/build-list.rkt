@@ -4,4 +4,12 @@
 
 ;N [N -> N] -> [List-of N]
 ;a build list variant
-(define (build-l*st n f) ...)
+(define (build-l*st n0 f)
+  (local (;N [List-of N] -> [List-of N]
+          ;a build list variant
+          ;accumulator a means the last number added
+          (define (bl/a n a)
+            (cond 
+              [(= n 1) (list a)]
+              [else (cons (f a) (bl/a (sub1 n) (f (add1 a))))])))
+    (bl/a n0 0)))
