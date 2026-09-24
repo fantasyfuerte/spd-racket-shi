@@ -23,10 +23,15 @@
 ;produces an editor with the cursor at the mouse x-coordinate
 (define (split-structural ed x)
   (local (
-          (define plain (implode ed))
-          (define selected (round (/ x FONT-SIZE)))
-          (define pre 
-            (reverse (explode (substring plain 0 selected))))
-          (define post 
-            (explode (substring plain selected (string-length plain)))))
-    (make-editor pre post)))
+          (define (are-ok? pre post)
+            (and (<= (image-width (editor-text pre)) x)
+                 (or 
+                   (empty? post)
+                   (<= x (image-width (editor-text (cons (first post) pre)))))))
+          (define (split-structural* pre post)
+            (cond
+              [(empty? pre ) (make-editor '() ed)]
+              [(are-ok? pre post) (make-editor pre post)]
+              [else (split-structural* (rest pre) 
+                                       (cons (first pre) post))])))
+    (split-structural* (reverse ed) '())))
