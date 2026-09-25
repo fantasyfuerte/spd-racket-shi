@@ -36,8 +36,35 @@
   (big-bang (create-editor s "")
     [on-key editor-key-handler]
     [to-draw editor-render]
+    [on-mouse handle-mouse]
   )
 )
+
+;[List-of 1String] -> Image
+;renders a string as an image for the editor
+(define (editor-text s)
+  (text (implode s) FONT-SIZE FONT-COLOR))
+
+
+(define (split ed x)
+  (local (
+          (define (preok? pre) 
+            (<= (image-width (editor-text pre)) x))
+          ;[List-of 1String] [List-of 1String] -> Editor
+          ;accumulator apost is the post of the editor
+          (define (split/a pre apost)
+            (cond
+              [(empty? pre) (make-editor '() ed)]
+              [(preok? pre) (make-editor pre apost)]
+              [else (split/a (rest pre) (cons (first pre) apost))])))
+    (split/a (reverse ed) '())))
+
+;Editor Integer Integer MouseEvent -> Editor
+;handles the click on the editor
+(define (handle-mouse s x y me)
+  (if (string=? me "button-down")
+      (split (append (reverse (editor-pre s)) (editor-post s)) x)
+      s))
 
 ;Editor->Image
 ;renders an editor as an image of the two texts
@@ -170,11 +197,6 @@
 
 (main "hello")
 
-;[List-of 1String] -> Image
-;renders a string as an image for the editor
-(define (editor-text s)
-  (text (implode s) FONT-SIZE FONT-COLOR))
-
 ;[List-of 1String] -> N 
 ;produces an editor with the cursor at the mouse x-coordinate
 (define (split-structural ed x)
@@ -192,15 +214,4 @@
                                        (cons (first pre) post))])))
     (split-structural* (reverse ed) '())))
 
-(define (split ed x)
-  (local (
-          (define (preok? pre) 
-            (<= (image-width (editor-text pre)) x))
-          ;[List-of 1String] [List-of 1String] -> Editor
-          ;accumulator apost is the post of the editor
-          (define (split/a pre apost)
-            (cond
-              [(empty? pre) (make-editor '() ed)]
-              [(preok? pre) (make-editor pre apost)]
-              [else (split/a (rest pre) (cons (first pre) apost))])))
-    (split/a (reverse ed) '())))
+
