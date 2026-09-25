@@ -42,7 +42,7 @@
           ;accumulator apost is the post of the editor
           (define (split/a pre apost)
             (cond
-              [(empty? pre) (make-editor '() apost)]
+              [(empty? pre) (make-editor '() ed)]
               [(preok? pre) (make-editor pre apost)]
               [else (split/a (rest pre) (cons (first pre) apost))])))
     (split/a (reverse ed) '())))
