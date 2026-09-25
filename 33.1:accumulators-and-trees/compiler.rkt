@@ -16,3 +16,6 @@
 (define (is-var? exp) (symbol? exp))
 (define (is-λ exp) (and (cons? exp)
                         (= (length exp) 3)))
+(define (is-app? exp) (and (cons? exp)
+                           (= (length exp) 2)))
+
