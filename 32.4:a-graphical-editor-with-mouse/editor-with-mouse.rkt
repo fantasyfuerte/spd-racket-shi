@@ -35,3 +35,14 @@
               [else (split-structural* (rest pre) 
                                        (cons (first pre) post))])))
     (split-structural* (reverse ed) '())))
+
+(define (split ed x)
+  (local (
+          ;[List-of 1String] [List-of 1String] -> Editor
+          ;accumulator apost is the post of the editor
+          (define (split/a pre apost)
+            (cond
+              [(empty? pre) (make-editor '() apost)]
+              [(preok? pre) (make-editor pre apost)]
+              [else (split/a (rest pre) (cons (first pre) apost))])))
+    (split/a (reverse ed) '())))
