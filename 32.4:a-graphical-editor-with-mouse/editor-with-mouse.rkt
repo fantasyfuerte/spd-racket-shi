@@ -38,6 +38,8 @@
 
 (define (split ed x)
   (local (
+          (define (preok? x) 
+            (<= (image-width (editor-text pre)) x))
           ;[List-of 1String] [List-of 1String] -> Editor
           ;accumulator apost is the post of the editor
           (define (split/a pre apost)
