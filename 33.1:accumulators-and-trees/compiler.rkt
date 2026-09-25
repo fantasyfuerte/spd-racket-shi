@@ -14,3 +14,5 @@
 (define ex4 '((λ(x) (x x)) (λ (x) (x x))))
 
 (define (is-var? exp) (symbol? exp))
+(define (is-λ exp) (and (cons? exp)
+                        (= (length exp) 3)))
