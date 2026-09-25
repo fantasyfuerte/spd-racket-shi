@@ -19,3 +19,5 @@
 (define (is-app? exp) (and (cons? exp)
                            (= (length exp) 2)))
 (define (λ-para exp) (first (second exp)))
+(define (λ-body exp) (third exp))
+
