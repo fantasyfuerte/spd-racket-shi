@@ -12,3 +12,5 @@
 (define ex2 '(λ (x) y))
 (define ex3 '(λ (y) (λ (x) y)))
 (define ex4 '((λ(x) (x x)) (λ (x) (x x))))
+
+(define (is-var? exp) (symbol? exp))
