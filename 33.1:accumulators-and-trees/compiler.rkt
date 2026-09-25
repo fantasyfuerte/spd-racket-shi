@@ -20,4 +20,4 @@
                            (= (length exp) 2)))
 (define (λ-para exp) (first (second exp)))
 (define (λ-body exp) (third exp))
-
+(define (app-fun exp) (first exp))
