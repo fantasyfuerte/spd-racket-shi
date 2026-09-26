@@ -57,5 +57,10 @@
 (check-expect (undeclareds ex3) ex3)
 (check-expect (undeclareds ex4) ex4)
 
-(define (undeclareds le0)
-  le0)
+(define (undeclareds le)
+  (cond
+    [(is-var? le) ...]
+    [(is-λ? le) (... (undeclareds (λ-body le)) ...)]
+    [(is-app? le)
+     (... (undeclareds (app-fun le))
+          (undeclareds (app-arg le)) ...)]))
