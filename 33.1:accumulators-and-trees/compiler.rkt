@@ -22,3 +22,11 @@
 (define (λ-body exp) (third exp))
 (define (app-fun exp) (first exp))
 (define (app-arg exp) (second exp))
+
+;Lam -> [List-of Symbols]
+;produces the list of all symbols used as λ parameters in a λ term
+(define (declareds exp) 
+  (cond
+    [(is-var? exp) '()]
+    [(is-λ exp) (cons (λ-para exp) (declareds (λ-body exp)))]
+    [else (append (declareds (app-fun exp)) (declareds (app-arg exp)))]))
