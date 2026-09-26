@@ -57,10 +57,19 @@
 (check-expect (undeclareds ex3) ex3)
 (check-expect (undeclareds ex4) ex4)
 
-(define (undeclareds le)
-  (cond
-    [(is-var? le) ...]
-    [(is-λ? le) (... (undeclareds (λ-body le)) ...)]
-    [(is-app? le)
-     (... (undeclareds (app-fun le))
-          (undeclareds (app-arg le)) ...)]))
+(define (undeclareds le0)
+  (local
+    (;Lam ??? -> Lam
+     ;accumulator a represents ...
+     (define (undeclareds/a le a)
+       (cond
+         [(is-var? le) ...]
+         [(is-λ? le)
+          (... (undeclareds/a (λ-body le)
+                              ... a ...) ...)]
+         [(is-app? le)
+          (... (undeclareds/a (app-fun le)
+                              ... a ...)
+               (undeclareds/a (app-arg le) 
+                              ... a ...) ...)])))
+    (undeclareds/a le0 ...)))
