@@ -30,3 +30,20 @@
     [(is-var? exp) '()]
     [(is-λ exp) (cons (λ-para exp) (declareds (λ-body exp)))]
     [else (append (declareds (app-fun exp)) (declareds (app-arg exp)))]))
+
+;; A Lam is one of:
+;; – Symbol
+;; - λexp
+;; - λapp
+
+(define-struct λexp [param body])
+;; A λexp is a structure:
+;;  (make-struct (list Symbol) Lam)
+
+(define-struct λapp [fun arg])
+;; A λapp is a structure:
+;;  (make-struct Lam Lam)
+
+(define ex1 (make-λexp '(x) 'x))
+(define ex2 (make-λexp '(x) 'y))
+(define ex3 (make-λexp '(y) (make-λexp 'y 'x)))
