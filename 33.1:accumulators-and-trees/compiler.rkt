@@ -59,17 +59,22 @@
 
 (define (undeclareds le0)
   (local
-    (;Lam ??? -> Lam
-     ;accumulator a represents ...
-     (define (undeclareds/a le a)
+    (;Lam [List-of Symbol] -> Lam
+     ;accumulator declareds is a list of all λ parameters
+     ;on the path from le0 to  le
+     (define (undeclareds/a le declareds)
        (cond
-         [(is-var? le) ...]
+         [(is-var? le)
+          (if (member? le declareds) le '*undeclareds)]
          [(is-λ? le)
-          (... (undeclareds/a (λ-body le)
-                              ... a ...) ...)]
+          (local ((define para (λ-para le))
+                  (define body (λ-body le))
+                  (define newd (cons para declareds)))
+            (list 'λ (list para)
+                  (undeclareds/a body newd)))]
          [(is-app? le)
-          (... (undeclareds/a (app-fun le)
-                              ... a ...)
-               (undeclareds/a (app-arg le) 
-                              ... a ...) ...)])))
-    (undeclareds/a le0 ...)))
+          (local ((define fun (app-fun le))
+                  (define arg (app-arg le)))
+            (list (undeclareds/a fun declareds)
+                  (undeclareds/a arg declareds)))])))
+    (undeclareds/a le0 '())))
