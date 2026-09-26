@@ -14,7 +14,7 @@
 (define ex4 '((λ(x) (x x)) (λ (x) (x x))))
 
 (define (is-var? exp) (symbol? exp))
-(define (is-λ exp) (and (cons? exp)
+(define (is-λ? exp) (and (cons? exp)
                         (= (length exp) 3)))
 (define (is-app? exp) (and (cons? exp)
                            (= (length exp) 2)))
@@ -28,7 +28,7 @@
 (define (declareds exp) 
   (cond
     [(is-var? exp) '()]
-    [(is-λ exp) (cons (λ-para exp) (declareds (λ-body exp)))]
+    [(is-λ? exp) (cons (λ-para exp) (declareds (λ-body exp)))]
     [else (append (declareds (app-fun exp)) (declareds (app-arg exp)))]))
 
 ;; A Lam is one of:
@@ -43,10 +43,6 @@
 (define-struct λapp [fun arg])
 ;; A λapp is a structure:
 ;;  (make-struct Lam Lam)
-
-(define ex1 (make-λexp '(x) 'x))
-(define ex2 (make-λexp '(x) 'y))
-(define ex3 (make-λexp '(y) (make-λexp 'y 'x)))
 
 ;Lam -> Lam
 ;replaces all symbols s in le with '*undeclared
@@ -65,7 +61,7 @@
      (define (undeclareds/a le declareds)
        (cond
          [(is-var? le)
-          (if (member? le declareds) le '*undeclareds)]
+          (if (member? le declareds) le '*undeclared)]
          [(is-λ? le)
           (local ((define para (λ-para le))
                   (define body (λ-body le))
