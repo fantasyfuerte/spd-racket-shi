@@ -47,3 +47,15 @@
 (define ex1 (make-λexp '(x) 'x))
 (define ex2 (make-λexp '(x) 'y))
 (define ex3 (make-λexp '(y) (make-λexp 'y 'x)))
+
+;Lam -> Lam
+;replaces all symbols s in le with '*undeclared
+;if they do not occur within the body of a λ expression
+;whose parameter is s
+(check-expect (undeclareds ex1) ex1)
+(check-expect (undeclareds ex2) '(λ (x) *undeclared))
+(check-expect (undeclareds ex3) ex3)
+(check-expect (undeclareds ex4) ex4)
+
+(define (undeclareds le0)
+  le0)
