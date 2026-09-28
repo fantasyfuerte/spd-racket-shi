@@ -30,3 +30,10 @@
   (cond
     [(empty? a-list) (error "List is empty")]
     [else (pair-right a-list)]))
+
+
+(define-struct cpair [count left right])
+;a [MyList X] is one of:
+;-- '()
+;-- (make-cpair (tech "N") X [MyList X])
+;accumulator the count field is the number of cpairs
