@@ -21,7 +21,6 @@
 ;2 cannibals and 1 missionary
 
 ;Graphical Constants
-
 (define SIZE 10)
 (define WIDTH (+ (* 2 SIZE) 4))
 (define SCENE-HEIGHT (* MAX WIDTH))
@@ -42,9 +41,9 @@
                       (rectangle (* 5 WIDTH) SCENE-HEIGHT "outline" "blue")
                       (rectangle 2 SCENE-HEIGHT "solid" "blue")))
 
-(define ps-1 (make-ps (make-side 3 3) (make-side 0 0) 'left))
-(define ps-2 (make-ps (make-side 2 1) (make-side 1 2) 'right))
-(define ps-3 (make-ps (make-side 0 0) (make-side 3 3) 'right))
+(define ps-1 (make-puzzle (make-group 3 3) (make-group 0 0) 'left))
+(define ps-2 (make-puzzle (make-group 2 1) (make-group 1 2) 'right))
+(define ps-3 (make-puzzle (make-group 0 0) (make-group 3 3) 'right))
 
 ;PuzzleState -> PuzzleState
 ;is the final state reachable from state0
@@ -61,3 +60,12 @@
                [else
                  (solve* (create-next-states los))])))
     (solve* (list state0))))
+
+;PuzzleState -> Boolean
+;yields true if the game is a final state
+(define (final? ps)
+  (local (
+          ;Group -> Number
+          (define (count-people g)
+            (+ (group-can g) (group-mis g))))
+    (zero? (count-people (puzzle-left ps)))))
