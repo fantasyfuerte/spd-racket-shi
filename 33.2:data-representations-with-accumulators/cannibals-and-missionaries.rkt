@@ -20,6 +20,32 @@
 ;interpretation: (make-group 1 2) means that are 
 ;2 cannibals and 1 missionary
 
+;Graphical Constants
+
+(define SIZE 10)
+(define WIDTH (+ (* 2 SIZE) 4))
+(define SCENE-HEIGHT (* MAX WIDTH))
+
+(define MIS (overlay (circle SIZE "solid" "brown")
+                     (circle (+ 1 SIZE) 'solid 'transparent)))
+
+(define CAN (overlay (circle SIZE "solid" "yellow")
+                     (circle (+ 1 SIZE) 'solid 'transparent)))
+
+(define BOAT (above (rhombus SIZE 120 "solid" "blue")
+                    (overlay (rectangle (* 2 SIZE) SIZE "solid" "blue")
+                             (rectangle (* 3 SIZE) SIZE 'solid 'transparent))))
+
+(define BANK (rectangle (* 2 WIDTH) SCENE-HEIGHT "outline" "green"))
+
+(define RIVER (beside (rectangle 2 SCENE-HEIGHT "solid" "blue")
+                      (rectangle (* 5 WIDTH) SCENE-HEIGHT "outline" "blue")
+                      (rectangle 2 SCENE-HEIGHT "solid" "blue")))
+
+(define ps-1 (make-ps (make-side 3 3) (make-side 0 0) 'left))
+(define ps-2 (make-ps (make-side 2 1) (make-side 1 2) 'right))
+(define ps-3 (make-ps (make-side 0 0) (make-side 3 3) 'right))
+
 ;PuzzleState -> PuzzleState
 ;is the final state reachable from state0
 ;generative creates a tree of possible boat rides
