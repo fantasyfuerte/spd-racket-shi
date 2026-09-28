@@ -44,3 +44,11 @@
     [(empty? r) (make-cpair 1 f r)]
     [(cpair? r) (make-cpair (+ (cpair-count r) 1) f r)]
     [else (error "our-cons: ...")]))
+
+;Any -> N
+;how many items does l contain
+(define (our-length l)
+  (cond
+    [(empty? l) 0]
+    [(cpair? l) (cpair-count l)]
+    [else (error "Not a cpair")]))
