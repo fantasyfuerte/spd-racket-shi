@@ -72,3 +72,44 @@
     (undeclareds/a le0 '())))
 
 (define ex5 '(λ (*undeclared) ((λ (x) (x *undeclared)) y)))
+
+(check-expect (static-distance ex1) '(λ (x) 0))
+(check-expect (static-distance ex2) '(λ (x) y))
+(check-expect (static-distance ex3) '(λ (y) (λ (x) 1)))
+(check-expect (static-distance ex4) '((λ (x) ((λ (y) (0 1)) 0)) (λ (z) 0)))
+(define (static-distance le0)
+  (local (
+          ; [List-of Symbol] Symbol -> [Maybe N]
+          (define (index-of l0 i)
+            (local (; [List-of Symbol] N -> [Maybe N]
+                    ; accumulator n is an index on l0
+                    ; of the first item of l.
+                    (define (index-of/a l n)
+                      (cond
+                        [(empty? l) (error "Not found")]
+                        [(symbol=? (first l) i) n]
+                        [else (index-of/a (rest l) (add1 n))])))
+              (index-of/a l0 0)))
+
+          ; Lam [List-of Symbol] -> Lam
+          ; accumulator declareds is a list of all λ
+          ; parameters on the path from le0 to le.
+          (define (static-distance/a le declareds)
+            (cond
+              [(is-var? le)
+               (if (member? le declareds)
+                   (index-of declareds le)
+                   le)]
+              [(is-λ? le)
+               (local ((define param (λ-param le))
+                       (define body (λ-body le))
+                       (define newd (cons param declareds)))
+                 (list 'λ (list param)
+                       (static-distance/a body newd)))]
+              [(is-app? le)
+               (local ((define fun (app-fun le))
+                       (define arg (app-arg le)))
+                 (list (static-distance/a fun declareds)
+                       (static-distance/a arg declareds)))])))
+
+    (static-distance/a le0 '())))
