@@ -13,3 +13,10 @@
     [(empty? a-list) (make-pair a-value a-list)]
     [(our-cons? a-list) (make-pair a-value a-list)]
     [else (error "Not a list")]))
+
+;ConsOrEmpty -> Any
+;extracts the left part of the given pair
+(define (our-first mimicked-list)
+  (if (empty? mimicked-list)
+      (error "List is empty")
+      (pair-left mimicked-list)))
