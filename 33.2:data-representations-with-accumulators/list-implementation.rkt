@@ -23,3 +23,10 @@
   (if (empty? mimicked-list)
       (error "List is empty")
       (pair-left mimicked-list)))
+
+;ConsOrEmpty -> ConsOrEmpty
+;retrieves the rest of the list
+(define (our-rest a-list)
+  (cond
+    [(empty? a-list) (error "List is empty")]
+    [else (pair-right a-list)]))
