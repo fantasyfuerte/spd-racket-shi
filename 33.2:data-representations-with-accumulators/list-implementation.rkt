@@ -7,6 +7,9 @@
 ; -- '()
 ; -- (make-pair Any ConsOrEmpty)
 
+;Any -> boolean
+(define (our-cons? x) (pair? x))
+
 ;Any ConsOrEmpty -> ConsOrEmpty
 (define (our-cons a-value a-list)
   (cond
