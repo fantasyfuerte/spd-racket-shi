@@ -37,3 +37,10 @@
 ;-- '()
 ;-- (make-cpair (tech "N") X [MyList X])
 ;accumulator the count field is the number of cpairs
+
+;data definition, via a constructor-function
+(define (our-ccons f r)
+  (cond
+    [(empty? r) (make-cpair 1 f r)]
+    [(cpair? r) (make-cpair (+ (cpair-count r) 1) f r)]
+    [else (error "our-cons: ...")]))
