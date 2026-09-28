@@ -6,11 +6,12 @@
 
 (define MAX 3); max of each
 
-(define-struct puzzle [left right boat])
+(define-struct puzzle [states left right boat])
 ;a PuzzleState is a structure:
-;  (make-puzzle Group Group Boat)
-;interpretation: (make-puzzle a b c) combines 
-;the group a with the group b and the boat c
+;  (make-puzzle [List-of PuzzleState] Group Group Boat)
+;interpretation: (make-puzzle z a b c) combines 
+;the group a with the group b and the boat c and the 
+;list of previous states z
 
 ;a Boat is one of:
 ; -- 'left
