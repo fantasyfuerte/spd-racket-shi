@@ -44,9 +44,9 @@
                       (rectangle (* 5 WIDTH) SCENE-HEIGHT "outline" "blue")
                       (rectangle 2 SCENE-HEIGHT "solid" "blue")))
 
-(define ps-1 (make-puzzle (make-group 3 3) (make-group 0 0) 'left))
-(define ps-2 (make-puzzle (make-group 2 1) (make-group 1 2) 'right))
-(define ps-3 (make-puzzle (make-group 0 0) (make-group 3 3) 'right))
+(define ps-1 (make-puzzle '() (make-group 3 3) (make-group 0 0) 'left))
+(define ps-2 (make-puzzle '() (make-group 2 1) (make-group 1 2) 'right))
+(define ps-3 (make-puzzle '() (make-group 0 0) (make-group 3 3) 'right))
 
 ;; PuzzleState -> Image
 ;; Renders an image according to the given puzzle state.
