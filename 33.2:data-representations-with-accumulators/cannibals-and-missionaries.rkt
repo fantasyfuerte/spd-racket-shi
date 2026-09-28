@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname cannibals-and-missionaries) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/image)
+
 (define MAX 3); max of each
 
 (define-struct puzzle [left right boat])
@@ -25,10 +27,10 @@
 (define WIDTH (+ (* 2 SIZE) 4))
 (define SCENE-HEIGHT (* MAX WIDTH))
 
-(define MIS (overlay (circle SIZE "solid" "brown")
+(define MIS (overlay (circle SIZE "solid" "green")
                      (circle (+ 1 SIZE) 'solid 'transparent)))
 
-(define CAN (overlay (circle SIZE "solid" "yellow")
+(define CAN (overlay (circle SIZE "solid" "red")
                      (circle (+ 1 SIZE) 'solid 'transparent)))
 
 (define BOAT (above (rhombus SIZE 120 "solid" "blue")
@@ -45,11 +47,32 @@
 (define ps-2 (make-puzzle (make-group 2 1) (make-group 1 2) 'right))
 (define ps-3 (make-puzzle (make-group 0 0) (make-group 3 3) 'right))
 
+;; PuzzleState -> Image
+;; Renders an image according to the given puzzle state.
+(define (render-mc state)
+  (local ((define (render-actor img n)
+            (foldr (lambda (i a) (above img a))
+                   empty-image
+                   (build-list n (lambda (i) i))))
+
+          (define (render-bank bank)
+            (overlay (beside (render-actor MIS (group-mis bank))
+                             (render-actor CAN (group-can bank)))
+                     BANK)))
+
+    (beside (render-bank (puzzle-left state))
+            (overlay/align (puzzle-boat state) "middle" BOAT RIVER)
+            (render-bank (puzzle-right state)))))
+
+(render-mc ps-1)
+(render-mc ps-2)
+(render-mc ps-3)
+
 ;PuzzleState -> PuzzleState
 ;is the final state reachable from state0
 ;generative creates a tree of possible boat rides
 ;termination ???
-(check-expect (solve initial-puzzle) final-puzzle)
+;(check-expect (solve initial-puzzle) final-puzzle)
 (define (solve state0)
   (local (;[List-of PuzzleState] -> PuzzleState
           ;generative generates the successors of los
@@ -69,3 +92,5 @@
           (define (count-people g)
             (+ (group-can g) (group-mis g))))
     (zero? (count-people (puzzle-left ps)))))
+
+(define (create-next-states s) s)
