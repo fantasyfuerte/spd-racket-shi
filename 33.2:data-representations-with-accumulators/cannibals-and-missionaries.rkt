@@ -3,6 +3,7 @@
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname cannibals-and-missionaries) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 (require 2htdp/image)
+(require 2htdp/universe)
 
 (define MAX 3); max of each
 (define CAP 2); max of people the boat can carry
@@ -231,3 +232,6 @@
         (group-can (puzzle-left ps)))
      (+ (group-mis (puzzle-right ps))
         (group-can (puzzle-right ps)))))
+
+(define (movie x)
+  (run-movie x (map render-mc (reverse(puzzle-states (solve ps-1))))))
