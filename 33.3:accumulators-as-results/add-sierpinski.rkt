@@ -23,9 +23,7 @@
          (define scene2
            (add-sierpinski scene1 a mid-a-b mid-c-a))
          (define scene3
-           (add-sierpinski scene2 b mid-b-c mid-a-b))
-         (define scene4 
-           (add-sierpinski scene0 c mid-c-a mid-b-c)))
+           (add-sierpinski scene2 b mid-b-c mid-a-b)))
         (add-sierpinski scene3 c mid-c-a mid-b-c))]))
 
 ;Image Posn Posn Posn -> Image
@@ -48,5 +46,5 @@
 ;determines the midpoint between a and b
 (define (mid-point a b)
   (make-posn (/ (+ (posn-x a) (posn-x b)) 2) 
-             (/ (+ (posn-x a) (posn-x b)) 2)))
+             (/ (+ (posn-y a) (posn-y b)) 2)))
 
