@@ -46,4 +46,7 @@
 
 ;Posn Posn -> Posn
 ;determines the midpoint between a and b
-(define (mid-point a b) a)
+(define (mid-point a b)
+  (make-posn (/ (+ (posn-x a) (posn-x b)) 2) 
+             (/ (+ (posn-x a) (posn-x b)) 2)))
+
