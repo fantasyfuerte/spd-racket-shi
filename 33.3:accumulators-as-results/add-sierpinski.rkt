@@ -23,3 +23,15 @@
          (define scene4 
            (add-sierpinski scene0 c mid-c-a mid-b-c)))
         (... scene1 ... scene2 ... scene3))]))
+
+;Image Posn Posn Posn -> Image
+;adds the black triangle a b c to scene
+(define (add-triangle scene a b c) scene)
+
+;Posn Posn Posn -> Boolean
+;is the triangle a b c too small to be divided?
+(define (too-small? a b c) #false)
+
+;Posn Posn -> Posn
+;determines the midpoint between a and b
+(define (mid-point a b) a)
