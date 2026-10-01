@@ -4,6 +4,8 @@
 
 (require 2htdp/image)
 
+(define ab-side-threshold 10)
+
 ;Image Posn Posn -> Image
 ;generative adds the triangle (a, b, c) to s,
 ;subdivides it into three triangles by taking
@@ -37,7 +39,10 @@
 
 ;Posn Posn Posn -> Boolean
 ;is the triangle a b c too small to be divided?
-(define (too-small? a b c) #false)
+(define (too-small? a b c)
+  (< (sqrt (+ (sqr (- (posn-x a) (posn-x b))) 
+              (sqr (- (posn-y a) (posn-y b))))) 
+     ab-side-threshold))
 
 ;Posn Posn -> Posn
 ;determines the midpoint between a and b
