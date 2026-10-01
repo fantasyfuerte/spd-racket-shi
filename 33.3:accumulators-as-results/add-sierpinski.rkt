@@ -2,6 +2,8 @@
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname add-sierpinski) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
+(require 2htdp/image)
+
 ;Image Posn Posn -> Image
 ;generative adds the triangle (a, b, c) to s,
 ;subdivides it into three triangles by taking
@@ -9,7 +11,7 @@
 ;is too small
 (define (add-sierpinski scene0 a b c)
   (cond
-    [(too-small? a b c) scene 0]
+    [(too-small? a b c) scene0]
     [else 
       (local 
         ((define scene1 (add-triangle scene0 a b c))
@@ -26,7 +28,12 @@
 
 ;Image Posn Posn Posn -> Image
 ;adds the black triangle a b c to scene
-(define (add-triangle scene a b c) scene)
+(define (add-triangle scene a b c)
+  (scene+line 
+    (scene+line
+      (scene+line scene (posn-x a) (posn-y a) (posn-x b) (posn-y b) "black")
+      (posn-x b) (posn-y b) (posn-x c) (posn-y c) "black")
+    (posn-x c) (posn-y c) (posn-x a) (posn-y a) "black"))
 
 ;Posn Posn Posn -> Boolean
 ;is the triangle a b c too small to be divided?
