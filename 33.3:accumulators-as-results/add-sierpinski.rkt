@@ -21,12 +21,12 @@
          (define mid-b-c (mid-point b c))
          (define mid-c-a (mid-point c a))
          (define scene2
-           (add-sierpinski scene0 a mid-a-b mid-c-a))
+           (add-sierpinski scene1 a mid-a-b mid-c-a))
          (define scene3
-           (add-sierpinski scene0 b mid-b-c mid-a-b))
+           (add-sierpinski scene2 b mid-b-c mid-a-b))
          (define scene4 
            (add-sierpinski scene0 c mid-c-a mid-b-c)))
-        (... scene1 ... scene2 ... scene3))]))
+        (add-sierpinski scene3 c mid-c-a mid-b-c))]))
 
 ;Image Posn Posn Posn -> Image
 ;adds the black triangle a b c to scene
